@@ -37,12 +37,13 @@ import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_login.*
 import java.lang.Exception
 
+
 /**
  * A login screen that offers login via email/password.
  */
 class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
-
+   //TODO:- Manage UI
 
     private var mAuthTask: UserLoginTask? = null
 
