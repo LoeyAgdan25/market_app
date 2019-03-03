@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.content_signup.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import java.lang.Exception
-import AppController
 import android.content.Intent
 import com.amazonaws.regions.Regions
 
