@@ -11,7 +11,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import java.lang.Exception
 import AppController
-import kotlinx.android.synthetic.main.activity_login.*
 
 class SignupActivity : AppCompatActivity() {
 
@@ -37,6 +36,9 @@ class SignupActivity : AppCompatActivity() {
 
 
         var userPoolCognito = app.getUserPool()
+
+        
+
         var cognitoUserAttr = CognitoUserAttributes()
         cognitoUserAttr.addAttribute("email",txt_email.text.toString())
         cognitoUserAttr.addAttribute("profile","FREE")
@@ -53,8 +55,10 @@ class SignupActivity : AppCompatActivity() {
 
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-            Log.d("_login","User successfully signed")
+            Log.d("_login","User successfully signed , signUpConfirmationState : " + signUpConfirmationState )
             //TODO:- Open confirmation code...
+
+
         }
 
         override fun onFailure(exception: Exception?) {
