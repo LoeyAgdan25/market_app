@@ -11,8 +11,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import java.lang.Exception
 import AppController
+import android.content.Intent
+import com.amazonaws.regions.Regions
 
 class SignupActivity : AppCompatActivity() {
+
+    var userPool:CognitoUserPool? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,26 +28,22 @@ class SignupActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        btn_signup.setOnClickListener{ doSignUpTapped() }
+        userPool = CognitoUserPool(baseContext,
+                UtilityHelper.CognitoUserPool.USERPOOL_ID,
+                UtilityHelper.CognitoUserPool.CLIENT_ID,
+                UtilityHelper.CognitoUserPool.CLIENT_SECRET,
+                Regions.US_EAST_2)
 
+        btn_signup.setOnClickListener{ doSignUpTapped() }
     }
 
+
+
     private fun doSignUpTapped(){
-
-        Log.d("Signup","doing signup...")
-
-        val app:AppController = AppController()
-
-
-        var userPoolCognito = app.getUserPool()
-
-        
-
         var cognitoUserAttr = CognitoUserAttributes()
         cognitoUserAttr.addAttribute("email",txt_email.text.toString())
         cognitoUserAttr.addAttribute("profile","FREE")
-        userPoolCognito?.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler )
-
+        this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
     }
 
 
@@ -56,8 +56,9 @@ class SignupActivity : AppCompatActivity() {
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
             Log.d("_login","User successfully signed , signUpConfirmationState : " + signUpConfirmationState )
-            //TODO:- Open confirmation code...
 
+            val intent = Intent(baseContext, ConfirmationActivity::class.java)
+            startActivity(intent)
 
         }
 

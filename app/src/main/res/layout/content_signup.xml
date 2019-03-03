@@ -9,7 +9,8 @@
     tools:showIn="@layout/activity_signup">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
@@ -18,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
         <EditText
             android:id="@+id/txt_email"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email Address"
@@ -27,7 +28,7 @@
             tools:layout_editor_absoluteY="58dp" />
         <EditText
             android:id="@+id/txt_password_2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter Password"
@@ -37,7 +38,7 @@
 
         <EditText
             android:id="@+id/txt_password_1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter Password"

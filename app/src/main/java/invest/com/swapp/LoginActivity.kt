@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         })
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
+        email_sign_up_button.setOnClickListener { attemptSignup() }
 
         val userPool = com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool(baseContext,CognitoUserPool.USERPOOL_ID,CognitoUserPool.CLIENT_ID,CognitoUserPool.CLIENT_SECRET,Regions.US_EAST_2)
 
@@ -92,9 +93,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             val intent = Intent(baseContext, MasterActivity::class.java)
             //startActivity(intent)
             Log.w("_message","email is the same")
+    }
 
-
-
+    private fun attemptSignup(){
+        val intent = Intent(baseContext, SignupActivity::class.java)
+        startActivity(intent)
     }
 
     private fun isEmailValid(email: String): Boolean {
