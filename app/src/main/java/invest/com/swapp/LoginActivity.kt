@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.content.Intent
+import android.text.Editable
 import android.util.Log
+import android.widget.Toast
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
@@ -46,6 +49,16 @@ class LoginActivity : AppCompatActivity(){
         email_sign_in_button.setOnClickListener { attemptLogin() }
         email_sign_up_button.setOnClickListener { attemptSignup()}
 
+
+        Log.d("signin", "user signin" + userPool!!.currentUser.userId)
+
+        if(userPool!!.currentUser.userId.isEmpty()){
+            Toast.makeText(baseContext,"login",Toast.LENGTH_LONG).show()
+        }else{
+            startActivity(Intent(baseContext, MasterActivity::class.java))
+        }
+
+
     }
 
     private fun attemptLogin() {
@@ -70,10 +83,11 @@ class LoginActivity : AppCompatActivity(){
         override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
             val intent = Intent(baseContext, MasterActivity::class.java)
             startActivity(intent)
+            Log.d("signin","success signing in")
         }
 
         override fun onFailure(exception: Exception?) {
-
+            Log.d("signin","error signing in")
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation?) {
@@ -90,6 +104,9 @@ class LoginActivity : AppCompatActivity(){
     }
 
     fun getUserAuthentication(authenticationContinuation: AuthenticationContinuation,username:String){
+
+        Log.d("signin","Get authentication...")
+
         var authDetails = AuthenticationDetails(username,cPassword,null)
         authenticationContinuation.setAuthenticationDetails(authDetails)
         authenticationContinuation.continueTask()
