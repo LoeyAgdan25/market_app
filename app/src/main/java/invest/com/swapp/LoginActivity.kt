@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity(){
         if(userPool!!.currentUser.userId.isEmpty()){
             Toast.makeText(baseContext,"login",Toast.LENGTH_LONG).show()
         }else{
-            startActivity(Intent(baseContext, MasterActivity::class.java))
+          //  startActivity(Intent(baseContext, MasterActivity::class.java))
         }
 
 

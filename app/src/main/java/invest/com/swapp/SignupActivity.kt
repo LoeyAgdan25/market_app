@@ -27,11 +27,18 @@ class SignupActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        userPool = CognitoUserPool(baseContext,
+
+
+
+       /* userPool = CognitoUserPool(baseContext,
                 UtilityHelper.CognitoUserPool.USERPOOL_ID,
                 UtilityHelper.CognitoUserPool.CLIENT_ID,
                 UtilityHelper.CognitoUserPool.CLIENT_SECRET,
-                Regions.US_EAST_2)
+                Regions.US_EAST_2) */
+
+        //var helper = AppHelper(baseContext)
+
+        AppHelper.init(baseContext)
 
         btn_signup.setOnClickListener{ doSignUpTapped() }
     }
@@ -42,7 +49,9 @@ class SignupActivity : AppCompatActivity() {
         var cognitoUserAttr = CognitoUserAttributes()
         cognitoUserAttr.addAttribute("email",txt_email.text.toString())
         cognitoUserAttr.addAttribute("profile","FREE")
-        this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
+        //this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
+
+        AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
     }
 
 
