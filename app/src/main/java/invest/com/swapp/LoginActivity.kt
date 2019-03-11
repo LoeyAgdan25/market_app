@@ -1,6 +1,7 @@
 package invest.com.swapp
 
 
+import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -61,28 +62,74 @@ class LoginActivity : AppCompatActivity(){
 
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode){
+            1 -> // Register user
+                if(resultCode == Activity.RESULT_OK){
+                    var name = data!!.getStringExtra("name")
+                    if(!name.isEmpty()){
+                        txt_username.setText(name)
+                        password.setText("")
+                        password.requestFocus()
+                    }
+
+                    var pwd = data.getStringExtra("password")
+                    if(!pwd.isEmpty()){
+                        password.setText(pwd)
+                    }
+
+                    if(!name.isEmpty() && !pwd.isEmpty()){
+                        cUsername = name
+                        cPassword = pwd
+                        AppHelper.userPool!!.getUser(cUsername).getSessionInBackground(authHandler)
+                    }
+                }
+            2 -> // Confirm register user
+                if(resultCode == Activity.RESULT_OK){
+
+
+                }
+            4 -> //Main
+                if(resultCode == Activity.RESULT_OK){
+                    if(txt_username == null){
+
+                    }
+
+                    txt_username.setText("")
+                    txt_username.requestFocus()
+                    password.setText("")
+                    password.requestFocus()
+                }
+            else -> print("not")
+        }
+
+    }
+
     private fun attemptLogin() {
         cUsername = txt_username.text.toString()
-
-//        if (cUsername.isEmpty()) {
-//            return
-//        }
+//        if (cUsername.isEmpty()) { return }
 
         cPassword = password.text.toString()
-
-//        if (cPassword.isEmpty()){
-//            return
-//        }
+//        if (cPassword.isEmpty()){ return }
 
         Log.d("signin","trigger")
 
-        userPool!!.getUser(cUsername).getSessionInBackground(handler)
+        userPool!!.getUser(cUsername).getSessionInBackground(authHandler)
     }
 
-    var handler = object: AuthenticationHandler{
+    var authHandler = object: AuthenticationHandler{
         override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
+            AppHelper.currSession = userSession
+            AppHelper.newDevice = newDevice
+
+            //dismiss dialog
+
             val intent = Intent(baseContext, MasterActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 4)
+
             Log.d("signin","success signing in")
         }
 
@@ -106,124 +153,14 @@ class LoginActivity : AppCompatActivity(){
     fun getUserAuthentication(authenticationContinuation: AuthenticationContinuation,username:String){
 
         Log.d("signin","Get authentication...")
-
         var authDetails = AuthenticationDetails(username,cPassword,null)
         authenticationContinuation.setAuthenticationDetails(authDetails)
         authenticationContinuation.continueTask()
     }
 
-    /*
-
-      if(username != null) {
-            this.username = username;
-            AppHelper.setUser(username);
-        }
-        if(this.password == null) {
-            inUsername.setText(username);
-            password = inPassword.getText().toString();
-            if(password == null) {
-                TextView label = (TextView) findViewById(R.id.textViewUserPasswordMessage);
-                label.setText(inPassword.getHint()+" enter password");
-                inPassword.setBackground(getDrawable(R.drawable.text_border_error));
-                return;
-            }
-
-            if(password.length() < 1) {
-                TextView label = (TextView) findViewById(R.id.textViewUserPasswordMessage);
-                label.setText(inPassword.getHint()+" enter password");
-                inPassword.setBackground(getDrawable(R.drawable.text_border_error));
-                return;
-            }
-        }
-        AuthenticationDetails authenticationDetails = new AuthenticationDetails(this.username, password, null);
-        continuation.setAuthenticationDetails(authenticationDetails);
-        continuation.continueTask();
-
-
-    */
-
-    /*
-
-     //
-    AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
-        @Override
-        public void onSuccess(CognitoUserSession cognitoUserSession, CognitoDevice device) {
-            Log.d(TAG, " -- Auth Success");
-            AppHelper.setCurrSession(cognitoUserSession);
-            AppHelper.newDevice(device);
-            closeWaitDialog();
-            launchUser();
-        }
-
-        @Override
-        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String username) {
-            closeWaitDialog();
-            Locale.setDefault(Locale.US);
-            getUserAuthentication(authenticationContinuation, username);
-        }
-
-        @Override
-        public void getMFACode(MultiFactorAuthenticationContinuation multiFactorAuthenticationContinuation) {
-            closeWaitDialog();
-            mfaAuth(multiFactorAuthenticationContinuation);
-        }
-
-        @Override
-        public void onFailure(Exception e) {
-            closeWaitDialog();
-            TextView label = (TextView) findViewById(R.id.textViewUserIdMessage);
-            label.setText("Sign-in failed");
-            inPassword.setBackground(getDrawable(R.drawable.text_border_error));
-
-            label = (TextView) findViewById(R.id.textViewUserIdMessage);
-            label.setText("Sign-in failed");
-            inUsername.setBackground(getDrawable(R.drawable.text_border_error));
-
-            showDialogMessage("Sign-in failed", AppHelper.formatException(e));
-        }
-
-        @Override
-        public void authenticationChallenge(ChallengeContinuation continuation) {
-            /**
-             * For Custom authentication challenge, implement your logic to present challenge to the
-             * user and pass the user's responses to the continuation.
-             */
-            if ("NEW_PASSWORD_REQUIRED".equals(continuation.getChallengeName())) {
-                // This is the first sign-in attempt for an admin created user
-                newPasswordContinuation = (NewPasswordContinuation) continuation;
-                AppHelper.setUserAttributeForDisplayFirstLogIn(newPasswordContinuation.getCurrentUserAttributes(),
-                        newPasswordContinuation.getRequiredAttributes());
-                closeWaitDialog();
-                firstTimeSignIn();
-            } else if ("SELECT_MFA_TYPE".equals(continuation.getChallengeName())) {
-                closeWaitDialog();
-                mfaOptionsContinuation = (ChooseMfaContinuation) continuation;
-                List<String> mfaOptions = mfaOptionsContinuation.getMfaOptions();
-                selectMfaToSignIn(mfaOptions, continuation.getParameters());
-            }
-        }
-    };
-
-
-    */
-
     private fun attemptSignup(){
         val intent = Intent(baseContext, SignupActivity::class.java)
         startActivity(intent)
     }
-
-    private fun isEmailValid(email: String): Boolean {
-        //TODO: Replace this with your own logic
-        return email.contains("@")
-    }
-
-    private fun isPasswordValid(password: String): Boolean {
-        //TODO: Replace this with your own logic
-        return password.length > 4
-    }
-
-
-
-
 
 }

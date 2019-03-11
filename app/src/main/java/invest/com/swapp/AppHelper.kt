@@ -1,12 +1,13 @@
 package invest.com.swapp
 
 import android.content.Context
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.regions.Regions
 
-public class AppHelper{
+class AppHelper{
 
     var context: Context? = null
     companion object {
@@ -25,6 +26,7 @@ public class AppHelper{
 
         var currSession:CognitoUserSession? = null
         var userDetails:CognitoUserDetails? = null
+        var newDevice:CognitoDevice? = null
 
         fun init(context: Context){
             if (appHelper != null && userPool != null){
