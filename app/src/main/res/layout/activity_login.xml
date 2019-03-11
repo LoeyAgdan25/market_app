@@ -84,6 +84,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_sign_in"
+                    android:background="@color/colorPrimaryDark"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -94,8 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Forgot Password"
+                android:background="@android:color/transparent"
                 android:textStyle="bold"
-                android:visibility="gone"
                 />
         </LinearLayout>
     </ScrollView>
