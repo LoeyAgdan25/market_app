@@ -53,12 +53,16 @@ class LoginActivity : AppCompatActivity(){
 
         Log.d("signin", "user signin" + userPool!!.currentUser.userId)
 
-        if(userPool!!.currentUser.userId.isEmpty()){
-            Toast.makeText(baseContext,"login",Toast.LENGTH_LONG).show()
-        }else{
-          //  startActivity(Intent(baseContext, MasterActivity::class.java))
-        }
+//        if(userPool!!.currentUser.userId.isEmpty()){
+//            Toast.makeText(baseContext,"login",Toast.LENGTH_LONG).show()
+//        }else{
+//          //  startActivity(Intent(baseContext, MasterActivity::class.java))
+//        }
 
+        this.supportActionBar!!.hide()
+
+        AppHelper.init(baseContext)
+        findCurrent()
 
     }
 
@@ -89,7 +93,6 @@ class LoginActivity : AppCompatActivity(){
                 }
             2 -> // Confirm register user
                 if(resultCode == Activity.RESULT_OK){
-
 
                 }
             4 -> //Main
@@ -151,7 +154,6 @@ class LoginActivity : AppCompatActivity(){
     }
 
     fun getUserAuthentication(authenticationContinuation: AuthenticationContinuation,username:String){
-
         Log.d("signin","Get authentication...")
         var authDetails = AuthenticationDetails(username,cPassword,null)
         authenticationContinuation.setAuthenticationDetails(authDetails)
@@ -161,6 +163,16 @@ class LoginActivity : AppCompatActivity(){
     private fun attemptSignup(){
         val intent = Intent(baseContext, SignupActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun findCurrent(){
+        var user = AppHelper.userPool!!.currentUser
+        cUsername = user.userId
+        if(cUsername != null){
+            AppHelper.user = cUsername
+            txt_username.setText(user.userId)
+            user.getSessionInBackground(authHandler)
+        }
     }
 
 }

@@ -11,6 +11,7 @@ import android.view.Menu
 import android.widget.SearchView
 import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_master.*
+import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
 
@@ -31,6 +32,7 @@ class MasterActivity : AppCompatActivity(){
     fun btnSignoutTapped(){
         userPool!!.currentUser.signOut()
         startActivity(Intent(baseContext,LoginActivity::class.java))
+        exitProcess(-1)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
