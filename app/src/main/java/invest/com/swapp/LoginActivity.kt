@@ -14,11 +14,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_login.*
 import java.lang.Exception
@@ -27,7 +25,8 @@ class LoginActivity : AppCompatActivity(){
 
     private var cUsername:String = ""
     private var cPassword:String = ""
-    var userPool: CognitoUserPool? = null
+    private var userPool: CognitoUserPool? = null
+    private var forgotPasswordContinuation: ForgotPasswordContinuation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +48,7 @@ class LoginActivity : AppCompatActivity(){
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
         email_sign_up_button.setOnClickListener { attemptSignup()}
-
-
-        Log.d("signin", "user signin" + userPool!!.currentUser.userId)
-
-//        if(userPool!!.currentUser.userId.isEmpty()){
-//            Toast.makeText(baseContext,"login",Toast.LENGTH_LONG).show()
-//        }else{
-//          //  startActivity(Intent(baseContext, MasterActivity::class.java))
-//        }
-
+        forgot_password_in_button.setOnClickListener { attemptForgotPassword() }
         this.supportActionBar!!.hide()
 
         AppHelper.init(baseContext)
@@ -94,6 +84,18 @@ class LoginActivity : AppCompatActivity(){
             2 -> // Confirm register user
                 if(resultCode == Activity.RESULT_OK){
 
+                }
+            3 -> //Forgot Password
+                if(resultCode == Activity.RESULT_OK){
+                    var newPass = data!!.getStringExtra("newPass")
+                    var code = data!!.getStringExtra("code")
+                    if(newPass != null && code != null){
+                        if(!newPass.isEmpty() && !code.isEmpty()){
+                            forgotPasswordContinuation!!.setPassword(newPass)
+                            forgotPasswordContinuation!!.setVerificationCode(code)
+                            forgotPasswordContinuation!!.continueTask()
+                        }
+                    }
                 }
             4 -> //Main
                 if(resultCode == Activity.RESULT_OK){
@@ -153,6 +155,21 @@ class LoginActivity : AppCompatActivity(){
         }
     }
 
+    var forgotPwdHandler = object: ForgotPasswordHandler{
+        override fun onSuccess() {
+            Log.d("_forgot_password","success");
+        }
+
+        override fun onFailure(exception: Exception?) {
+            Log.d("_forgot_password","exception failed ${exception}"  )
+        }
+
+        override fun getResetCode(continuation: ForgotPasswordContinuation?) {
+            getForgotPasswordCode(continuation!!)
+        }
+
+    }
+
     fun getUserAuthentication(authenticationContinuation: AuthenticationContinuation,username:String){
         Log.d("signin","Get authentication...")
         var authDetails = AuthenticationDetails(username,cPassword,null)
@@ -174,6 +191,24 @@ class LoginActivity : AppCompatActivity(){
             txt_username.setText(user.userId)
             user.getSessionInBackground(authHandler)
         }
+    }
+
+    private fun getForgotPasswordCode(forgotPasswordContinuation: ForgotPasswordContinuation){
+        this.forgotPasswordContinuation = forgotPasswordContinuation
+        var intent = Intent(baseContext, ForgotPasswordActivity::class.java)
+        intent.putExtra("destination",forgotPasswordContinuation.parameters.destination)
+        intent.putExtra("deliveryMed",forgotPasswordContinuation.parameters.deliveryMedium)
+        startActivityForResult(intent,3)
+
+    }
+
+    private fun attemptForgotPassword(){
+        cUsername = txt_username.text.toString()
+        if(cUsername.isEmpty()){
+            return
+        }
+
+        AppHelper.userPool!!.getUser(cUsername).forgotPasswordInBackground(forgotPwdHandler) //add handler
     }
 
 }
