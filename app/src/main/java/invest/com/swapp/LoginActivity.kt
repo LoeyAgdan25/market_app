@@ -167,7 +167,8 @@ class LoginActivity : AppCompatActivity(){
 
     private fun findCurrent(){
         var user = AppHelper.userPool!!.currentUser
-        cUsername = user.userId
+        if (user.userId == null) return
+            cUsername = user.userId
         if(cUsername != null){
             AppHelper.user = cUsername
             txt_username.setText(user.userId)
