@@ -21,13 +21,13 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         setSupportActionBar(toolbar)
+        this.supportActionBar!!.title = "Sign Up"
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-
-
 
 
        /* userPool = CognitoUserPool(baseContext,
@@ -39,8 +39,10 @@ class SignupActivity : AppCompatActivity() {
         //var helper = AppHelper(baseContext)
 
         AppHelper.init(baseContext)
-
         btn_signup.setOnClickListener{ doSignUpTapped() }
+
+
+
     }
 
 

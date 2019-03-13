@@ -13,6 +13,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        this.supportActionBar!!.show()
+        this.supportActionBar!!.title = "Forgot Password"
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         var extras = intent.extras
         if(extras != null){
             var dest = extras.getString("destination")
