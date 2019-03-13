@@ -1,6 +1,5 @@
 package invest.com.swapp
 
-import UtilityHelper.CognitoUserPool
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -8,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_master.*
@@ -15,31 +15,21 @@ import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
 
-    var userPool: com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
 
-        userPool = com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool(baseContext,
-                CognitoUserPool.USERPOOL_ID,
-                CognitoUserPool.CLIENT_ID,
-                CognitoUserPool.CLIENT_SECRET,
-                Regions.US_EAST_2)
-
-        btn_signout.setOnClickListener { btnSignoutTapped() }
+        AppHelper.init(baseContext)
     }
 
-    fun btnSignoutTapped(){
-        userPool!!.currentUser.signOut()
-        startActivity(Intent(baseContext,LoginActivity::class.java))
-        exitProcess(-1)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(
                 R.menu.option_menu,
                 menu
         )
+
+
 
         val searchView = menu?.findItem(R.id.searchMenu)?.actionView as SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -72,8 +62,19 @@ class MasterActivity : AppCompatActivity(){
 //            LoadQuery("%")
             false
         }
-
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item!!.itemId){
+            R.id.logout_menu -> {
+                AppHelper.userPool!!.currentUser.signOut()
+                startActivity(Intent(baseContext,LoginActivity::class.java))
+                exitProcess(-1)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 
