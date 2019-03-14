@@ -3,23 +3,68 @@ package invest.com.swapp
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.util.*
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_master.*
+import okhttp3.*
+import java.io.IOException
+import java.lang.reflect.Array.get
 import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
 
+    private var stockList: ArrayList<Stock> = ArrayList()
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var adapter: RecyclerAdapter
+    private lateinit var stockRequester:StockRequester
+    private lateinit var client: OkHttpClient
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
-
         AppHelper.init(baseContext)
+
+        linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        recyclerView.layoutManager = linearLayoutManager
+
+        adapter = RecyclerAdapter(stockList)
+        recyclerView.adapter = adapter
+
+        //stockRequester = StockRequester(this)
+        client = OkHttpClient()
+
+        processFetch()
+
+    }
+
+    fun processFetch(){
+        val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME)
+                .authority(MasterActivity.URL_AUTHORITY)
+                .appendPath(MasterActivity.URL_PATH_1)
+                .build().toString()
+
+        val request = Request.Builder().url(urlRequest).build()
+        //isLoadingData = false
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                Log.d("_json", response.body()!!.string())
+
+
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("_json", e.message)
+            }
+        })
     }
 
 
@@ -28,9 +73,6 @@ class MasterActivity : AppCompatActivity(){
                 R.menu.option_menu,
                 menu
         )
-
-
-
         val searchView = menu?.findItem(R.id.searchMenu)?.actionView as SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -77,6 +119,16 @@ class MasterActivity : AppCompatActivity(){
         }
     }
 
+    companion object {
+        private val MEDIA_TYPE_KEY = "media_type"
+        private val MEDIA_TYPE_VIDEO_VALUE = "video"
+        private val URL_SCHEME = "http"
+        private val URL_AUTHORITY = "phisix-api2.appspot.com"
+        private val URL_PATH_1 = "stocks.json"
+        private val URL_PATH_2 = ""
+        private val URL_QUERY_PARAM_DATE_KEY = ""
+        private val URL_QUERY_PARAM_API_KEY = ""
+    }
 
 
 }
