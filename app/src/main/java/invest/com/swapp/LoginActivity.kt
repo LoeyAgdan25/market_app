@@ -19,6 +19,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.indeterminateProgressDialog
+import org.jetbrains.anko.toast
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity(){
@@ -31,14 +34,6 @@ class LoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                attemptLogin()
-                return@OnEditorActionListener true
-            }
-            false
-        })
 
         userPool = CognitoUserPool(baseContext,
                 UtilityHelper.CognitoUserPool.USERPOOL_ID,
@@ -114,15 +109,25 @@ class LoginActivity : AppCompatActivity(){
     }
 
     private fun attemptLogin() {
+
+
+
         cUsername = txt_username.text.toString()
-//        if (cUsername.isEmpty()) { return }
+        if (cUsername.isEmpty()) {
+            alert("Email required","").show()
+            return }
 
         cPassword = password.text.toString()
-//        if (cPassword.isEmpty()){ return }
-
-        Log.d("signin","trigger")
+        if (cPassword.isEmpty()){
+            alert("Password required",""){
+                positiveButton("Ok",{
+//                    toast("do this!")
+                })
+            }.show()
+            return }
 
         userPool!!.getUser(cUsername).getSessionInBackground(authHandler)
+        indeterminateProgressDialog("Signing...").show()
     }
 
     var authHandler = object: AuthenticationHandler{
@@ -130,16 +135,19 @@ class LoginActivity : AppCompatActivity(){
             AppHelper.currSession = userSession
             AppHelper.newDevice = newDevice
 
-            //dismiss dialog
-
+            indeterminateProgressDialog("").dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             startActivityForResult(intent, 4)
-
-            Log.d("signin","success signing in")
         }
 
         override fun onFailure(exception: Exception?) {
-            Log.d("signin","error signing in")
+            indeterminateProgressDialog("").dismiss()
+            if(!password.text.toString().isEmpty()){
+                alert{
+                    title("Error: ")
+                    message("${exception}")
+                }.show()
+            }
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation?) {
@@ -205,10 +213,25 @@ class LoginActivity : AppCompatActivity(){
     private fun attemptForgotPassword(){
         cUsername = txt_username.text.toString()
         if(cUsername.isEmpty()){
-            return
-        }
+            alert{
+                message("Email is required")
+                positiveButton("Ok"){
 
-        AppHelper.userPool!!.getUser(cUsername).forgotPasswordInBackground(forgotPwdHandler) //add handler
+                }
+            }.show()
+            return
+        }else {
+            alert{
+                message("Verification code will be sent on your email")
+                title("Forgot Password")
+                positiveButton("Continue"){
+                    AppHelper.userPool!!.getUser(cUsername).forgotPasswordInBackground(forgotPwdHandler) //add handler
+                }
+                negativeButton("Cancel"){
+                    //do nothing
+                }
+            }.show()
+        }
     }
 
 }
