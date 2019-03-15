@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity(){
     private var cPassword:String = ""
     private var userPool: CognitoUserPool? = null
     private var forgotPasswordContinuation: ForgotPasswordContinuation? = null
+    private var connectivityManager: ConnectivityManager = ConnectivityManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,19 @@ class LoginActivity : AppCompatActivity(){
                 UtilityHelper.CognitoUserPool.CLIENT_SECRET,
                 Regions.US_EAST_2)
 
-        email_sign_in_button.setOnClickListener { attemptLogin() }
+        email_sign_in_button.setOnClickListener {
+            if(connectivityManager.isConnectingToInternet(this)) {
+                attemptLogin()
+            }else{
+                alert{
+                    title("No Internet")
+                    message("Please check internet connection")
+                    positiveButton("Ok"){
+                        //do nothing
+                    }
+                }.show()
+            }
+        }
         email_sign_up_button.setOnClickListener { attemptSignup()}
         forgot_password_in_button.setOnClickListener { attemptForgotPassword() }
         this.supportActionBar!!.hide()
