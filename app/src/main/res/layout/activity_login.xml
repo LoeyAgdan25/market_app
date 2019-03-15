@@ -82,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Sign up"
+                    android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
                 <Button
                     android:id="@+id/email_sign_in_button"
@@ -102,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Forgot Password"
+                android:textColor="@color/colorPrimary"
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
                 />
