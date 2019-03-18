@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import invest.com.swapp.dummy.DummyContent
@@ -21,6 +22,7 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
+import kotlin.coroutines.experimental.coroutineContext
 
 class StockItemListActivity : AppCompatActivity() {
 
@@ -139,6 +141,10 @@ class StockItemListActivity : AppCompatActivity() {
             holder.contentView.text = item.description
             holder.percentView.text = item.percent
 
+            if(item.percent.contains("-")){
+                holder.imageIndicator.setImageResource(R.drawable.sort_down)
+            }
+
 
             with(holder.itemView) {
                 tag = item
@@ -152,6 +158,7 @@ class StockItemListActivity : AppCompatActivity() {
             val idView: TextView = view.id_text
             val contentView: TextView = view.content
             val percentView: TextView = view.percent
+            val imageIndicator: ImageView = view.indicator
         }
     }
 
