@@ -43,6 +43,12 @@ class MasterActivity : AppCompatActivity(){
 
         processFetch()
 
+        btn_dashboard_search.setOnClickListener { doSearchStock() }
+
+    }
+
+    fun doSearchStock(){
+        startActivity(Intent(baseContext, StockItemListActivity::class.java))
     }
 
     fun processFetch(){
@@ -120,14 +126,10 @@ class MasterActivity : AppCompatActivity(){
     }
 
     companion object {
-        private val MEDIA_TYPE_KEY = "media_type"
-        private val MEDIA_TYPE_VIDEO_VALUE = "video"
         private val URL_SCHEME = "http"
         private val URL_AUTHORITY = "phisix-api2.appspot.com"
         private val URL_PATH_1 = "stocks.json"
-        private val URL_PATH_2 = ""
-        private val URL_QUERY_PARAM_DATE_KEY = ""
-        private val URL_QUERY_PARAM_API_KEY = ""
+
     }
 
 
