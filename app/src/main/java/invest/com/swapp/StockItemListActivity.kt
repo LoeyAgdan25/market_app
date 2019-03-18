@@ -70,8 +70,6 @@ class StockItemListActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 var r = response.body()!!.string()
                 try {
-
-
                     runOnUiThread {
                         val rootJsonObject = JSONObject(r)
                         var roots = rootJsonObject.getJSONArray("stock")
@@ -79,7 +77,7 @@ class StockItemListActivity : AppCompatActivity() {
                             val stock = roots.get(i).toString()
                             val obj = JSONObject(stock)
 
-                            val imageModel = Stock("${obj.getString("name")}",obj.getString("percent_change"))
+                            val imageModel = Stock("${obj.getString("symbol")}",obj.getString("name"),obj.getString("percent_change"))
                             stockListAll.add(imageModel)
                         }
 
@@ -139,6 +137,8 @@ class StockItemListActivity : AppCompatActivity() {
             val item = values[position]
             holder.idView.text = item.name
             holder.contentView.text = item.description
+            holder.percentView.text = item.percent
+
 
             with(holder.itemView) {
                 tag = item
@@ -151,6 +151,7 @@ class StockItemListActivity : AppCompatActivity() {
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val idView: TextView = view.id_text
             val contentView: TextView = view.content
+            val percentView: TextView = view.percent
         }
     }
 
