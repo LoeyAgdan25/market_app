@@ -1,18 +1,26 @@
 package invest.com.swapp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import invest.com.swapp.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
+import java.lang.Exception
 
 class StockItemListActivity : AppCompatActivity() {
 
@@ -22,6 +30,7 @@ class StockItemListActivity : AppCompatActivity() {
      */
     private var twoPane: Boolean = false
     private var stocksArrayList: java.util.ArrayList<Stock>? = null
+    private lateinit var client: OkHttpClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +51,53 @@ class StockItemListActivity : AppCompatActivity() {
             // activity should be in two-pane mode.
             twoPane = true
         }
-
+        client = OkHttpClient()
         setupRecyclerView(stockitem_list)
     }
 
 
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        //Process to load recyclerview
-        //recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, stocksArrayList, twoPane)
+
+        val stockListAll = ArrayList<Stock>()
+        val urlRequest = Uri.Builder().scheme(StockItemListActivity.URL_SCHEME)
+                .authority(StockItemListActivity.URL_AUTHORITY)
+                .appendPath(StockItemListActivity.URL_PATH_1)
+                .build().toString()
+        val request = Request.Builder().url(urlRequest).build()
+        client.newCall(request).enqueue(object : Callback{
+
+            override fun onResponse(call: Call, response: Response) {
+                var r = response.body()!!.string()
+                try {
+
+
+                    runOnUiThread {
+                        val rootJsonObject = JSONObject(r)
+                        var roots = rootJsonObject.getJSONArray("stock")
+                        for (i in 0 until roots.length()) {
+                            val stock = roots.get(i).toString()
+                            val obj = JSONObject(stock)
+
+                            val imageModel = Stock("${obj.getString("name")}",obj.getString("percent_change"))
+                            stockListAll.add(imageModel)
+                        }
+
+                        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this@StockItemListActivity,stockListAll,twoPane)
+
+                        Log.d("_json", rootJsonObject.toString())
+                        Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("_json", e.message)
+            }
+        })
+
     }
 
     class SimpleItemRecyclerViewAdapter(private val parentActivity: StockItemListActivity,
@@ -105,5 +152,11 @@ class StockItemListActivity : AppCompatActivity() {
             val idView: TextView = view.id_text
             val contentView: TextView = view.content
         }
+    }
+
+    companion object {
+        private val URL_SCHEME = "http"
+        private val URL_AUTHORITY = "phisix-api2.appspot.com"
+        private val URL_PATH_1 = "stocks.json"
     }
 }

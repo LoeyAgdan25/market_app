@@ -39,7 +39,7 @@ class MasterActivity : AppCompatActivity(){
         //stockRequester = StockRequester(this)
         client = OkHttpClient()
 
-        processFetch()
+        //processFetch()
 
         btn_dashboard_search.setOnClickListener { doSearchStock() }
 
@@ -127,7 +127,6 @@ class MasterActivity : AppCompatActivity(){
         private val URL_SCHEME = "http"
         private val URL_AUTHORITY = "phisix-api2.appspot.com"
         private val URL_PATH_1 = "stocks.json"
-
     }
 
 
