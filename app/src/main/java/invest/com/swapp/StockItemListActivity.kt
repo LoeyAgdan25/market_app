@@ -9,20 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import invest.com.swapp.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 
-/**
- * An activity representing a list of Pings. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a [StockItemDetailActivity] representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 class StockItemListActivity : AppCompatActivity() {
 
     /**
@@ -30,6 +21,7 @@ class StockItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private var stocksArrayList: java.util.ArrayList<Stock>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +46,15 @@ class StockItemListActivity : AppCompatActivity() {
         setupRecyclerView(stockitem_list)
     }
 
+
+
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+        //Process to load recyclerview
+        //recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, stocksArrayList, twoPane)
     }
 
     class SimpleItemRecyclerViewAdapter(private val parentActivity: StockItemListActivity,
-                                        private val values: List<DummyContent.DummyItem>,
+                                        private val values: ArrayList<Stock>,
                                         private val twoPane: Boolean) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -95,8 +90,8 @@ class StockItemListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = item.id
-            holder.contentView.text = item.content
+            holder.idView.text = item.name
+            holder.contentView.text = item.description
 
             with(holder.itemView) {
                 tag = item

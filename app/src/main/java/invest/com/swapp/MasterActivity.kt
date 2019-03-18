@@ -11,11 +11,9 @@ import android.util.*
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
-import com.amazonaws.regions.Regions
 import kotlinx.android.synthetic.main.activity_master.*
 import okhttp3.*
 import java.io.IOException
-import java.lang.reflect.Array.get
 import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
