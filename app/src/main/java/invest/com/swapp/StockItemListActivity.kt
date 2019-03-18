@@ -1,5 +1,7 @@
 package invest.com.swapp
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,10 +10,9 @@ import android.support.v7.widget.RecyclerView
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import invest.com.swapp.dummy.DummyContent
@@ -23,6 +24,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
 import kotlin.coroutines.experimental.coroutineContext
+import kotlin.system.exitProcess
 
 class StockItemListActivity : AppCompatActivity() {
 
@@ -31,14 +33,15 @@ class StockItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
-    private var stocksArrayList: java.util.ArrayList<Stock>? = null
     private lateinit var client: OkHttpClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stockitem_list)
-
         setSupportActionBar(toolbar)
+
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         toolbar.title = title
 
         fab.setOnClickListener { view ->
@@ -55,6 +58,57 @@ class StockItemListActivity : AppCompatActivity() {
         }
         client = OkHttpClient()
         setupRecyclerView(stockitem_list)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(
+                R.menu.option_menu2,
+                menu
+        )
+        val searchView = menu?.findItem(R.id.searchMenu)?.actionView as SearchView
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnSearchClickListener {
+            //            LoadQuery("null")
+        }
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+//                    if (query.isNotEmpty()) LoadQuery("%$query%")
+//                    if (query.isEmpty()) LoadQuery("null")
+                    Log.d("_query","doing some query")
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+//                    if (newText.length > 1) LoadQuery("%$newText%")
+//                    if (newText.isEmpty()) LoadQuery("null")
+                    Log.d("_query","doing query onchange" + newText);
+                }
+                return false
+            }
+        })
+        searchView.setOnCloseListener {
+            //            LoadQuery("%")
+            false
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item!!.itemId){
+            R.id.logout_menu -> {
+                AppHelper.userPool!!.currentUser.signOut()
+                startActivity(Intent(baseContext,LoginActivity::class.java))
+                exitProcess(-1)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 
