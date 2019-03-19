@@ -100,17 +100,17 @@ class StockItemListActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item!!.itemId){
-            R.id.logout_menu -> {
-                AppHelper.userPool!!.currentUser.signOut()
-                startActivity(Intent(baseContext,LoginActivity::class.java))
-                exitProcess(-1)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        return when(item!!.itemId){
+//            R.id.logout_menu -> {
+//                AppHelper.userPool!!.currentUser.signOut()
+//                startActivity(Intent(baseContext,LoginActivity::class.java))
+//                exitProcess(-1)
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     private fun filter(str: String){
         val filtered:List<Stock> = stockListAll.filter{it.name.contains(str,true)}
@@ -170,11 +170,11 @@ class StockItemListActivity : AppCompatActivity() {
 
         init {
             onClickListener = View.OnClickListener { v ->
-                val item = v.tag as DummyContent.DummyItem
+                val item = v.tag as Stock
                 if (twoPane) {
                     val fragment = StockItemDetailFragment().apply {
                         arguments = Bundle().apply {
-                            putString(StockItemDetailFragment.ARG_ITEM_ID, item.id)
+                            putString(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                         }
                     }
                     parentActivity.supportFragmentManager
@@ -183,7 +183,7 @@ class StockItemListActivity : AppCompatActivity() {
                             .commit()
                 } else {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
-                        putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.id)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                     }
                     v.context.startActivity(intent)
                 }
