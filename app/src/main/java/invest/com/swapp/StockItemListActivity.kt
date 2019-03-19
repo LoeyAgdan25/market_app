@@ -76,8 +76,8 @@ class StockItemListActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-//                    if (query.isNotEmpty()) LoadQuery("%$query%")
-//                    if (query.isEmpty()) LoadQuery("null")
+                    if (query.isNotEmpty()) filter("$query")
+                    if (query.isEmpty()) filter("null")
                     Log.d("_query","doing some query")
                 }
                 return false
@@ -85,8 +85,9 @@ class StockItemListActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-//                    if (newText.length > 1) LoadQuery("%$newText%")
-//                    if (newText.isEmpty()) LoadQuery("null")
+                    if (newText.length > 1) filter("$newText")
+                    if (newText.isEmpty()) filter("null")
+
                     Log.d("_query","doing query onchange" + newText);
                 }
                 return false
@@ -111,11 +112,17 @@ class StockItemListActivity : AppCompatActivity() {
         }
     }
 
-
+    private fun filter(str: String){
+        val filtered:List<Stock> = stockListAll.filter{it.name.contains(str,true)}
+        Log.d("_filtered", filtered.toString())
+        stockitem_list!!.adapter = SimpleItemRecyclerViewAdapter(this,ArrayList(filtered),true)
+    }
+    val stockListAll = ArrayList<Stock>()
+    var recyclerView:RecyclerView? = null
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
 
-        val stockListAll = ArrayList<Stock>()
+
         val urlRequest = Uri.Builder().scheme(StockItemListActivity.URL_SCHEME)
                 .authority(StockItemListActivity.URL_AUTHORITY)
                 .appendPath(StockItemListActivity.URL_PATH_1)
