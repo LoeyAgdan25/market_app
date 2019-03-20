@@ -54,5 +54,11 @@ class StockItemDetailFragment : Fragment() {
          * represents.
          */
         const val ARG_ITEM_ID = "item_id"
+        const val ARG_ITEM_SYMBOL = "item_symbol"
+        const val ARG_ITEM_NAME = "item_name"
+        const val ARG_ITEM_VOLUME = "item_volume"
+        const val ARG_ITEM_PERCENTAGE = "item_percentage"
+        const val ARG_ITEM_PRICE = "item_price"
+        const val ARG_ITEM_STATUS = "item_status"
     }
 }

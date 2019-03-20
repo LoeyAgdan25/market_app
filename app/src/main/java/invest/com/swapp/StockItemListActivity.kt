@@ -140,7 +140,7 @@ class StockItemListActivity : AppCompatActivity() {
                             val stock = roots.get(i).toString()
                             val obj = JSONObject(stock)
 
-                            val imageModel = Stock("${obj.getString("symbol")}",obj.getString("name"),obj.getString("percent_change"))
+                            val imageModel = Stock("${obj.getString("symbol")}",obj.getString("name"),obj.getString("percent_change"),"","")
                             stockListAll.add(imageModel)
                         }
 
@@ -175,6 +175,10 @@ class StockItemListActivity : AppCompatActivity() {
                     val fragment = StockItemDetailFragment().apply {
                         arguments = Bundle().apply {
                             putString(StockItemDetailFragment.ARG_ITEM_ID, item.name)
+                            putString(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
+                            putString(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
+                            putString(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
+                            putString(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
                         }
                     }
                     parentActivity.supportFragmentManager
@@ -184,6 +188,13 @@ class StockItemListActivity : AppCompatActivity() {
                 } else {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                         putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
+
+
                     }
                     v.context.startActivity(intent)
                 }
