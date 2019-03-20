@@ -37,4 +37,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.6.3'
     implementation 'org.jetbrains.anko:anko-common:0.9'
+    implementation "org.jetbrains.anko:anko-sqlite:0.9"
 }
