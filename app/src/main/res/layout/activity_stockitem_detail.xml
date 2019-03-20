@@ -33,5 +33,18 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/stat_notify_chat"
+        android:visibility="gone"
         />
+
+    <Button
+        android:id="@+id/btn_watch_stock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="0dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="5dp"
+        android:text="Watch"
+        android:textColor="#ffff"
+        android:textSize="20sp" />
 </android.support.design.widget.CoordinatorLayout>

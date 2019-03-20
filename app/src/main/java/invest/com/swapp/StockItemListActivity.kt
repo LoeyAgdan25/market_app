@@ -140,7 +140,11 @@ class StockItemListActivity : AppCompatActivity() {
                             val stock = roots.get(i).toString()
                             val obj = JSONObject(stock)
 
-                            val imageModel = Stock("${obj.getString("symbol")}",obj.getString("name"),obj.getString("percent_change"),"","")
+                            val imageModel = Stock("${obj.getString("name")}",
+                                    obj.getString("symbol"),"",
+                                    obj.getString("percent_change"),
+                                    obj.getString("volume"),
+                                    obj.getJSONObject("price").getString("amount"))
                             stockListAll.add(imageModel)
                         }
 
@@ -188,12 +192,11 @@ class StockItemListActivity : AppCompatActivity() {
                 } else {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                         putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
-                        putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
                         putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
                         putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
-
 
                     }
                     v.context.startActivity(intent)
