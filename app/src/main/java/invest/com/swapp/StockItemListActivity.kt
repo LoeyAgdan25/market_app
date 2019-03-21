@@ -212,8 +212,8 @@ class StockItemListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = item.name
-            holder.contentView.text = item.description
+            holder.idView.text = item.symbol
+            holder.contentView.text = item.name
             holder.percentView.text = item.percent
 
             if(item.percent.contains("-")){

@@ -59,6 +59,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="invest.com.swapp.StockItemListActivity" />
         </activity>
+        <activity android:name=".InvestActivity"></activity>
     </application>
 
 </manifest>

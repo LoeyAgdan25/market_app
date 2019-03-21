@@ -42,6 +42,16 @@
         android:layout_gravity="bottom"
         >
         <Button
+            android:id="@+id/btn_watch_invest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/design_default_color_primary"
+            android:elevation="0dp"
+            android:layout_margin="5dp"
+            android:text="Invest"
+            android:textColor="#ffff"
+            android:textSize="20sp" />
+        <Button
             android:id="@+id/btn_watch_stock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

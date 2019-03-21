@@ -1,8 +1,6 @@
 package invest.com.swapp
 
-import android.content.ContentValues
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -13,11 +11,8 @@ import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.db.*
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import java.util.*
 
 
 class StockItemDetailActivity : AppCompatActivity() {
@@ -66,6 +61,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         btn_watch_stock.setOnClickListener { doWatchStock() }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
+        btn_watch_invest.setOnClickListener {  }
         doFindStock(symbol)
         doFindStockAll()
     }
