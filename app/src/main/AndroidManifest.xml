@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MasterActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".auth.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,21 +27,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".auth.SignupActivity"
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="invest.com.swapp.LoginActivity" />
+                android:value="invest.com.swapp.auth.LoginActivity" />
         </activity>
         <activity
-            android:name=".ConfirmationActivity"
+            android:name=".auth.ConfirmationActivity"
             android:label="@string/title_activity_confirmation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ForgotPasswordActivity">
+        <activity android:name=".auth.ForgotPasswordActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="invest.com.swapp.LoginActivity" />
+                android:value="invest.com.swapp.auth.LoginActivity" />
         </activity>
         <activity
             android:name=".StockItemListActivity"

@@ -1,19 +1,13 @@
 package invest.com.swapp
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.*
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SearchView
+import invest.com.swapp.auth.LoginActivity
 import kotlinx.android.synthetic.main.activity_master.*
-import okhttp3.*
-import java.io.IOException
 import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
@@ -54,7 +48,7 @@ class MasterActivity : AppCompatActivity(){
         return when(item!!.itemId){
             R.id.logout_menu -> {
                 AppHelper.userPool!!.currentUser.signOut()
-                startActivity(Intent(baseContext,LoginActivity::class.java))
+                startActivity(Intent(baseContext, LoginActivity::class.java))
                 exitProcess(-1)
                 true
             }

@@ -1,27 +1,22 @@
-package invest.com.swapp
+package invest.com.swapp.auth
 
 
 import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import android.content.Intent
-import android.text.Editable
 import android.util.Log
-import android.widget.Toast
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.amazonaws.regions.Regions
+import invest.com.swapp.*
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.toast
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity(){

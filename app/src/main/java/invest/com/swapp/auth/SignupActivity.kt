@@ -1,4 +1,4 @@
-package invest.com.swapp
+package invest.com.swapp.auth
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,7 +11,8 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import java.lang.Exception
 import android.content.Intent
-import com.amazonaws.regions.Regions
+import invest.com.swapp.AppHelper
+import invest.com.swapp.R
 
 class SignupActivity : AppCompatActivity() {
 
