@@ -2,11 +2,13 @@ package invest.com.swapp
 
 import android.content.ContentValues
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
@@ -62,11 +64,11 @@ class StockItemDetailActivity : AppCompatActivity() {
         }
 
         btn_watch_stock.setOnClickListener { doWatchStock() }
-        doFindStock()
+        doFindStock(symbol)
+        doFindStockAll()
     }
 
-    fun doFindStock(){
-        toast("do find stock")
+    fun doFindStockAll(){
         database.use {
             select("tblWatched").exec {
                 while (moveToNext()) {
@@ -77,8 +79,25 @@ class StockItemDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-
+    fun doFindStock(sym: String){
+        database.use {
+            select("tblWatched").where("symbol = {symbol}","symbol" to sym).limit(1).exec {
+                //moveToNext()
+                if(moveToFirst()){
+//                    if(getString(getColumnIndex("status")).equals("watched")){
+//                        toast("Stock already in watched")
+//                    }else{
+//                        doWatchStock()
+//                    }
+                    toast("this is in watchlist")
+                    btn_watch_stock.visibility = View.GONE
+                }else{
+                    toast("not in watchlist")
+                }
+            }
+        }
     }
 
     fun doWatchStock(){
@@ -87,12 +106,13 @@ class StockItemDetailActivity : AppCompatActivity() {
 
 //        doAsync {
             database.use {
-                insert("tblWatched",
+               insert("tblWatched",
                         "symbol" to txt_stock_symbol.text,
                         "name" to intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME),
                         "currency" to "PHP",
                         "amount" to txt_stock_price.text,
-                        "volume" to txt_stock_volume.text
+                        "volume" to txt_stock_volume.text,
+                        "status" to "watched"
                 )
 
                 toast("stock is saved!")

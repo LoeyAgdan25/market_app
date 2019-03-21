@@ -27,7 +27,8 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
                 "name" to TEXT,
                 "currency" to TEXT,
                 "amount" to TEXT,
-                "volume" to TEXT
+                "volume" to TEXT,
+                "status" to TEXT
                 )
     }
 

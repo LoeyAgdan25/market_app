@@ -193,7 +193,7 @@ class StockItemListActivity : AppCompatActivity() {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                         putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                         putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
-                        putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
                         putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
