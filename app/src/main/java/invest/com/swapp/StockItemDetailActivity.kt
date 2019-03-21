@@ -61,7 +61,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         btn_watch_stock.setOnClickListener { doWatchStock() }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
-        btn_watch_invest.setOnClickListener {  }
+        btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
         doFindStockAll()
     }
@@ -77,6 +77,13 @@ class StockItemDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun doInvest(sym:String){
+        var intent = Intent(this,InvestActivity::class.java).apply {
+            putExtra("symbol","$sym")
+        }
+        startActivity(intent)
     }
 
     fun doRemoveWatched(sym:String){

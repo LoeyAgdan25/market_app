@@ -8,5 +8,11 @@ class InvestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invest)
+
+        supportActionBar!!.title = intent.getStringExtra("symbol")
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
     }
+
+
 }
