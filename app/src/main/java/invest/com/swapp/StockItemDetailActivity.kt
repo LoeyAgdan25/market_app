@@ -11,7 +11,7 @@ import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
 import org.jetbrains.anko.custom.async
-import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import java.util.*
@@ -62,6 +62,23 @@ class StockItemDetailActivity : AppCompatActivity() {
         }
 
         btn_watch_stock.setOnClickListener { doWatchStock() }
+        doFindStock()
+    }
+
+    fun doFindStock(){
+        toast("do find stock")
+        database.use {
+            select("tblWatched").exec {
+                while (moveToNext()) {
+                    Log.d("_symbol", getString(getColumnIndex("symbol")) +
+                            " " + getString(getColumnIndex("name"))
+                            + getString(getColumnIndex("amount"))
+                            + getString(getColumnIndex("volume")))
+                }
+            }
+        }
+
+
     }
 
     fun doWatchStock(){
