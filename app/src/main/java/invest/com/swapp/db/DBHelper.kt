@@ -30,6 +30,16 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
                 "volume" to TEXT,
                 "status" to TEXT
                 )
+
+        p0!!.createTable("tblInvestment",true,"id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "price" to REAL,
+                "stocks" to INTEGER,
+                "amount" to REAL,
+                "bcharge" to REAL,
+                "tax" to REAL,
+                "total" to REAL,
+                "date" to TEXT
+                )
     }
 
 

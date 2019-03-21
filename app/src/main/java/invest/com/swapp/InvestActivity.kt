@@ -11,8 +11,5 @@ class InvestActivity : AppCompatActivity() {
 
         supportActionBar!!.title = intent.getStringExtra("symbol")
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
     }
-
-
 }
