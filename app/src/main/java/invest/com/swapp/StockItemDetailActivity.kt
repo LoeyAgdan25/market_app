@@ -17,8 +17,6 @@ import org.jetbrains.anko.toast
 
 class StockItemDetailActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stockitem_detail)
@@ -118,9 +116,10 @@ class StockItemDetailActivity : AppCompatActivity() {
 //                    }else{
 //                        doWatchStock()
 //                    }
-                    toast("this is in watchlist")
+                    //toast("this is in watchlist")
                     btn_watch_stock.visibility = View.GONE
                 }else{
+                    btn_watch_invest.visibility = View.GONE
                     toast("not in watchlist")
                 }
             }
@@ -142,6 +141,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
                 toast("stock is saved!")
                 btn_watch_stock.visibility = View.GONE
+                btn_watch_invest.visibility = View.VISIBLE
             }
     }
 
