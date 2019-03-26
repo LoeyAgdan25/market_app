@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import invest.com.swapp.db.DBHelper
+import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_invest.*
+import org.jetbrains.anko.db.insert
+import java.util.*
 
 class InvestActivity : AppCompatActivity() {
 
@@ -88,7 +92,19 @@ class InvestActivity : AppCompatActivity() {
     }
 
     fun doSaveInvestment(){
+        database.use {
+            insert(DBHelper.tblInvestment,
+                "symbol" to intent.getStringExtra("symbol"),
+                    "price" to txt_price_sold.text as Double,
+                    "stocks" to txt_stocks_sold.text as Double,
+                    "amount" to txt_amount_sold.text as Double,
+                    "bcharge" to txt_broker_charge.text as Double,
+                    "tax" to txt_tax_charge.text as Double,
+                    "total" to txt_total_investment.text as Double,
+                    "date" to Date().toString()
+                    )
 
+        }
     }
 
 }

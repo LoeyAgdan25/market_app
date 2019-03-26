@@ -18,6 +18,9 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
 
             return instance!!
         }
+
+        var tblWatchlist = "tblWatched"
+        var tblInvestment = "tblInvestment"
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -32,6 +35,7 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
                 )
 
         p0!!.createTable("tblInvestment",true,"id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "symbol" to TEXT,
                 "price" to REAL,
                 "stocks" to INTEGER,
                 "amount" to REAL,
