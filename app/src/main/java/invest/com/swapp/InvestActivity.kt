@@ -6,8 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_invest.*
-import kotlinx.android.synthetic.main.content_detail_stocks.*
-import org.jetbrains.anko.toast
 
 class InvestActivity : AppCompatActivity() {
 
@@ -86,6 +84,10 @@ class InvestActivity : AppCompatActivity() {
 
         var allTotal = (price * stock) - (charge + tax)
         txt_total_investment.setText("$allTotal")
+
+    }
+
+    fun doSaveInvestment(){
 
     }
 
