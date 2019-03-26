@@ -45,6 +45,31 @@ class InvestActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,before: Int, count: Int) {doCompute()}
         })
 
+        btn_invest_save.setOnClickListener {
+
+           if(txt_price_sold.text.isEmpty()){
+                return@setOnClickListener
+           }
+
+           if(txt_stocks_sold.text.isEmpty()){
+                return@setOnClickListener
+           }
+
+           if(txt_tax_charge.text.isEmpty()){
+                return@setOnClickListener
+           }
+
+           if(txt_broker_charge.text.isEmpty()){
+                return@setOnClickListener
+           }
+
+           if(txt_amount_sold.text.isEmpty()){
+                return@setOnClickListener
+           }
+
+           doSaveInvestment()
+        }
+
     }
 
     fun doCompute(){
