@@ -15,11 +15,14 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import invest.com.swapp.db.DBHelper
+import invest.com.swapp.db.database
 import invest.com.swapp.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 import okhttp3.*
+import org.jetbrains.anko.db.select
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -45,8 +48,8 @@ class StockItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            showPortfolio()
         }
 
         if (stockitem_detail_container != null) {
@@ -241,5 +244,28 @@ class StockItemListActivity : AppCompatActivity() {
         private val URL_SCHEME = "http"
         private val URL_AUTHORITY = "phisix-api2.appspot.com"
         private val URL_PATH_1 = "stocks.json"
+    }
+
+    private fun showPortfolio(){
+
+        val list = ArrayList<String>()
+
+        database.use {
+            select(DBHelper.tblInvestment,"symbol").exec {
+                while (moveToNext()){
+                    Log.d("_symbol", getString(getColumnIndex("symbol")) )
+                    list.add(getString(getColumnIndex("symbol")))
+                }
+            }
+        }
+
+        var array = arrayOfNulls<String>(list.size)
+        if(list.size > 0){
+            list.toArray(array)
+        }
+
+        val filtered:List<Stock> = stockListAll.filter{ array.contains(it.name) }
+        Log.d("_list","${filtered.size}" )
+        stockitem_list!!.adapter = SimpleItemRecyclerViewAdapter(this,ArrayList(filtered),true)
     }
 }
