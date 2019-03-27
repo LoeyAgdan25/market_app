@@ -9,6 +9,7 @@ import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_invest.*
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.toast
 import java.util.*
 
 class InvestActivity : AppCompatActivity() {
@@ -120,14 +121,16 @@ class InvestActivity : AppCompatActivity() {
         database.use {
             insert(DBHelper.tblInvestment,
                 "symbol" to intent.getStringExtra("symbol"),
-                    "price" to txt_price_sold.text as Double,
-                    "stocks" to txt_stocks_sold.text as Double,
-                    "amount" to txt_amount_sold.text as Double,
-                    "bcharge" to txt_broker_charge.text as Double,
-                    "tax" to txt_tax_charge.text as Double,
-                    "total" to txt_total_investment.text as Double,
+                    "price" to txt_price_sold.text.toString().toDouble(),
+                    "stocks" to txt_stocks_sold.text.toString().toDouble(),
+                    "amount" to txt_amount_sold.text.toString().toDouble(),
+                    "bcharge" to txt_broker_charge.text.toString().toDouble(),
+                    "tax" to txt_tax_charge.text.toString().toDouble(),
+                    "total" to txt_total_investment.text.toString().toDouble(),
                     "date" to Date().toString()
                     )
+
+                toast("Investment has been saved")
 
         }
     }
