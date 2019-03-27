@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 import okhttp3.*
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -259,13 +260,22 @@ class StockItemListActivity : AppCompatActivity() {
             }
         }
 
-        var array = arrayOfNulls<String>(list.size)
+
         if(list.size > 0){
+
+            var array = arrayOfNulls<String>(list.size)
             list.toArray(array)
+
+            Log.d("array", array.toString())
+
+
+            var list = mutableListOf<Stock>()
+            val filtered: List<Stock> = stockListAll.filter{array.contains(it.symbol)}
+
+            Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stockListAll.size}" )
+            stockitem_list!!.adapter = SimpleItemRecyclerViewAdapter(this,ArrayList(filtered),true)
         }
 
-        val filtered:List<Stock> = stockListAll.filter{ array.contains(it.name) }
-        Log.d("_list","${filtered.size}" )
-        stockitem_list!!.adapter = SimpleItemRecyclerViewAdapter(this,ArrayList(filtered),true)
+
     }
 }
