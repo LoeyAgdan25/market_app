@@ -57,6 +57,6 @@ class MasterActivity : AppCompatActivity(){
         }
     }
 
-    
+
 
 }
