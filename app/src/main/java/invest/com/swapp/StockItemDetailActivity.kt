@@ -93,7 +93,6 @@ class StockItemDetailActivity : AppCompatActivity() {
                 database.use {
                     delete("tblWatched","symbol = {symbol}", "symbol" to sym)
                 }
-
                 btn_watch_stock.visibility = View.VISIBLE
                 btn_watch_remove.visibility = View.GONE
             }
@@ -102,8 +101,6 @@ class StockItemDetailActivity : AppCompatActivity() {
                 //do nothing
             }
         }.show()
-
-
     }
 
     fun doFindStock(sym: String){

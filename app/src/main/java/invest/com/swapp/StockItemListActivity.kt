@@ -268,7 +268,6 @@ class StockItemListActivity : AppCompatActivity() {
 
             Log.d("array", array.toString())
 
-
             var list = mutableListOf<Stock>()
             val filtered: List<Stock> = stockListAll.filter{array.contains(it.symbol)}
 

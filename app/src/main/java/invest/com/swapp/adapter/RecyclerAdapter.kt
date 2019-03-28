@@ -1,14 +1,17 @@
-package invest.com.swapp
+package invest.com.swapp.adapter
 
 import android.support.annotation.NonNull
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import invest.com.swapp.R
+import invest.com.swapp.Stock
+import invest.com.swapp.inflate
 import kotlinx.android.synthetic.main.recyclerview_item_row.view.*
 
 class RecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
-    override fun onCreateViewHolder(@NonNull p0: ViewGroup, p1: Int): RecyclerAdapter.ViewHolder {
+    override fun onCreateViewHolder(@NonNull p0: ViewGroup, p1: Int): ViewHolder {
         val inflatedView = p0.inflate(R.layout.recyclerview_item_row, false)
         return ViewHolder(inflatedView)
     }

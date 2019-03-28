@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import invest.com.swapp.adapter.RecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlin.system.exitProcess
@@ -23,9 +24,9 @@ class MasterActivity : AppCompatActivity(){
         AppHelper.init(baseContext)
 
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        recyclerView.layoutManager = linearLayoutManager
+        recyclerViewMain.layoutManager = linearLayoutManager
         adapter = RecyclerAdapter(stockList)
-        recyclerView.adapter = adapter
+        recyclerViewMain.adapter = adapter
 
 
         btn_dashboard_search.setOnClickListener { doSearchStock() }
@@ -55,5 +56,7 @@ class MasterActivity : AppCompatActivity(){
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    
 
 }
