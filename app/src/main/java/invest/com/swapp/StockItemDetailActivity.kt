@@ -1,25 +1,21 @@
 package invest.com.swapp
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
-import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.db.*
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import java.util.*
 
 
 class StockItemDetailActivity : AppCompatActivity() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,11 +58,13 @@ class StockItemDetailActivity : AppCompatActivity() {
         }
 
         btn_watch_stock.setOnClickListener { doWatchStock() }
-        doFindStock()
+        btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
+        btn_watch_invest.setOnClickListener { doInvest(symbol) }
+        doFindStock(symbol)
+        doFindStockAll()
     }
 
-    fun doFindStock(){
-        toast("do find stock")
+    fun doFindStockAll(){
         database.use {
             select("tblWatched").exec {
                 while (moveToNext()) {
@@ -77,27 +75,71 @@ class StockItemDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    fun doInvest(sym:String){
+        var intent = Intent(this,InvestActivity::class.java).apply {
+            putExtra("symbol","$sym")
+        }
+        startActivity(intent)
+    }
 
+    fun doRemoveWatched(sym:String){
+
+        alert {
+            title("Remove Stock")
+            message("Remove Stock from watchlist")
+            yesButton {
+                database.use {
+                    delete("tblWatched","symbol = {symbol}", "symbol" to sym)
+                }
+                btn_watch_stock.visibility = View.VISIBLE
+                btn_watch_remove.visibility = View.GONE
+            }
+
+            noButton{
+                //do nothing
+            }
+        }.show()
+    }
+
+    fun doFindStock(sym: String){
+        database.use {
+            select("tblWatched").where("symbol = {symbol}","symbol" to sym).limit(1).exec {
+                //moveToNext()
+                if(moveToFirst()){
+//                    if(getString(getColumnIndex("status")).equals("watched")){
+//                        toast("Stock already in watched")
+//                    }else{
+//                        doWatchStock()
+//                    }
+                    //toast("this is in watchlist")
+                    btn_watch_stock.visibility = View.GONE
+                }else{
+                    btn_watch_invest.visibility = View.GONE
+                    toast("not in watchlist")
+                }
+            }
+        }
     }
 
     fun doWatchStock(){
 
-        Log.d("event","watching stock");
-
-//        doAsync {
+        Log.d("event","watching stock")
             database.use {
-                insert("tblWatched",
+               insert("tblWatched",
                         "symbol" to txt_stock_symbol.text,
                         "name" to intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME),
                         "currency" to "PHP",
                         "amount" to txt_stock_price.text,
-                        "volume" to txt_stock_volume.text
+                        "volume" to txt_stock_volume.text,
+                        "status" to "watched"
                 )
 
                 toast("stock is saved!")
+                btn_watch_stock.visibility = View.GONE
+                btn_watch_invest.visibility = View.VISIBLE
             }
-//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =

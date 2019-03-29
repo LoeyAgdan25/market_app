@@ -15,11 +15,15 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import invest.com.swapp.db.DBHelper
+import invest.com.swapp.db.database
 import invest.com.swapp.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 import okhttp3.*
+import org.jetbrains.anko.db.select
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -45,8 +49,8 @@ class StockItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            showPortfolio()
         }
 
         if (stockitem_detail_container != null) {
@@ -193,7 +197,7 @@ class StockItemListActivity : AppCompatActivity() {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                         putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                         putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
-                        putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
+                        putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
                         putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
                         putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
@@ -212,8 +216,8 @@ class StockItemListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = item.name
-            holder.contentView.text = item.description
+            holder.idView.text = item.symbol
+            holder.contentView.text = item.name
             holder.percentView.text = item.percent
 
             if(item.percent.contains("-")){
@@ -243,5 +247,36 @@ class StockItemListActivity : AppCompatActivity() {
         private val URL_SCHEME = "http"
         private val URL_AUTHORITY = "phisix-api2.appspot.com"
         private val URL_PATH_1 = "stocks.json"
+    }
+
+    private fun showPortfolio(){
+
+        val list = ArrayList<String>()
+
+        database.use {
+            select(DBHelper.tblInvestment,"symbol").exec {
+                while (moveToNext()){
+                    Log.d("_symbol", getString(getColumnIndex("symbol")) )
+                    list.add(getString(getColumnIndex("symbol")))
+                }
+            }
+        }
+
+
+        if(list.size > 0){
+
+            var array = arrayOfNulls<String>(list.size)
+            list.toArray(array)
+
+            Log.d("array", array.toString())
+
+            var list = mutableListOf<Stock>()
+            val filtered: List<Stock> = stockListAll.filter{array.contains(it.symbol)}
+
+            Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stockListAll.size}" )
+            stockitem_list!!.adapter = SimpleItemRecyclerViewAdapter(this,ArrayList(filtered),true)
+        }
+
+
     }
 }
