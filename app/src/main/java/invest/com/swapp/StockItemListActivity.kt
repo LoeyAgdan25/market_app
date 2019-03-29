@@ -218,6 +218,8 @@ class StockItemListActivity : AppCompatActivity() {
 
             if(item.percent.contains("-")){
                 holder.imageIndicator.setImageResource(R.drawable.sort_down)
+            }else{
+                holder.imageIndicator.setImageResource(R.drawable.sort_up)
             }
 
 
