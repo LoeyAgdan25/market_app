@@ -32,7 +32,6 @@ class StockItemDetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = "${name}"
 
-
         txt_stock_symbol.text = "${symbol}"
         txt_stock_percent.text = "${percent}"
         txt_stock_price.text = "${price}"
@@ -46,7 +45,6 @@ class StockItemDetailActivity : AppCompatActivity() {
                             intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_ID))
                 }
             }
-
             supportFragmentManager.beginTransaction()
                     .add(R.id.stockitem_detail_container, fragment)
                     .commit()
