@@ -29,7 +29,6 @@ class MasterActivity : AppCompatActivity(){
         adapter = RecyclerAdapter(stockList)
         recyclerViewMain.adapter = adapter
 
-
         btn_dashboard_search.setOnClickListener { doSearchStock() }
 
     }

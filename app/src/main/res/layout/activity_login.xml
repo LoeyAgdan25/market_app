@@ -38,13 +38,10 @@
                android:layout_gravity="center_horizontal"
                android:textColor="@color/colorPrimaryDark"
                android:textSize="20sp"
-               android:drawableLeft="@drawable/ic_show_chart_green_400_24dp"
                />
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <AutoCompleteTextView
                     android:id="@+id/txt_username"
                     android:layout_width="match_parent"

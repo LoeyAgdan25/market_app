@@ -179,21 +179,21 @@ class StockItemListActivity : AppCompatActivity() {
         init {
             onClickListener = View.OnClickListener { v ->
                 val item = v.tag as Stock
-                if (twoPane) {
-                    val fragment = StockItemDetailFragment().apply {
-                        arguments = Bundle().apply {
-                            putString(StockItemDetailFragment.ARG_ITEM_ID, item.name)
-                            putString(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
-                            putString(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
-                            putString(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
-                            putString(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
-                        }
-                    }
-                    parentActivity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.stockitem_detail_container, fragment)
-                            .commit()
-                } else {
+//                if (twoPane) {
+//                    val fragment = StockItemDetailFragment().apply {
+//                        arguments = Bundle().apply {
+//                            putString(StockItemDetailFragment.ARG_ITEM_ID, item.name)
+//                            putString(StockItemDetailFragment.ARG_ITEM_NAME, item.description)
+//                            putString(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
+//                            putString(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
+//                            putString(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
+//                        }
+//                    }
+//                    parentActivity.supportFragmentManager
+//                            .beginTransaction()
+//                            .replace(R.id.stockitem_detail_container, fragment)
+//                            .commit()
+//                } else {
                     val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                         putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                         putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
@@ -204,7 +204,7 @@ class StockItemListActivity : AppCompatActivity() {
 
                     }
                     v.context.startActivity(intent)
-                }
+//                }
             }
         }
 

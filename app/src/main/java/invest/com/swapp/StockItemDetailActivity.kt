@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import invest.com.swapp.db.database
+import kotlinx.android.synthetic.main.activity_invest.view.*
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
 import org.jetbrains.anko.alert
@@ -93,6 +94,7 @@ class StockItemDetailActivity : AppCompatActivity() {
                 }
                 btn_watch_stock.visibility = View.VISIBLE
                 btn_watch_remove.visibility = View.GONE
+                txt_stock_status.text = "Unwatched"
             }
 
             noButton{
@@ -112,10 +114,13 @@ class StockItemDetailActivity : AppCompatActivity() {
 //                        doWatchStock()
 //                    }
                     //toast("this is in watchlist")
+                    txt_stock_status.text = "Watch"
                     btn_watch_stock.visibility = View.GONE
+
                 }else{
+                    txt_stock_status.text = "Unwatched"
                     btn_watch_invest.visibility = View.GONE
-                    toast("not in watchlist")
+
                 }
             }
         }
@@ -134,9 +139,10 @@ class StockItemDetailActivity : AppCompatActivity() {
                         "status" to "watched"
                 )
 
-                toast("stock is saved!")
+                //toast("stock is saved!")
+                txt_stock_status.text = "Watched"
                 btn_watch_stock.visibility = View.GONE
-                btn_watch_invest.visibility = View.VISIBLE
+//                btn_watch_invest.visibility = View.VISIBLE
             }
     }
 
