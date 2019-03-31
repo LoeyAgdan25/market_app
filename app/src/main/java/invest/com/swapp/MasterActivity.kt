@@ -9,7 +9,10 @@ import android.view.Menu
 import android.view.MenuItem
 import invest.com.swapp.adapter.RecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
+import invest.com.swapp.db.DBHelper
+import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_master.*
+import org.jetbrains.anko.db.select
 import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
@@ -17,7 +20,7 @@ class MasterActivity : AppCompatActivity(){
     private var stockList: ArrayList<Stock> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RecyclerAdapter
-
+    private val stockListAll = ArrayList<Stock>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,24 @@ class MasterActivity : AppCompatActivity(){
         recyclerViewMain.adapter = adapter
 
         btn_dashboard_search.setOnClickListener { doSearchStock() }
+        setUpRecyclerview(recyclerViewMain)
+    }
+
+    private fun setUpRecyclerview(recyclerView: RecyclerView){
+        //do sqlite database
+
+        database.use {
+            select(DBHelper.tblWatchlist).exec {
+                while (moveToNext()){
+                    val stockModel = Stock("","${getString(getColumnIndex("symbol"))}","","","","")
+                    stockListAll.add(stockModel)
+                }
+            }
+        }
+
+        if(stockListAll.size > 0){
+            recyclerView.adapter = RecyclerAdapter(stockListAll)
+        }
 
     }
 
@@ -56,7 +77,4 @@ class MasterActivity : AppCompatActivity(){
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
-
 }
