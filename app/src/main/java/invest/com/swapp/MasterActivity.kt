@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import invest.com.swapp.R.id.btn_dashboard_search
+import invest.com.swapp.R.id.recyclerViewMain
 import invest.com.swapp.adapter.RecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.db.DBHelper
@@ -16,6 +18,7 @@ import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.*
+import kotlinx.coroutines.experimental.awaitAll
 import okhttp3.*
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.doAsync
@@ -75,7 +78,10 @@ class MasterActivity : AppCompatActivity(){
         if(stockListAll.size > 0){
             recyclerView.adapter = RecyclerAdapter(stockListAll)
         }
+
+
     }
+
 
     private fun fetchUpdate(symbol: String){
 
@@ -92,11 +98,9 @@ class MasterActivity : AppCompatActivity(){
         client.newCall(request).enqueue(object : Callback{
             override fun onResponse(call: Call, response: Response) {
                 Log.d("_log", response.body()!!.string())
-//                toast("response $response")
             }
 
             override fun onFailure(call: Call, e: IOException) {
-//                toast("error $e")
                 Log.d("_log", "$e")
             }
 
