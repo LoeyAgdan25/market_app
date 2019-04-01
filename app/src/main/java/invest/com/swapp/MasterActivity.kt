@@ -30,6 +30,7 @@ import java.io.IOException
 import java.lang.Exception
 import kotlin.system.exitProcess
 
+
 class MasterActivity : AppCompatActivity(){
 
     private var stockList: ArrayList<Stock> = ArrayList()
@@ -54,6 +55,10 @@ class MasterActivity : AppCompatActivity(){
         btn_dashboard_search.setOnClickListener { doSearchStock() }
         setupRecyclerView(recyclerViewMain)
 
+//        val adView = AdView(this)
+//        adView.adSize = AdSize.BANNER
+//        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+// TODO: Add adView to your view hierarchy.
 
     }
 
@@ -130,58 +135,59 @@ class MasterActivity : AppCompatActivity(){
             }
         }
 
-    private fun fetchUpdate(symbol: String){
+        private fun fetchUpdate(symbol: String){
 
-       val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME)
-               .authority(MasterActivity.URL_AUTHORITY)
-               .appendPath("stocks")
-               .appendPath("$symbol.json")
-               .build().toString()
+           val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME)
+                   .authority(MasterActivity.URL_AUTHORITY)
+                   .appendPath("stocks")
+                   .appendPath("$symbol.json")
+                   .build().toString()
 
 
-        Log.d("_logs","symbol $symbol $urlRequest")
-        val request = Request.Builder().url(urlRequest).build()
+            Log.d("_logs","symbol $symbol $urlRequest")
+            val request = Request.Builder().url(urlRequest).build()
 
-        client.newCall(request).enqueue(object : Callback{
-            override fun onResponse(call: Call, response: Response) {
-                Log.d("_log", response.body()!!.string())
-            }
+            client.newCall(request).enqueue(object : Callback{
+                override fun onResponse(call: Call, response: Response) {
+                    Log.d("_log", response.body()!!.string())
+                }
 
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("_log", "$e")
-            }
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("_log", "$e")
+                }
 
-        })
-    }
-
-    fun doSearchStock(){
-        startActivity(Intent(baseContext, StockItemListActivity::class.java))
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(
-                R.menu.option_menu,
-                menu
-        )
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item!!.itemId){
-            R.id.logout_menu -> {
-                AppHelper.userPool!!.currentUser.signOut()
-                startActivity(Intent(baseContext, LoginActivity::class.java))
-                exitProcess(-1)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+            })
         }
-    }
-    //http://phisix-api2.appspot.com/stocks/BDO.json
-    companion object {
-        private val URL_SCHEME = "http"
-        private val URL_AUTHORITY = "phisix-api2.appspot.com"
-        private val URL_PATH_1 = "stocks.json"
 
-    }
+        fun doSearchStock(){
+            startActivity(Intent(baseContext, StockItemListActivity::class.java))
+        }
+
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(
+                    R.menu.option_menu,
+                    menu
+            )
+            return super.onCreateOptionsMenu(menu)
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+            return when(item!!.itemId){
+                R.id.logout_menu -> {
+                    AppHelper.userPool!!.currentUser.signOut()
+                    startActivity(Intent(baseContext, LoginActivity::class.java))
+                    exitProcess(-1)
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+        }
+
+        //http://phisix-api2.appspot.com/stocks/BDO.json
+        companion object {
+            private val URL_SCHEME = "http"
+            private val URL_AUTHORITY = "phisix-api2.appspot.com"
+            private val URL_PATH_1 = "stocks.json"
+
+        }
 }
