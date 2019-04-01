@@ -86,9 +86,6 @@ class MasterActivity : AppCompatActivity(){
                         }
 
                         filter(stockListAll)
-
-                        //recyclerView.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this@MasterActivity, stockListAll, twoPane)
-
                         Log.d("_json", rootJsonObject.toString())
                         Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
                     }
@@ -108,7 +105,7 @@ class MasterActivity : AppCompatActivity(){
             val list = ArrayList<String>()
 
             database.use {
-                select(DBHelper.tblWatchlist,"symbol").exec {
+                select(DBHelper.tblWatchlist,"symbol").limit(3).exec {
                     while (moveToNext()){
                         Log.d("_symbol", getString(getColumnIndex("symbol")) )
                         list.add(getString(getColumnIndex("symbol")))
@@ -132,36 +129,6 @@ class MasterActivity : AppCompatActivity(){
                 recyclerViewMain.adapter = RecyclerAdapter(ArrayList(filtered))
             }
         }
-
-
-//    private fun setUpRecyclerview(recyclerView: RecyclerView){
-//        //do sqlite database
-//        //add grouping wait
-//        //TODO:- Do coroutines...
-//        database.use {
-//            select(DBHelper.tblWatchlist).exec {
-//                while (moveToNext()){
-//                    val stockModel = Stock("","${getString(getColumnIndex("symbol"))}","","","","")
-//
-//                    doAsync { fetchUpdate(stockModel.symbol) }
-//                    stockListAll.add(stockModel)
-//                }
-//            }
-//        }
-//
-//        //Add group wait here...
-//
-//        if(stockListAll.size > 0){
-//            recyclerView.adapter = RecyclerAdapter(stockListAll)
-//        }
-//
-//
-//    }
-
-    private fun doFilterList(){
-
-    }
-
 
     private fun fetchUpdate(symbol: String){
 

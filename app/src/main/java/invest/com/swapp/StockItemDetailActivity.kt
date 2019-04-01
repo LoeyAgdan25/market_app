@@ -86,7 +86,7 @@ class StockItemDetailActivity : AppCompatActivity() {
     fun doRemoveWatched(sym:String){
 
         alert {
-            title("Remove Stock")
+            title("Watchlist")
             message("Remove Stock from watchlist")
             yesButton {
                 database.use {
@@ -139,11 +139,13 @@ class StockItemDetailActivity : AppCompatActivity() {
                         "status" to "watched"
                 )
 
-                //toast("stock is saved!")
                 txt_stock_status.text = "Watched"
                 btn_watch_stock.visibility = View.GONE
-//                btn_watch_invest.visibility = View.VISIBLE
             }
+    }
+
+    fun doGetCount(){
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
