@@ -16,6 +16,7 @@ import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_master.*
+import kotlinx.android.synthetic.main.stockitem_list.*
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.*
 import kotlinx.coroutines.experimental.awaitAll
@@ -23,8 +24,10 @@ import okhttp3.*
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.json.JSONObject
 
 import java.io.IOException
+import java.lang.Exception
 import kotlin.system.exitProcess
 
 class MasterActivity : AppCompatActivity(){
@@ -49,36 +52,113 @@ class MasterActivity : AppCompatActivity(){
 
         client = OkHttpClient()
         btn_dashboard_search.setOnClickListener { doSearchStock() }
-        setUpRecyclerview(recyclerViewMain)
-
-
+        setupRecyclerView(recyclerViewMain)
 
 
     }
 
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
 
 
-    private fun setUpRecyclerview(recyclerView: RecyclerView){
-        //do sqlite database
-        //add grouping wait
-        //TODO:- Do coroutines...
-        database.use {
-            select(DBHelper.tblWatchlist).exec {
-                while (moveToNext()){
-                    val stockModel = Stock("","${getString(getColumnIndex("symbol"))}","","","","")
+        val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME)
+                .authority(MasterActivity.URL_AUTHORITY)
+                .appendPath(MasterActivity.URL_PATH_1)
+                .build().toString()
+        val request = Request.Builder().url(urlRequest).build()
+        client.newCall(request).enqueue(object : Callback{
 
-                    doAsync { fetchUpdate(stockModel.symbol) }
-                    stockListAll.add(stockModel)
+            override fun onResponse(call: Call, response: Response) {
+                var r = response.body()!!.string()
+                try {
+                    runOnUiThread {
+                        val rootJsonObject = JSONObject(r)
+                        var roots = rootJsonObject.getJSONArray("stock")
+                        for (i in 0 until roots.length()) {
+                            val stock = roots.get(i).toString()
+                            val obj = JSONObject(stock)
+
+                            val imageModel = Stock("${obj.getString("name")}",
+                                    obj.getString("symbol"),"",
+                                    obj.getString("percent_change"),
+                                    obj.getString("volume"),
+                                    obj.getJSONObject("price").getString("amount"))
+                            stockListAll.add(imageModel)
+                        }
+
+                        filter(stockListAll)
+
+                        //recyclerView.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this@MasterActivity, stockListAll, twoPane)
+
+                        Log.d("_json", rootJsonObject.toString())
+                        Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
                 }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("_json", e.message)
+            }
+        })
+
+        }
+
+        private fun filter(stocks: ArrayList<Stock>){
+            val list = ArrayList<String>()
+
+            database.use {
+                select(DBHelper.tblWatchlist,"symbol").exec {
+                    while (moveToNext()){
+                        Log.d("_symbol", getString(getColumnIndex("symbol")) )
+                        list.add(getString(getColumnIndex("symbol")))
+                    }
+                }
+            }
+
+
+            if(list.size > 0){
+
+                var array = arrayOfNulls<String>(list.size)
+                list.toArray(array)
+
+                Log.d("array", array.toString())
+
+                var list = mutableListOf<Stock>()
+                val filtered: List<Stock> = stocks.filter{array.contains(it.symbol)}
+
+                Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stocks.size}" )
+                //stockitem_list!!.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this, ArrayList(filtered), true)
+                recyclerViewMain.adapter = RecyclerAdapter(ArrayList(filtered))
             }
         }
 
-        //Add group wait here...
 
-        if(stockListAll.size > 0){
-            recyclerView.adapter = RecyclerAdapter(stockListAll)
-        }
+//    private fun setUpRecyclerview(recyclerView: RecyclerView){
+//        //do sqlite database
+//        //add grouping wait
+//        //TODO:- Do coroutines...
+//        database.use {
+//            select(DBHelper.tblWatchlist).exec {
+//                while (moveToNext()){
+//                    val stockModel = Stock("","${getString(getColumnIndex("symbol"))}","","","","")
+//
+//                    doAsync { fetchUpdate(stockModel.symbol) }
+//                    stockListAll.add(stockModel)
+//                }
+//            }
+//        }
+//
+//        //Add group wait here...
+//
+//        if(stockListAll.size > 0){
+//            recyclerView.adapter = RecyclerAdapter(stockListAll)
+//        }
+//
+//
+//    }
 
+    private fun doFilterList(){
 
     }
 
