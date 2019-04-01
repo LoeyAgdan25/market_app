@@ -9,6 +9,10 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import invest.com.swapp.R.id.btn_dashboard_search
 import invest.com.swapp.R.id.recyclerViewMain
 import invest.com.swapp.adapter.RecyclerAdapter
@@ -38,12 +42,17 @@ class MasterActivity : AppCompatActivity(){
     private lateinit var adapter: RecyclerAdapter
     private val stockListAll = ArrayList<Stock>()
     private lateinit var client: OkHttpClient
+    lateinit var mAdView : AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
         AppHelper.init(baseContext)
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
+
 
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         recyclerViewMain.layoutManager = linearLayoutManager
@@ -55,9 +64,11 @@ class MasterActivity : AppCompatActivity(){
         btn_dashboard_search.setOnClickListener { doSearchStock() }
         setupRecyclerView(recyclerViewMain)
 
-//        val adView = AdView(this)
-//        adView.adSize = AdSize.BANNER
-//        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
 // TODO: Add adView to your view hierarchy.
 
     }
