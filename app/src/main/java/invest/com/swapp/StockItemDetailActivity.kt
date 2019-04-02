@@ -61,7 +61,7 @@ class StockItemDetailActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        btn_watch_stock.setOnClickListener { doWatchStock() }
+        btn_watch_stock.setOnClickListener { doWatchStock(symbol) }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
         btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
@@ -136,25 +136,37 @@ class StockItemDetailActivity : AppCompatActivity() {
         }
     }
 
-    fun doWatchStock(){
+    fun doWatchStock(sym:String){
 
         if (mInterstitialAd.isLoaded) {
             mInterstitialAd.show()
         }
 
+
+
         Log.d("event","watching stock")
             database.use {
-               insert("tblWatched",
-                        "symbol" to txt_stock_symbol.text,
-                        "name" to intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME),
-                        "currency" to "PHP",
-                        "amount" to txt_stock_price.text,
-                        "volume" to txt_stock_volume.text,
-                        "status" to "watched"
-                )
 
-                txt_stock_status.text = "Watched"
-                btn_watch_stock.visibility = View.GONE
+               //check first if already exist dont add again
+                select("tblWatched").where("symbol = {symbol}","symbol" to sym).limit(1).exec{
+                    if(moveToFirst()){
+                        toast("Stock already in the watchlist")
+                    }else{
+                        insert("tblWatched",
+                                "symbol" to txt_stock_symbol.text,
+                                "name" to intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME),
+                                "currency" to "PHP",
+                                "amount" to txt_stock_price.text,
+                                "volume" to txt_stock_volume.text,
+                                "status" to "watched"
+                        )
+
+                        txt_stock_status.text = "Watched"
+                        btn_watch_stock.visibility = View.GONE
+                    }
+                }
+
+
             }
 
 

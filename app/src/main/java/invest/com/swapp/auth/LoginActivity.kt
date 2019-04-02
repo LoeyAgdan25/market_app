@@ -146,6 +146,7 @@ class LoginActivity : AppCompatActivity(){
             indeterminateProgressDialog("").dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             startActivityForResult(intent, 4)
+            finish()
         }
 
         override fun onFailure(exception: Exception?) {
