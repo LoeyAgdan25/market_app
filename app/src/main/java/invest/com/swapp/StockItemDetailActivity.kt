@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import invest.com.swapp.db.database
+import kotlinx.android.synthetic.main.activity_invest.view.*
 import kotlinx.android.synthetic.main.activity_stockitem_detail.*
 import kotlinx.android.synthetic.main.content_detail_stocks.*
 import org.jetbrains.anko.alert
@@ -17,10 +20,13 @@ import org.jetbrains.anko.toast
 
 class StockItemDetailActivity : AppCompatActivity() {
 
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stockitem_detail)
         setSupportActionBar(toolbar)
+
 
         var symbol = intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL)
         var name = intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME)
@@ -60,6 +66,11 @@ class StockItemDetailActivity : AppCompatActivity() {
         btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
         doFindStockAll()
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
     }
 
     fun doFindStockAll(){
@@ -85,7 +96,7 @@ class StockItemDetailActivity : AppCompatActivity() {
     fun doRemoveWatched(sym:String){
 
         alert {
-            title("Remove Stock")
+            title("Watchlist")
             message("Remove Stock from watchlist")
             yesButton {
                 database.use {
@@ -93,6 +104,7 @@ class StockItemDetailActivity : AppCompatActivity() {
                 }
                 btn_watch_stock.visibility = View.VISIBLE
                 btn_watch_remove.visibility = View.GONE
+                txt_stock_status.text = "Unwatched"
             }
 
             noButton{
@@ -112,16 +124,23 @@ class StockItemDetailActivity : AppCompatActivity() {
 //                        doWatchStock()
 //                    }
                     //toast("this is in watchlist")
+                    txt_stock_status.text = "Watch"
                     btn_watch_stock.visibility = View.GONE
+
                 }else{
+                    txt_stock_status.text = "Unwatched"
                     btn_watch_invest.visibility = View.GONE
-                    toast("not in watchlist")
+
                 }
             }
         }
     }
 
     fun doWatchStock(){
+
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        }
 
         Log.d("event","watching stock")
             database.use {
@@ -134,11 +153,14 @@ class StockItemDetailActivity : AppCompatActivity() {
                         "status" to "watched"
                 )
 
-                toast("stock is saved!")
+                txt_stock_status.text = "Watched"
                 btn_watch_stock.visibility = View.GONE
-                btn_watch_invest.visibility = View.VISIBLE
             }
+
+
+
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
