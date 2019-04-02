@@ -68,7 +68,7 @@ class MasterActivity : AppCompatActivity(){
         if(checkConnectivity(this)) {
             setupRecyclerView(recyclerViewMain)
         }else{
-            status_main.text = "Network not connected."
+            status_main.text = "Internet is not connected."
             empty_view.visibility = View.VISIBLE
         }
 
