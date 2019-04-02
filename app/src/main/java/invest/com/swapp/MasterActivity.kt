@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -129,9 +130,8 @@ class MasterActivity : AppCompatActivity(){
                 }
             }
 
-
             if(list.size > 0){
-
+                recyclerViewMain.visibility = View.VISIBLE
                 var array = arrayOfNulls<String>(list.size)
                 list.toArray(array)
 
@@ -143,6 +143,9 @@ class MasterActivity : AppCompatActivity(){
                 Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stocks.size}" )
                 //stockitem_list!!.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this, ArrayList(filtered), true)
                 recyclerViewMain.adapter = RecyclerAdapter(ArrayList(filtered))
+            }else{
+                empty_view.visibility = View.VISIBLE
+                recyclerViewMain.visibility = View.INVISIBLE
             }
         }
 
