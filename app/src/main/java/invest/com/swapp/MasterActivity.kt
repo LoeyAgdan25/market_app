@@ -1,6 +1,8 @@
 package invest.com.swapp
 
+import android.content.Context
 import android.content.Intent
+import android.net.NetworkInfo
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -54,7 +56,6 @@ class MasterActivity : AppCompatActivity(){
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
 
-
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         recyclerViewMain.layoutManager = linearLayoutManager
         adapter = RecyclerAdapter(stockList)
@@ -63,8 +64,13 @@ class MasterActivity : AppCompatActivity(){
 
         client = OkHttpClient()
         btn_dashboard_search.setOnClickListener { doSearchStock() }
-        setupRecyclerView(recyclerViewMain)
 
+        if(checkConnectivity(this)) {
+            setupRecyclerView(recyclerViewMain)
+        }else{
+            status_main.text = "Network not connected."
+            empty_view.visibility = View.VISIBLE
+        }
 
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
@@ -73,6 +79,25 @@ class MasterActivity : AppCompatActivity(){
 // TODO: Add adView to your view hierarchy.
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(checkConnectivity(this)) {
+            setupRecyclerView(recyclerViewMain)
+        }else{
+            status_main.text = "Network not connected."
+            empty_view.visibility = View.VISIBLE
+        }
+    }
+
+    fun checkConnectivity(context: Context): Boolean {
+
+            val cm = ConnectivityManager()
+            getSystemService(Context.CONNECTIVITY_SERVICE)
+            return cm.isConnectingToInternet(this)
+
+    }
+
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
 
