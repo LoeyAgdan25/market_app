@@ -147,7 +147,7 @@ class MasterActivity : AppCompatActivity(){
             val list = ArrayList<String>()
 
             database.use {
-                select(DBHelper.tblWatchlist,"symbol").limit(3).exec {
+                select(DBHelper.tblWatchlist,"symbol").limit(5).exec {
                     while (moveToNext()){
                         Log.d("_symbol", getString(getColumnIndex("symbol")) )
                         list.add(getString(getColumnIndex("symbol")))
