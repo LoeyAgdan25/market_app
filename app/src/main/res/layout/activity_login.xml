@@ -108,6 +108,15 @@
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
                 />
+            <Button
+                android:id="@+id/btn_open_privacy"
+                android:layout_marginTop="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="Privacy Policy"
+                android:textColor="@color/colorPrimaryDark"
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

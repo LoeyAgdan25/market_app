@@ -5,6 +5,7 @@ import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
@@ -17,6 +18,7 @@ import invest.com.swapp.*
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
+import org.jetbrains.anko.toast
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity(){
@@ -50,6 +52,8 @@ class LoginActivity : AppCompatActivity(){
                 }.show()
             }
         }
+
+        btn_open_privacy.setOnClickListener { doOpenPrivacyPolicy() }
         email_sign_up_button.setOnClickListener { attemptSignup()}
         forgot_password_in_button.setOnClickListener { attemptForgotPassword() }
         this.supportActionBar!!.hide()
@@ -57,6 +61,12 @@ class LoginActivity : AppCompatActivity(){
         AppHelper.init(baseContext)
         findCurrent()
 
+    }
+
+
+    fun doOpenPrivacyPolicy(){
+        val url = "http://3.17.23.239/swapp-privacy-policy/"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
 

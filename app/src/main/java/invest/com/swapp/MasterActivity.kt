@@ -22,6 +22,7 @@ import invest.com.swapp.adapter.RecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 import kotlinx.coroutines.experimental.DefaultDispatcher
@@ -65,6 +66,7 @@ class MasterActivity : AppCompatActivity(){
         client = OkHttpClient()
         btn_dashboard_search.setOnClickListener { doSearchStock() }
 
+
         if(checkConnectivity(this)) {
             setupRecyclerView(recyclerViewMain)
         }else{
@@ -89,6 +91,7 @@ class MasterActivity : AppCompatActivity(){
             empty_view.visibility = View.VISIBLE
         }
     }
+
 
     fun checkConnectivity(context: Context): Boolean {
 
