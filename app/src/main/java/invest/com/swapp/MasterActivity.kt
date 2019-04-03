@@ -53,9 +53,10 @@ class MasterActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
         AppHelper.init(baseContext)
-
+        //Production ca-app-pub-4268048783942748~4717310066
+//        Testing ca-app-pub-3940256099942544~3347511713
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
+        MobileAds.initialize(this, "ca-app-pub-4268048783942748~4717310066")
 
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         recyclerViewMain.layoutManager = linearLayoutManager
@@ -113,6 +114,11 @@ class MasterActivity : AppCompatActivity(){
         client.newCall(request).enqueue(object : Callback{
 
             override fun onResponse(call: Call, response: Response) {
+
+                if(response == null){
+                   return
+                }
+
                 var r = response.body()!!.string()
                 try {
                     runOnUiThread {
