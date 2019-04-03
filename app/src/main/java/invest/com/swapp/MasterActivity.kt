@@ -83,7 +83,7 @@ class MasterActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
         if(checkConnectivity(this)) {
-            setupRecyclerView(recyclerViewMain)
+            //setupRecyclerView(recyclerViewMain)
         }else{
             status_main.text = "Network not connected."
             empty_view.visibility = View.VISIBLE

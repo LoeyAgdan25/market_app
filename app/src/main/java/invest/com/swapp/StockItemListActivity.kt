@@ -120,6 +120,12 @@ class StockItemListActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback{
 
             override fun onResponse(call: Call, response: Response) {
+
+                if(response == null){
+                    toast("could not connect to api, try again.")
+                    return
+                }
+
                 var r = response.body()!!.string()
                 try {
                     runOnUiThread {
