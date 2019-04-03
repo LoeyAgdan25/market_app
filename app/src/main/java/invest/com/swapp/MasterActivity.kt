@@ -215,7 +215,8 @@ class MasterActivity : AppCompatActivity(){
                 R.id.logout_menu -> {
                     AppHelper.userPool!!.currentUser.signOut()
                     startActivity(Intent(baseContext, LoginActivity::class.java))
-                    exitProcess(-1)
+//                    exitProcess(-1)
+                    finish()
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
