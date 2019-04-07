@@ -66,7 +66,8 @@ class StockItemDetailActivity : AppCompatActivity() {
         btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
         doFindStockAll()
-
+        //Production: ca-app-pub-4268048783942748/7970283074
+        //Testing: ca-app-pub-3940256099942544/1033173712
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
