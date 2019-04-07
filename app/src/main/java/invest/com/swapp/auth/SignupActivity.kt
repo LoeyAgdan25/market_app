@@ -13,6 +13,7 @@ import java.lang.Exception
 import android.content.Intent
 import invest.com.swapp.AppHelper
 import invest.com.swapp.R
+import org.jetbrains.anko.toast
 
 class SignupActivity : AppCompatActivity() {
 
@@ -29,15 +30,6 @@ class SignupActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-
-
-       /* userPool = CognitoUserPool(baseContext,
-                UtilityHelper.CognitoUserPool.USERPOOL_ID,
-                UtilityHelper.CognitoUserPool.CLIENT_ID,
-                UtilityHelper.CognitoUserPool.CLIENT_SECRET,
-                Regions.US_EAST_2) */
-
-        //var helper = AppHelper(baseContext)
 
         AppHelper.init(baseContext)
         btn_signup.setOnClickListener{ doSignUpTapped() }
@@ -66,15 +58,18 @@ class SignupActivity : AppCompatActivity() {
 
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-            Log.d("_login","User successfully signed , signUpConfirmationState : " + signUpConfirmationState )
+            //Log.d("_login","User successfully signed , signUpConfirmationState : " + signUpConfirmationState )
+            toast("User signup waiting for confirmation...")
 
             val intent = Intent(baseContext, ConfirmationActivity::class.java)
+            intent.putExtra("email", txt_email.text.toString())
             startActivity(intent)
 
         }
 
         override fun onFailure(exception: Exception?) {
             Log.d("_login","Error user signed in" + exception.toString())
+            toast(exception.toString())
         }
     }
 

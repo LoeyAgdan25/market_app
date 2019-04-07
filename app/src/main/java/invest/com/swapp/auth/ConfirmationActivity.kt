@@ -1,5 +1,6 @@
 package invest.com.swapp.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -10,6 +11,7 @@ import invest.com.swapp.R
 
 import kotlinx.android.synthetic.main.activity_confirmation.*
 import kotlinx.android.synthetic.main.content_confirmation.*
+import org.jetbrains.anko.toast
 import java.lang.Exception
 
 class ConfirmationActivity : AppCompatActivity() {
@@ -28,6 +30,9 @@ class ConfirmationActivity : AppCompatActivity() {
                 UtilityHelper.CognitoUserPool.CLIENT_SECRET,
                 Regions.US_EAST_2)
 
+
+        txt_email_confirm.setText(intent.getStringExtra("email").toString())
+
         btn_confirm.setOnClickListener { confirmCodeTqpped()  }
 
 
@@ -42,13 +47,15 @@ class ConfirmationActivity : AppCompatActivity() {
     val handler = object:GenericHandler{
         override fun onSuccess() {
             Log.d("_login","confirmation success" )
-
+            toast("User successfully confirm")
+            val intent = Intent(baseContext, LoginActivity::class.java)
+            startActivity(intent)
         }
 
 
         override fun onFailure(exception: Exception?) { //To change body of created functions use File | Settings | File Templates.
             Log.d("_login","exception" + exception!!.message  )
-
+            toast(exception!!.message.toString())
         }
     }
 
