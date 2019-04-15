@@ -12,7 +12,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHan
 import java.lang.Exception
 import android.content.Intent
 import invest.com.swapp.AppHelper
+import invest.com.swapp.MasterActivity
 import invest.com.swapp.R
+import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
 
 class SignupActivity : AppCompatActivity() {
@@ -46,7 +48,8 @@ class SignupActivity : AppCompatActivity() {
         cognitoUserAttr.addAttribute("profile","FREE")
         //this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
 
-        AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
+        AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_2.text.toString(),cognitoUserAttr,null,handler)
+        indeterminateProgressDialog("Signing up your account. Please wait...").show()
     }
 
 
@@ -58,10 +61,9 @@ class SignupActivity : AppCompatActivity() {
 
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-            //Log.d("_login","User successfully signed , signUpConfirmationState : " + signUpConfirmationState )
-            toast("User signup waiting for confirmation...")
 
-            val intent = Intent(baseContext, ConfirmationActivity::class.java)
+
+            val intent = Intent(baseContext, MasterActivity::class.java)
             intent.putExtra("email", txt_email.text.toString())
             startActivity(intent)
 

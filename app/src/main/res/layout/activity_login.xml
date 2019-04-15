@@ -35,13 +35,16 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="swapp"
+               android:drawableLeft="@drawable/ic_show_chart_green_500_24dp"
                android:layout_gravity="center_horizontal"
                android:textColor="@color/colorPrimaryDark"
                android:textSize="20sp"
                />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="#000"
+                >
                 <AutoCompleteTextView
                     android:id="@+id/txt_username"
                     android:layout_width="match_parent"
@@ -55,7 +58,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="#000"
+                >
 
                 <EditText
                     android:id="@+id/password"
@@ -71,20 +76,12 @@
 
             </android.support.design.widget.TextInputLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
                 >
-                <Button
-                    android:id="@+id/email_sign_up_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Sign up"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceSmall"
@@ -98,6 +95,15 @@
 
             </LinearLayout>
             <Button
+                android:id="@+id/email_sign_up_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Sign up"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+            <Button
                 android:id="@+id/forgot_password_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
@@ -108,6 +114,7 @@
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
                 />
+
             <Button
                 android:id="@+id/btn_open_privacy"
                 android:layout_marginTop="100dp"

@@ -16,6 +16,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create an account to access and check latest updates."
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:layout_marginBottom="20dp"
+
+            />
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -25,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Email Address"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="58dp" />
         </android.support.design.widget.TextInputLayout>
@@ -41,19 +51,6 @@
                 android:inputType="textPassword"
                 tools:layout_editor_absoluteX="85dp"
                 tools:layout_editor_absoluteY="177dp" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/txt_password_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Enter Password"
-                android:inputType="textPassword"
-                tools:layout_editor_absoluteX="85dp"
-                tools:layout_editor_absoluteY="120dp" />
         </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_signup"
