@@ -25,9 +25,6 @@ import invest.com.swapp.db.database
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.stockitem_list.*
-import kotlinx.coroutines.experimental.DefaultDispatcher
-import kotlinx.coroutines.*
-import kotlinx.coroutines.experimental.awaitAll
 import okhttp3.*
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.doAsync
@@ -91,7 +88,7 @@ class MasterActivity : AppCompatActivity(){
         if(checkConnectivity(this)) {
             //setupRecyclerView(recyclerViewMain)
         }else{
-            status_main.text = "Network not connected."
+            status_main.text = "Internet not connected."
             empty_view.visibility = View.VISIBLE
         }
     }

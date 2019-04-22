@@ -27,7 +27,7 @@ import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
-import kotlin.coroutines.experimental.coroutineContext
+import kotlin.coroutines.coroutineContext
 import kotlin.system.exitProcess
 
 class StockItemListActivity : AppCompatActivity() {
@@ -163,9 +163,9 @@ class StockItemListActivity : AppCompatActivity() {
                 val json_string = application.assets.open(file_name).bufferedReader().use{
                     it.readText()
                 }
-
-
-                recyclerView.adapter = SimpleItemRecyclerViewAdapter(this@StockItemListActivity,getStockList(json_string),twoPane)
+                runOnUiThread {
+                    recyclerView.adapter = SimpleItemRecyclerViewAdapter(this@StockItemListActivity, getStockList(json_string), twoPane)
+                }
             }
         })
 
