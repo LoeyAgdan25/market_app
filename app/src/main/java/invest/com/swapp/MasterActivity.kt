@@ -228,6 +228,12 @@ class MasterActivity : AppCompatActivity(){
                     finish()
                     true
                 }
+
+                R.id.news_menu -> {
+                    startActivity(Intent(baseContext, NewsActivity::class.java))
+                    true
+                }
+
                 else -> super.onOptionsItemSelected(item)
             }
         }

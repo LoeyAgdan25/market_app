@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="invest.com.swapp">
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,12 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- Production ca-app-pub-4268048783942748~4717310066
+        <activity android:name=".ViewNews"></activity>
+        <activity android:name=".NewsActivity" />
+        <!--
+         Production ca-app-pub-4268048783942748~4717310066
              Testing ca-app-pub-3940256099942544~3347511713
-         -->
+        -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4268048783942748~4717310066"/>
+            android:value="ca-app-pub-4268048783942748~4717310066" />
 
         <activity android:name=".MasterActivity" />
         <activity
@@ -27,6 +29,7 @@
             android:label="swapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -64,7 +67,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="invest.com.swapp.StockItemListActivity" />
         </activity>
-        <activity android:name=".InvestActivity"></activity>
+        <activity android:name=".InvestActivity" />
     </application>
 
 </manifest>
