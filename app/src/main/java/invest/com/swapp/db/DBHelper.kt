@@ -21,6 +21,7 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
 
         var tblWatchlist = "tblWatched"
         var tblInvestment = "tblInvestment"
+        var tblStockCache = "tblStockCache"
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -43,6 +44,14 @@ class DBHelper(contxt:Context): ManagedSQLiteOpenHelper(contxt,"SwappDB", null,1
                 "tax" to REAL,
                 "total" to REAL,
                 "date" to TEXT
+                )
+
+        p0!!.createTable("tblStockCache",true,"id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "symbol" to TEXT,
+                "name" to TEXT,
+                "currency" to  TEXT,
+                "amount" to TEXT,
+                "volume" to TEXT
                 )
     }
 

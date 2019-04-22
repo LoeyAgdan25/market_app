@@ -54,7 +54,6 @@ class StockItemListActivity : AppCompatActivity() {
         }
 
         if (stockitem_detail_container != null) {
-
             twoPane = true
         }
         client = OkHttpClient()
@@ -111,7 +110,6 @@ class StockItemListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
 
-
         val urlRequest = Uri.Builder().scheme(StockItemListActivity.URL_SCHEME)
                 .authority(StockItemListActivity.URL_AUTHORITY)
                 .appendPath(StockItemListActivity.URL_PATH_1)
@@ -150,15 +148,32 @@ class StockItemListActivity : AppCompatActivity() {
                     }
                 }catch (e: Exception){
                     e.printStackTrace()
+                    Log.d("_json_error", e.message)
+                    /**
+
+
+
+                     */
                 }
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("_json", e.message)
+                Log.d("_json_network_error", e.message)
+                val file_name = "stocks.json"
+                val json_string = application.assets.open(file_name).bufferedReader().use{
+                    it.readText()
+                }
+
+
+                recyclerView.adapter = SimpleItemRecyclerViewAdapter(this@StockItemListActivity,getStockList(json_string),twoPane)
             }
         })
 
+
+
     }
+
+
 
     class SimpleItemRecyclerViewAdapter(private val parentActivity: StockItemListActivity,
                                         private val values: ArrayList<Stock>,
@@ -224,6 +239,28 @@ class StockItemListActivity : AppCompatActivity() {
         private val URL_AUTHORITY = "phisix-api2.appspot.com"
         private val URL_PATH_1 = "stocks.json"
     }
+
+    private fun getStockList(str:String):ArrayList<Stock>{
+        var listEmpty = ArrayList<Stock>();
+
+        val rootJsonObject = JSONObject(str)
+        var roots = rootJsonObject.getJSONArray("stock")
+        for (i in 0 until roots.length()) {
+            val stock = roots.get(i).toString()
+            val obj = JSONObject(stock)
+
+            val imageModel = Stock("${obj.getString("name")}",
+                    obj.getString("symbol"),"",
+                    obj.getString("percent_change"),
+                    obj.getString("volume"),
+                    obj.getJSONObject("price").getString("amount"))
+            listEmpty.add(imageModel)
+        }
+
+        return listEmpty
+    }
+
+
 
     private fun showPortfolio(){
 

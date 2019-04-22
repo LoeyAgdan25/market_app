@@ -53,10 +53,12 @@ class MasterActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
         AppHelper.init(baseContext)
+
         //Production ca-app-pub-4268048783942748~4717310066
-//        Testing ca-app-pub-3940256099942544~3347511713
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-4268048783942748~4717310066")
+        //Testing ca-app-pub-3940256099942544~3347511713
+        //Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
 
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         recyclerViewMain.layoutManager = linearLayoutManager
@@ -76,6 +78,7 @@ class MasterActivity : AppCompatActivity(){
         }
 
         mAdView = findViewById(R.id.adView)
+        mAdView.visibility = View.GONE
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
@@ -95,11 +98,9 @@ class MasterActivity : AppCompatActivity(){
 
 
     fun checkConnectivity(context: Context): Boolean {
-
             val cm = ConnectivityManager()
             getSystemService(Context.CONNECTIVITY_SERVICE)
             return cm.isConnectingToInternet(this)
-
     }
 
 
@@ -120,29 +121,31 @@ class MasterActivity : AppCompatActivity(){
                 }
 
                 var r = response.body()!!.string()
-                try {
                     runOnUiThread {
-                        val rootJsonObject = JSONObject(r)
-                        var roots = rootJsonObject.getJSONArray("stock")
-                        for (i in 0 until roots.length()) {
-                            val stock = roots.get(i).toString()
-                            val obj = JSONObject(stock)
 
-                            val imageModel = Stock("${obj.getString("name")}",
-                                    obj.getString("symbol"),"",
-                                    obj.getString("percent_change"),
-                                    obj.getString("volume"),
-                                    obj.getJSONObject("price").getString("amount"))
-                            stockListAll.add(imageModel)
+                        try{
+                            val rootJsonObject = JSONObject(r)
+                            var roots = rootJsonObject.getJSONArray("stock")
+                            for (i in 0 until roots.length()) {
+                                val stock = roots.get(i).toString()
+                                val obj = JSONObject(stock)
+
+                                val imageModel = Stock("${obj.getString("name")}",
+                                        obj.getString("symbol"),"",
+                                        obj.getString("percent_change"),
+                                        obj.getString("volume"),
+                                        obj.getJSONObject("price").getString("amount"))
+                                stockListAll.add(imageModel)
+                            }
+
+                            filter(stockListAll)
+                            Log.d("_json", rootJsonObject.toString())
+                            Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
+
+                        }catch (e: Exception){
+                            e.printStackTrace()
                         }
-
-                        filter(stockListAll)
-                        Log.d("_json", rootJsonObject.toString())
-                        Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
                     }
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
             }
 
             override fun onFailure(call: Call, e: IOException) {
