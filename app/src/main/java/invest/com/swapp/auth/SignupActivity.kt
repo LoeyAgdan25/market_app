@@ -1,5 +1,6 @@
 package invest.com.swapp.auth
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -18,10 +19,16 @@ import invest.com.swapp.R
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
+import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager
+import org.jetbrains.anko.contentView
+import java.util.regex.Pattern
 
 class SignupActivity : AppCompatActivity() {
 
-    var userPool:CognitoUserPool? = null
+    private val PASSWORD_POLICY = """Password should be minimum 8 characters long,
+            |at least one number""".trimMargin()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +45,9 @@ class SignupActivity : AppCompatActivity() {
         AppHelper.init(baseContext)
         btn_signup.setOnClickListener{
             if(validateEmail(txt_email.text.toString()) && validatePassword(txt_password_2.text.toString())){
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 doSignUpTapped()
-            }else{
-                alert("It seems there is wrong with your input",""){
-                    positiveButton("Ok",{
-                    })
-                }.show()
             }
         }
     }
@@ -71,14 +75,33 @@ class SignupActivity : AppCompatActivity() {
             return false
     }
 
-    private fun validatePassword(password: String):Boolean{
-        if(password.isNotEmpty()){
-            return true
+    private fun validatePassword(password: String, updateUI: Boolean = true): Boolean{
+
+        val str = password
+        var valid = true
+
+        if (str.length < 8) {
+            valid = false
         }
-        return false
+
+        var exp = ".*[0-9].*"
+        var pattern = Pattern.compile(exp, Pattern.CASE_INSENSITIVE)
+        var matcher = pattern.matcher(str)
+        if (!matcher.matches()) {
+            valid = false
+        }
+
+        if (updateUI) {
+            val error: String? = if (valid) null else PASSWORD_POLICY
+            if(error != null){
+                alert(error!!,""){
+                    positiveButton("Ok",{})
+                }.show()
+            }
+        }
+
+        return valid
     }
-
-
 
     /**
      *  AWS Handler...
@@ -87,8 +110,7 @@ class SignupActivity : AppCompatActivity() {
 
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-
-
+            indeterminateProgressDialog("").dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             intent.putExtra("email", txt_email.text.toString())
             startActivity(intent)
@@ -96,8 +118,8 @@ class SignupActivity : AppCompatActivity() {
         }
 
         override fun onFailure(exception: Exception?) {
-            Log.d("_login","Error user signed in" + exception.toString())
-            toast(exception.toString())
+            Log.d("_error","Error user signed in" + exception.toString())
+            indeterminateProgressDialog("").dismiss()
         }
     }
 
