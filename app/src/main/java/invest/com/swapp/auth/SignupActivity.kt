@@ -1,5 +1,6 @@
 package invest.com.swapp.auth
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -29,6 +30,7 @@ class SignupActivity : AppCompatActivity() {
     private val PASSWORD_POLICY = """Password should be minimum 8 characters long,
             |at least one number""".trimMargin()
 
+    var indeterminateP:ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,16 +39,12 @@ class SignupActivity : AppCompatActivity() {
         this.supportActionBar!!.title = "Sign Up"
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         AppHelper.init(baseContext)
         btn_signup.setOnClickListener{
             if(validateEmail(txt_email.text.toString()) && validatePassword(txt_password_2.text.toString())){
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                indeterminateP = indeterminateProgressDialog("Please wait... ", "Sign up")
                 doSignUpTapped()
             }
         }
@@ -61,7 +59,7 @@ class SignupActivity : AppCompatActivity() {
         //this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
 
         AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_2.text.toString(),cognitoUserAttr,null,handler)
-        indeterminateProgressDialog("Signing up your account. Please wait...").show()
+        indeterminateP!!.show()
     }
 
     /**
@@ -71,7 +69,11 @@ class SignupActivity : AppCompatActivity() {
 
     private fun validateEmail(email: String): Boolean {
         if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()){
-            return true }
+            return true
+        }
+            alert("Invalid Email Address",""){
+                positiveButton("Ok",{})
+            }.show()
             return false
     }
 
@@ -110,7 +112,7 @@ class SignupActivity : AppCompatActivity() {
 
     val handler = object: SignUpHandler{
         override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-            indeterminateProgressDialog("").dismiss()
+            indeterminateP!!.dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             intent.putExtra("email", txt_email.text.toString())
             startActivity(intent)
@@ -118,8 +120,17 @@ class SignupActivity : AppCompatActivity() {
         }
 
         override fun onFailure(exception: Exception?) {
-            Log.d("_error","Error user signed in" + exception.toString())
-            indeterminateProgressDialog("").dismiss()
+            indeterminateP!!.dismiss()
+            var error = ""
+            if(exception.toString().contains("UsernameExist", ignoreCase = true)){
+                error = "User already exist"
+            }
+
+            alert("${error}","Error"){
+                positiveButton("Ok",{
+
+                })
+            }.show()
         }
     }
 

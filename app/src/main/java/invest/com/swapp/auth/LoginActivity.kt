@@ -2,11 +2,13 @@ package invest.com.swapp.auth
 
 
 import android.app.Activity
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
@@ -17,6 +19,7 @@ import com.amazonaws.regions.Regions
 import invest.com.swapp.*
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
 import java.lang.Exception
@@ -128,7 +131,8 @@ class LoginActivity : AppCompatActivity(){
 
     private fun attemptLogin() {
 
-
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
         cUsername = txt_username.text.toString()
         if (cUsername.isEmpty()) {
@@ -145,6 +149,7 @@ class LoginActivity : AppCompatActivity(){
             return }
 
         userPool!!.getUser(cUsername).getSessionInBackground(authHandler)
+
         indeterminateProgressDialog("Signing...").show()
     }
 
