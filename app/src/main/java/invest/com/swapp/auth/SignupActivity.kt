@@ -11,9 +11,11 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import java.lang.Exception
 import android.content.Intent
+import android.provider.ContactsContract
 import invest.com.swapp.AppHelper
 import invest.com.swapp.MasterActivity
 import invest.com.swapp.R
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
 
@@ -34,10 +36,16 @@ class SignupActivity : AppCompatActivity() {
         }
 
         AppHelper.init(baseContext)
-        btn_signup.setOnClickListener{ doSignUpTapped() }
-
-
-
+        btn_signup.setOnClickListener{
+            if(validateEmail(txt_email.text.toString()) && validatePassword(txt_password_2.text.toString())){
+                doSignUpTapped()
+            }else{
+                alert("It seems there is wrong with your input",""){
+                    positiveButton("Ok",{
+                    })
+                }.show()
+            }
+        }
     }
 
 
@@ -50,6 +58,24 @@ class SignupActivity : AppCompatActivity() {
 
         AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_2.text.toString(),cognitoUserAttr,null,handler)
         indeterminateProgressDialog("Signing up your account. Please wait...").show()
+    }
+
+    /**
+     *  Credential validation
+     *
+     * */
+
+    private fun validateEmail(email: String): Boolean {
+        if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()){
+            return true }
+            return false
+    }
+
+    private fun validatePassword(password: String):Boolean{
+        if(password.isNotEmpty()){
+            return true
+        }
+        return false
     }
 
 

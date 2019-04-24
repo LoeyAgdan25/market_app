@@ -19,46 +19,47 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create an account to access and check latest updates."
+            android:text="Hey, welcome to Swapp!"
             android:textSize="20sp"
             android:padding="10dp"
             android:textColor="#000"
-            android:layout_marginBottom="20dp"
-
+            android:layout_marginBottom="10dp"
             />
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/txt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Email Address"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|textNoSuggestions"
                 tools:layout_editor_absoluteX="84dp"
-                tools:layout_editor_absoluteY="58dp" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                tools:layout_editor_absoluteY="58dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableLeft="@drawable/ic_perm_identity_teal_a200_24dp"
+                android:layout_marginBottom="8dp"
+                />
             <EditText
                 android:id="@+id/txt_password_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Enter Password"
+                android:hint="Password"
                 android:inputType="textPassword"
                 tools:layout_editor_absoluteX="85dp"
-                tools:layout_editor_absoluteY="177dp" />
-        </android.support.design.widget.TextInputLayout>
+                tools:layout_editor_absoluteY="177dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableLeft="@drawable/ic_vpn_key_teal_a200_24dp"
+                android:layout_marginBottom="15dp"
+                />
         <Button
             android:id="@+id/btn_signup"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorPrimary"
-            android:text="Sign Up"
+            android:textColor="#fff"
+            android:background="@drawable/button_bg"
+            android:textAllCaps="false"
+            android:text="Register"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="269dp" />
     </LinearLayout>
