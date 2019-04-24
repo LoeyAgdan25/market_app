@@ -6,8 +6,8 @@
     android:name="invest.com.swapp.StockItemListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".StockItemListActivity"
     tools:listitem="@layout/stockitem_list_content" />

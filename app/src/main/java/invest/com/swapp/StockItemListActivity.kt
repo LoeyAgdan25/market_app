@@ -27,8 +27,11 @@ import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
+import java.lang.reflect.InvocationTargetException
 //import kotlin.coroutines.coroutineContext
 import kotlin.system.exitProcess
+
+
 
 class StockItemListActivity : AppCompatActivity() {
 
@@ -108,7 +111,7 @@ class StockItemListActivity : AppCompatActivity() {
     val stockListAll = ArrayList<Stock>()
     var recyclerView:RecyclerView? = null
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
+    private fun setupRecyclerView(recyclerView: RecyclerView){
 
         val urlRequest = Uri.Builder().scheme(StockItemListActivity.URL_SCHEME)
                 .authority(StockItemListActivity.URL_AUTHORITY)
@@ -146,9 +149,10 @@ class StockItemListActivity : AppCompatActivity() {
                         Log.d("_json", rootJsonObject.toString())
                         Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
                     }
-                }catch (e: Exception){
+                }catch (e: InvocationTargetException){
                     e.printStackTrace()
-                    Log.d("_json_error", e.message)
+                    val cause = e.cause
+                    Log.d("_json_error", "${cause}")
                     /**
 
 
