@@ -38,4 +38,8 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-common:0.9'
     implementation 'org.jetbrains.anko:anko-sqlite:0.9'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

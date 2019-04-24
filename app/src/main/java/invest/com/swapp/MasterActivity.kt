@@ -2,7 +2,6 @@ package invest.com.swapp
 
 import android.content.Context
 import android.content.Intent
-import android.net.NetworkInfo
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,34 +12,26 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import invest.com.swapp.R.id.btn_dashboard_search
-import invest.com.swapp.R.id.recyclerViewMain
-import invest.com.swapp.adapter.RecyclerAdapter
+import invest.com.swapp.adapter.StocksRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_master.*
-import kotlinx.android.synthetic.main.stockitem_list.*
 import okhttp3.*
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 import java.io.IOException
 import java.lang.Exception
-import kotlin.system.exitProcess
 
 
 class MasterActivity : AppCompatActivity(){
 
     private var stockList: ArrayList<Stock> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: RecyclerAdapter
+    private lateinit var adapter: StocksRecyclerAdapter
     private val stockListAll = ArrayList<Stock>()
     private lateinit var client: OkHttpClient
     lateinit var mAdView : AdView
@@ -59,7 +50,7 @@ class MasterActivity : AppCompatActivity(){
 
         linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         recyclerViewMain.layoutManager = linearLayoutManager
-        adapter = RecyclerAdapter(stockList)
+        adapter = StocksRecyclerAdapter(stockList)
         recyclerViewMain.adapter = adapter
 
 
@@ -176,7 +167,7 @@ class MasterActivity : AppCompatActivity(){
 
                 Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stocks.size}" )
                 //stockitem_list!!.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this, ArrayList(filtered), true)
-                recyclerViewMain.adapter = RecyclerAdapter(ArrayList(filtered))
+                recyclerViewMain.adapter = StocksRecyclerAdapter(ArrayList(filtered))
             }else{
                 empty_view.visibility = View.VISIBLE
                 recyclerViewMain.visibility = View.INVISIBLE

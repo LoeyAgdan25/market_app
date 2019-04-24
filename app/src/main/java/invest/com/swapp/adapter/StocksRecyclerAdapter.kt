@@ -1,7 +1,6 @@
 package invest.com.swapp.adapter
 
 import android.content.Intent
-import android.support.annotation.NonNull
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import invest.com.swapp.*
-import kotlinx.android.synthetic.main.recyclerview_item_row.view.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 
-class RecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){
 
     private val onClickListener: View.OnClickListener
     init {

@@ -1,4 +1,4 @@
-package invest.com.swapp;
+package invest.com.swapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import invest.com.swapp.R;
+import invest.com.swapp.RssFeedModel;
+import invest.com.swapp.ViewNews;
 
 //Add result to existing result...
 
@@ -44,7 +48,7 @@ public class RssFeedListAdapter
     public void onBindViewHolder(FeedModelViewHolder holder, int position) {
         final RssFeedModel rssFeedModel = mRssFeedModels.get(position);
         ((TextView)holder.rssFeedView.findViewById(R.id.titleText)).setText(rssFeedModel.title);
-        ((TextView)holder.rssFeedView.findViewById(R.id.descriptionText)).setText(rssFeedModel.description.substring(0,45) + " ...");
+        ((TextView)holder.rssFeedView.findViewById(R.id.descriptionText)).setText(rssFeedModel.description);
         //((TextView)holder.rssFeedView.findViewById(R.id.linkText)).setText(rssFeedModel.link);
         ((TextView)holder.rssFeedView.findViewById(R.id.linkText)).setVisibility(View.GONE);
         holder.rssFeedView.findViewById(R.id.linear_news_row).setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import invest.com.swapp.adapter.RssFeedListAdapter;
+
 public class NewsActivity extends AppCompatActivity {
 
     private static final String TAG = "NewsActivity";
