@@ -24,6 +24,8 @@ import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
 import java.lang.Exception
 
+//TODO:- Fix indeterminate progress to dismiss...
+
 class LoginActivity : AppCompatActivity(){
 
     private var cUsername:String = ""
@@ -167,9 +169,13 @@ class LoginActivity : AppCompatActivity(){
         override fun onFailure(exception: Exception?) {
             indeterminateProgressDialog("").dismiss()
             if(!password.text.toString().isEmpty()){
+                var error = ""
+                if("${exception}".contains("Unable to execute HTTP", ignoreCase = true)){
+                    error = "Your internet might be slow at this time."
+                }
                 alert{
                     title("Error: ")
-                    message("${exception}")
+                    message("${error}")
                 }.show()
             }
         }

@@ -26,6 +26,8 @@ import java.util.Random;
 
 import invest.com.swapp.adapter.RssFeedListAdapter;
 
+//TODO:- Title should not be included...
+
 public class NewsActivity extends AppCompatActivity {
 
     private static final String TAG = "NewsActivity";
@@ -42,6 +44,7 @@ public class NewsActivity extends AppCompatActivity {
     private String mFeedTitle;
     private String mFeedLink;
     private String mFeedDescription;
+    private String mFeedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +123,7 @@ public class NewsActivity extends AppCompatActivity {
 
                 if (title != null && link != null && description != null) {
                     if(isItem) {
-                        RssFeedModel item = new RssFeedModel(title, link, description);
+                        RssFeedModel item = new RssFeedModel(title, link, description, "");
                         items.add(item);
                     }
                     else {
@@ -144,7 +147,7 @@ public class NewsActivity extends AppCompatActivity {
 
     private class FetchFeedTask extends AsyncTask<Void, Void, Boolean> {
 
-        //TODO:- Make link as random
+        //TODO:- Load Image...
 
         private String urlLink;
 
@@ -204,4 +207,6 @@ public class NewsActivity extends AppCompatActivity {
             }
         }
     }
+
+    //TODO:- Add image Async task here for jsoup image...
 }

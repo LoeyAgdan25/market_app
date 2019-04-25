@@ -2,12 +2,21 @@ package invest.com.swapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.List;
 
 import invest.com.swapp.R;
@@ -49,7 +58,7 @@ public class RssFeedListAdapter
         final RssFeedModel rssFeedModel = mRssFeedModels.get(position);
         ((TextView)holder.rssFeedView.findViewById(R.id.titleText)).setText(rssFeedModel.title);
         ((TextView)holder.rssFeedView.findViewById(R.id.descriptionText)).setText(rssFeedModel.description);
-        //((TextView)holder.rssFeedView.findViewById(R.id.linkText)).setText(rssFeedModel.link);
+        ((ImageView)holder.rssFeedView.findViewById(R.id.img_feature_news)).setTag(position);
         ((TextView)holder.rssFeedView.findViewById(R.id.linkText)).setVisibility(View.GONE);
         holder.rssFeedView.findViewById(R.id.linear_news_row).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,5 +75,7 @@ public class RssFeedListAdapter
     public int getItemCount() {
         return mRssFeedModels.size();
     }
+
+    //TODO:- Add jsoup feature image gathering
 }
 

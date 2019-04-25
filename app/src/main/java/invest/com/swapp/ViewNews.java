@@ -24,6 +24,8 @@ public class ViewNews extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
 
         WebviewClient webViewClient = new WebviewClient(this);
+
+
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(getIntent().getStringExtra("link"));
 

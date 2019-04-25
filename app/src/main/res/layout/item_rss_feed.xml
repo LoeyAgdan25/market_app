@@ -5,7 +5,13 @@ android:layout_height="wrap_content"
 android:orientation="vertical"
 android:id="@+id/linear_news_row"
     >
-
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:id="@+id/img_feature_news"
+    android:layout_marginBottom="10dp"
+    android:visibility="gone"
+    />
 <TextView
     android:id="@+id/titleText"
     android:layout_width="match_parent"
@@ -15,7 +21,7 @@ android:id="@+id/linear_news_row"
     android:textSize="16sp"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
-    android:lineSpacingMultiplier="1.2"
+    android:lineSpacingMultiplier="1.5"
     />
 
 <TextView
@@ -23,6 +29,8 @@ android:id="@+id/linear_news_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="25dp"
+    android:lineSpacingMultiplier="1.5"
+    android:textColor="#424242"
     />
 
 <TextView
