@@ -56,19 +56,22 @@
             android:id="@+id/btn_watch_stock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_bg"
             android:elevation="0dp"
             android:layout_margin="5dp"
             android:text="Watch"
             android:textColor="#ffff"
+            android:textAllCaps="false"
             android:textSize="20sp" />
         <Button
             android:id="@+id/btn_watch_remove"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="0dp"
+            android:background="@drawable/button_bg_secondary"
             android:layout_margin="5dp"
             android:text="Remove"
+            android:textAllCaps="false"
             android:textSize="20sp" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
