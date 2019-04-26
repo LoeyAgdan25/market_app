@@ -2,6 +2,7 @@ package invest.com.swapp.auth
 
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -33,6 +34,7 @@ class LoginActivity : AppCompatActivity(){
     private var userPool: CognitoUserPool? = null
     private var forgotPasswordContinuation: ForgotPasswordContinuation? = null
     private var connectivityManager: ConnectivityManager = ConnectivityManager()
+    var indeterminateP: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,7 @@ class LoginActivity : AppCompatActivity(){
 
         email_sign_in_button.setOnClickListener {
             if(connectivityManager.isConnectingToInternet(this)) {
+                indeterminateP = indeterminateProgressDialog("Please wait... ", "Signing in")
                 attemptLogin()
             }else{
                 alert{
@@ -132,13 +135,16 @@ class LoginActivity : AppCompatActivity(){
     }
 
     private fun attemptLogin() {
+        indeterminateP!!.show()
 
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
+
         cUsername = txt_username.text.toString()
         if (cUsername.isEmpty()) {
             alert("Email required","").show()
+            indeterminateP!!.dismiss()
             return }
 
         cPassword = password.text.toString()
@@ -148,11 +154,12 @@ class LoginActivity : AppCompatActivity(){
 //                    toast("do this!")
                 })
             }.show()
+            indeterminateP!!.dismiss()
             return }
 
         userPool!!.getUser(cUsername).getSessionInBackground(authHandler)
 
-        indeterminateProgressDialog("Signing...").show()
+
     }
 
     var authHandler = object: AuthenticationHandler{
@@ -160,24 +167,30 @@ class LoginActivity : AppCompatActivity(){
             AppHelper.currSession = userSession
             AppHelper.newDevice = newDevice
 
-            indeterminateProgressDialog("").dismiss()
+            indeterminateP!!.dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             startActivityForResult(intent, 4)
             finish()
         }
 
         override fun onFailure(exception: Exception?) {
-            indeterminateProgressDialog("").dismiss()
+
             if(!password.text.toString().isEmpty()){
                 var error = ""
                 if("${exception}".contains("Unable to execute HTTP", ignoreCase = true)){
                     error = "Your internet might be slow at this time."
+                }else{
+                    error = "There is an error occured."
                 }
+                indeterminateP!!.dismiss()
                 alert{
-                    title("Error: ")
+                    title("Error")
                     message("${error}")
+                    positiveButton("Ok",{})
                 }.show()
             }
+
+            //
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation?) {
