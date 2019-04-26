@@ -73,9 +73,11 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     public List<RssFeedModel> parseFeed(InputStream inputStream) throws XmlPullParserException, IOException {
+
         String title = null;
         String link = null;
         String description = null;
+
         boolean isItem = false;
         List<RssFeedModel> items = new ArrayList<>();
 
@@ -84,13 +86,23 @@ public class NewsActivity extends AppCompatActivity {
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             xmlPullParser.setInput(inputStream, null);
 
-            xmlPullParser.nextTag();
             while (xmlPullParser.next() != XmlPullParser.END_DOCUMENT) {
+
                 int eventType = xmlPullParser.getEventType();
 
                 String name = xmlPullParser.getName();
                 if(name == null)
                     continue;
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    if(name.equalsIgnoreCase("item")) {
+                        isItem = true;
+                        description = null;
+                        title = null;
+                        link = null;
+                        continue;
+                    }
+                }
 
                 if(eventType == XmlPullParser.END_TAG) {
                     if(name.equalsIgnoreCase("item")) {
@@ -99,14 +111,8 @@ public class NewsActivity extends AppCompatActivity {
                     continue;
                 }
 
-                if (eventType == XmlPullParser.START_TAG) {
-                    if(name.equalsIgnoreCase("item")) {
-                        isItem = true;
-                        continue;
-                    }
-                }
+                //Log.d("NewsActivity", "Parsing name ==> " + name);
 
-                Log.d("NewsActivity", "Parsing name ==> " + name);
                 String result = "";
                 if (xmlPullParser.next() == XmlPullParser.TEXT) {
                     result = xmlPullParser.getText();
@@ -115,18 +121,23 @@ public class NewsActivity extends AppCompatActivity {
 
                 if (name.equalsIgnoreCase("title")) {
                     title = result;
+
                 } else if (name.equalsIgnoreCase("link")) {
                     link = result;
+
                 } else if (name.equalsIgnoreCase("description")) {
                     description = result;
+
                 }
+
+                Log.d("rss => ","title=>" + title + ", link=>" + link + ", desc=>" + description);
 
                 if (title != null && link != null && description != null) {
                     if(isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, "");
+
                         items.add(item);
-                    }
-                    else {
+                    } else {
                         mFeedTitle = title;
                         mFeedLink = link;
                         mFeedDescription = description;
