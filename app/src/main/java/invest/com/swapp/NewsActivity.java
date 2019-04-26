@@ -11,15 +11,25 @@ import android.util.Log;
 import android.util.Xml;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,11 +55,14 @@ public class NewsActivity extends AppCompatActivity {
     private String mFeedLink;
     private String mFeedDescription;
     private String mFeedImage;
+    public ArrayList<String> imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mEditText = (EditText) findViewById(R.id.rssFeedEditText);
@@ -58,6 +71,7 @@ public class NewsActivity extends AppCompatActivity {
         mFeedTitleTextView = (TextView) findViewById(R.id.feedTitle);
         mFeedDescriptionTextView = (TextView) findViewById(R.id.feedDescription);
         mFeedLinkTextView = (TextView) findViewById(R.id.feedLink);
+        imageURL = new ArrayList<>();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         new FetchFeedTask().execute((Void) null);
@@ -68,8 +82,6 @@ public class NewsActivity extends AppCompatActivity {
                 new FetchFeedTask().execute((Void) null);
             }
         });
-
-
     }
 
     public List<RssFeedModel> parseFeed(InputStream inputStream) throws XmlPullParserException, IOException {
@@ -80,6 +92,8 @@ public class NewsActivity extends AppCompatActivity {
 
         boolean isItem = false;
         List<RssFeedModel> items = new ArrayList<>();
+
+        int counter = 0;
 
         try {
             XmlPullParser xmlPullParser = Xml.newPullParser();
@@ -100,6 +114,7 @@ public class NewsActivity extends AppCompatActivity {
                         description = null;
                         title = null;
                         link = null;
+                        ++counter;
                         continue;
                     }
                 }
@@ -134,6 +149,8 @@ public class NewsActivity extends AppCompatActivity {
 
                 if (title != null && link != null && description != null) {
                     if(isItem) {
+
+                        //new Content().execute(title.replace(" ","%20"),counter + "");
                         RssFeedModel item = new RssFeedModel(title, link, description, "");
 
                         items.add(item);
@@ -209,6 +226,7 @@ public class NewsActivity extends AppCompatActivity {
                 mFeedTitleTextView.setText("Feed Title: " + mFeedTitle);
                 mFeedDescriptionTextView.setText("Feed Description: " + mFeedDescription);
                 mFeedLinkTextView.setText("Feed Link: " + mFeedLink);
+
                 // Fill RecyclerView
                 mRecyclerView.setAdapter(new RssFeedListAdapter(mFeedModelList,getBaseContext()));
             } else {

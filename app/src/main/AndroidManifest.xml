@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewNews"></activity>
-        <activity android:name=".NewsActivity" />
+        <activity android:name=".NewsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="invest.com.swapp.MasterActivity" />
+        </activity>
         <!--
          Production ca-app-pub-4268048783942748~4717310066
              Testing ca-app-pub-3940256099942544~3347511713

@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textInputLayout"
         android:text="Feed Title: "
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     <TextView
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/feedTitle"
         android:text="Feed Description: "
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     <TextView
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/feedDescription"
         android:text="Feed Link: "
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     <android.support.v4.widget.SwipeRefreshLayout
