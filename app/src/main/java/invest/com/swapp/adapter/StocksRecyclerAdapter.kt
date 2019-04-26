@@ -42,7 +42,9 @@ class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.
         val item = stocks[p1]
         p0.idView.text = item.symbol
         p0.contentView.text = item.name
-        p0.percentView.text = item.percent
+        p0.percentView.text = item.percent + "%"
+        p0.currentPrice.text = item.price + " PHP"
+
 
         if(item.percent.contains("-")){
             p0.imageIndicator.setImageResource(R.drawable.sort_down)
@@ -60,6 +62,7 @@ class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.
         val contentView: TextView = view.content
         val percentView: TextView = view.percent
         val imageIndicator: ImageView = view.indicator
+        val currentPrice: TextView = view.tv_price
     }
 
 

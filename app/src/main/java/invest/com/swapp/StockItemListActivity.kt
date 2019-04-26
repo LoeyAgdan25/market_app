@@ -153,11 +153,7 @@ class StockItemListActivity : AppCompatActivity() {
                     e.printStackTrace()
                     val cause = e.cause
                     Log.d("_json_error", "${cause}")
-                    /**
 
-
-
-                     */
                 }
             }
 
@@ -213,7 +209,8 @@ class StockItemListActivity : AppCompatActivity() {
             val item = values[position]
             holder.idView.text = item.symbol
             holder.contentView.text = item.name
-            holder.percentView.text = item.percent
+            holder.percentView.text = item.percent + "%"
+            holder.price.text = item.price + " PHP"
 
             if(item.percent.contains("-")){
                 holder.imageIndicator.setImageResource(R.drawable.sort_down)
@@ -235,6 +232,7 @@ class StockItemListActivity : AppCompatActivity() {
             val contentView: TextView = view.content
             val percentView: TextView = view.percent
             val imageIndicator: ImageView = view.indicator
+            val price:TextView = view.tv_price
         }
     }
 
