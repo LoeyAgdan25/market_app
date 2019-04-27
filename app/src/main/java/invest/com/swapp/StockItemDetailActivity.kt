@@ -28,6 +28,7 @@ class StockItemDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
+
         var symbol = intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL)
         var name = intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_NAME)
         var volume = intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_VOLUME)
@@ -44,28 +45,25 @@ class StockItemDetailActivity : AppCompatActivity() {
         txt_stock_status.text = "${status}"
         txt_stock_volume.text = "${volume}"
 
-        if (savedInstanceState == null) {
-            val fragment = StockItemDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(StockItemDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_ID))
-                }
-            }
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.stockitem_detail_container, fragment)
-                    .commit()
-        }
+//        if (savedInstanceState == null) {
+//            val fragment = StockItemDetailFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(StockItemDetailFragment.ARG_ITEM_ID,
+//                            intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_ID))
+//                }
+//            }
+//            supportFragmentManager.beginTransaction()
+//                    .add(R.id.stockitem_detail_container, fragment)
+//                    .commit()
+//        }
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+
 
         btn_watch_stock.setOnClickListener { doWatchStock(symbol) }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
         btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
-        doFindStockAll()
+        //doFindStockAll()
         //Production: ca-app-pub-4268048783942748/7970283074
         //Testing: ca-app-pub-3940256099942544/1033173712
         mInterstitialAd = InterstitialAd(this)
@@ -139,9 +137,9 @@ class StockItemDetailActivity : AppCompatActivity() {
 
     fun doWatchStock(sym:String){
 
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
-        }
+//        if (mInterstitialAd.isLoaded) {
+//            mInterstitialAd.show()
+//        }
 
 
 
@@ -178,7 +176,8 @@ class StockItemDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 android.R.id.home -> {
-                    navigateUpTo(Intent(this, StockItemListActivity::class.java))
+                    //navigateUpTo(Intent(this, StockItemListActivity::class.java))
+                    startActivity(Intent(this,MasterActivity::class.java))
                     true
                 }
                 else -> super.onOptionsItemSelected(item)

@@ -167,7 +167,7 @@ class LoginActivity : AppCompatActivity(){
             AppHelper.currSession = userSession
             AppHelper.newDevice = newDevice
 
-            indeterminateP!!.dismiss()
+//            indeterminateP!!.dismiss()
             val intent = Intent(baseContext, MasterActivity::class.java)
             startActivityForResult(intent, 4)
             finish()

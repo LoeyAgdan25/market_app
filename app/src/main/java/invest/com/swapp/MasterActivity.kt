@@ -59,6 +59,7 @@ class MasterActivity : AppCompatActivity(){
 
 
         if(checkConnectivity(this)) {
+            stockListAll.clear()
             setupRecyclerView(recyclerViewMain)
         }else{
             status_main.text = "Internet is not connected."
@@ -77,6 +78,7 @@ class MasterActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
         if(checkConnectivity(this)) {
+           //stockListAll.clear()
             //setupRecyclerView(recyclerViewMain)
         }else{
             status_main.text = "Internet not connected."
@@ -168,6 +170,7 @@ class MasterActivity : AppCompatActivity(){
                 Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stocks.size}" )
                 //stockitem_list!!.adapter = StockItemListActivity.SimpleItemRecyclerViewAdapter(this, ArrayList(filtered), true)
                 recyclerViewMain.adapter = StocksRecyclerAdapter(ArrayList(filtered))
+                empty_view.visibility = View.INVISIBLE
             }else{
                 empty_view.visibility = View.VISIBLE
                 recyclerViewMain.visibility = View.INVISIBLE
