@@ -24,9 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import invest.com.swapp.NewsActivity;
 import invest.com.swapp.R;
-import invest.com.swapp.RssFeedModel;
+import invest.com.swapp.model.RssFeedModel;
 import invest.com.swapp.ViewNews;
 
 //Add result to existing result...

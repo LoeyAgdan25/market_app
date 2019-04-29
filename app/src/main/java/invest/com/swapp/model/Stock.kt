@@ -1,4 +1,4 @@
-package invest.com.swapp
+package invest.com.swapp.model
 
 import android.os.Parcelable
 import java.util.*

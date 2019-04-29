@@ -7,17 +7,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.design.widget.Snackbar
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
 import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
-import invest.com.swapp.dummy.DummyContent
+import invest.com.swapp.model.Stock
 import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 import kotlinx.android.synthetic.main.stockitem_list.*
@@ -26,11 +23,8 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.IOException
-import java.lang.Exception
 import java.lang.reflect.InvocationTargetException
 //import kotlin.coroutines.coroutineContext
-import kotlin.system.exitProcess
-
 
 
 class StockItemListActivity : AppCompatActivity() {
@@ -137,7 +131,7 @@ class StockItemListActivity : AppCompatActivity() {
                             val obj = JSONObject(stock)
 
                             val imageModel = Stock("${obj.getString("name")}",
-                                    obj.getString("symbol"),"",
+                                    obj.getString("symbol"), "",
                                     obj.getString("percent_change"),
                                     obj.getString("volume"),
                                     obj.getJSONObject("price").getString("amount"))
@@ -252,7 +246,7 @@ class StockItemListActivity : AppCompatActivity() {
             val obj = JSONObject(stock)
 
             val imageModel = Stock("${obj.getString("name")}",
-                    obj.getString("symbol"),"",
+                    obj.getString("symbol"), "",
                     obj.getString("percent_change"),
                     obj.getString("volume"),
                     obj.getJSONObject("price").getString("amount"))

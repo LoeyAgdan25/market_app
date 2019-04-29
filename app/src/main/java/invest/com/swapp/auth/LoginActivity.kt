@@ -18,11 +18,11 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.amazonaws.regions.Regions
 import invest.com.swapp.*
+import invest.com.swapp.helper.ConnectivityManager
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.toast
 import java.lang.Exception
 
 //TODO:- Fix indeterminate progress to dismiss...

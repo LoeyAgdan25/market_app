@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import invest.com.swapp.*
+import invest.com.swapp.model.Stock
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 
 class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){

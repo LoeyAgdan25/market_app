@@ -1,4 +1,4 @@
-package invest.com.swapp
+package invest.com.swapp.helper
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo

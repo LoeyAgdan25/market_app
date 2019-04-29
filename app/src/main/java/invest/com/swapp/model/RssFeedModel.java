@@ -1,4 +1,4 @@
-package invest.com.swapp;
+package invest.com.swapp.model;
 
 /**
  * Created by Loey on 27/11/2016.

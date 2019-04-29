@@ -2,9 +2,9 @@ package invest.com.swapp
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.net.Uri.Builder
 import android.util.Log
+import invest.com.swapp.model.Stock
 import okhttp3.*
 import java.io.IOException
 

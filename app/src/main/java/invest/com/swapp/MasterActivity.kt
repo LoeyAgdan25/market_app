@@ -18,10 +18,13 @@ import invest.com.swapp.adapter.StocksRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
+import invest.com.swapp.helper.ConnectivityManager
+import invest.com.swapp.model.Stock
 import kotlinx.android.synthetic.main.activity_master.*
 import okhttp3.*
 import org.jetbrains.anko.db.select
 import org.json.JSONObject
+import org.jsoup.Jsoup
 
 import java.io.IOException
 import java.lang.Exception
@@ -71,6 +74,8 @@ class MasterActivity : AppCompatActivity(){
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
+
+        getAllStocks()
 // TODO: Add adView to your view hierarchy.
 
     }
@@ -121,7 +126,7 @@ class MasterActivity : AppCompatActivity(){
                                 val obj = JSONObject(stock)
 
                                 val imageModel = Stock("${obj.getString("name")}",
-                                        obj.getString("symbol"),"",
+                                        obj.getString("symbol"), "",
                                         obj.getString("percent_change"),
                                         obj.getString("volume"),
                                         obj.getJSONObject("price").getString("amount"))
@@ -229,6 +234,25 @@ class MasterActivity : AppCompatActivity(){
                 }
 
                 else -> super.onOptionsItemSelected(item)
+            }
+        }
+
+
+
+
+    fun getAllStocks(){
+
+        val userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36"
+        val url = "https://www.pse.com.ph/stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true&sector=ALL"
+
+            try{
+                val doc = Jsoup.connect(url).userAgent(userAgent).referrer("https://www.pse.com.ph/stockMarket/home.html").get()
+
+                Log.d("_html_indices","${doc.toString()}")
+
+
+            }catch ( e:Exception){
+                e.printStackTrace()
             }
         }
 
