@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".StockItemDetailActivity">
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,19 +18,29 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_detail_stocks"
-
-        />
-
-    <TextView
-        style="@style/Base.TextAppearance.AppCompat.Large"
+    <include
+        layout="@layout/content_detail_stocks"
+        android:layout_marginTop="65dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chart will be available soon..."
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textColor="#616161"
+     />
+
+    <!--<TextView-->
+        <!--style="@style/Base.TextAppearance.AppCompat.Large"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Chart will be available soon..."-->
+        <!--android:textAllCaps="false"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="#616161"-->
+        <!--/>-->
+
+    <com.github.mikephil.charting.charts.CandleStickChart
+        android:id="@+id/candle_stick_chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="bottom"
         />
 
     <android.support.design.widget.FloatingActionButton
