@@ -247,9 +247,7 @@ class MasterActivity : AppCompatActivity(){
 
             try{
                 val doc = Jsoup.connect(url).userAgent(userAgent).referrer("https://www.pse.com.ph/stockMarket/home.html").get()
-
-                Log.d("_html_indices","${doc.toString()}")
-
+                Log.d("_html_indices","${doc.body()}")
 
             }catch ( e:Exception){
                 e.printStackTrace()

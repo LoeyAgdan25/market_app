@@ -17,12 +17,15 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <include
         layout="@layout/content_detail_stocks"
         android:layout_marginTop="65dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/card_info"
      />
 
     <!--<TextView-->
@@ -40,8 +43,11 @@
         android:id="@+id/candle_stick_chart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_gravity="bottom"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/card_info"
         />
+    </RelativeLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
