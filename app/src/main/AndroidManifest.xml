@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,8 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewNews"></activity>
-        <activity android:name=".NewsActivity" >
+        <activity
+            android:name=".NavDrawer"
+            android:label="@string/title_activity_nav_drawer"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ViewNews" />
+        <activity android:name=".NewsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="invest.com.swapp.MasterActivity" />
@@ -27,19 +35,18 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4268048783942748~4717310066" />
 
-        <activity android:name=".MasterActivity"
-            android:launchMode="standard"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".MasterActivity"
+            android:launchMode="standard">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".auth.LoginActivity"
-            android:label="swapp">
-        </activity>
+            android:label="swapp"></activity>
         <activity
             android:name=".auth.SignupActivity"
             android:label="@string/title_activity_signup"
