@@ -20,8 +20,10 @@ import invest.com.swapp.db.DBHelper
 import invest.com.swapp.db.database
 import invest.com.swapp.helper.ConnectivityManager
 import invest.com.swapp.model.Stock
+import kotlinx.android.synthetic.main.activity_invest.*
 import kotlinx.android.synthetic.main.activity_master.*
 import okhttp3.*
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.toast
 import org.json.JSONObject
@@ -29,6 +31,7 @@ import org.jsoup.Jsoup
 
 import java.io.IOException
 import java.lang.Exception
+import java.util.*
 
 
 class MasterActivity : AppCompatActivity(){
@@ -241,14 +244,7 @@ class MasterActivity : AppCompatActivity(){
 
     fun getAllStocks2(){
 
-
-//        val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME_LOCAL)
-//                .authority(MasterActivity.URL_AUTHORIT_LOCAL)
-//                .appendPath(MasterActivity.URL_PATH_1_LOCAL)
-//                .build().toString()
-
-
-        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/history.php")
+        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/")
                 Log.d("_url", urlRequest.toString())
 
         val request = Request.Builder().url(urlRequest.toString()).build()
@@ -257,13 +253,46 @@ class MasterActivity : AppCompatActivity(){
 
             override fun onResponse(call: Call, response: Response) {
 
-//                if(response == null){
-//                    return
-//                }
+                if(response == null){
+                    return
+                }
 
                 var r = response.body()!!.string()
                 runOnUiThread {
-                    toast(r)
+                    try{
+
+                        toast(r)
+
+                        val rootJsonObject = JSONObject(r)
+                        var roots = rootJsonObject.getJSONArray("records")
+                       for (i in 0 until roots.length()) {
+                            val stock = roots.get(i).toString()
+                            val obj = JSONObject(stock)
+
+//                            val imageModel = Stock("${obj.getString("name")}",
+//                                    obj.getString("symbol"), "",
+//                                    obj.getString("percent_change"),
+//                                    obj.getString("volume"),
+//                                    obj.getJSONObject("price").getString("amount"))
+//                            database.use {
+//                                insert(DBHelper.tblStockCache,
+//                                        "symbol" to "${obj.getString("securitySymbol")}",
+//                                        "securityId" to "${obj.getString("securityID")}",
+//                                        "companyId" to "${obj.getString("companyId")}"
+//                                )
+//
+//                                toast("stock has been saved ${obj.getString("securityID")}")
+//
+//                            }
+
+                           Log.d("_response", "${obj.getString("name")}")
+                        }
+
+
+
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
                 }
             }
 

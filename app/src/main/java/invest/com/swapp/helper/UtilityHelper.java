@@ -464,6 +464,11 @@ public class UtilityHelper {
             return currency.getSymbol(currencyLocaleMap.get(currency));
         }
 
+        public static String getSecurityCred(){
+
+            return "";
+        }
+
     }
 
 
