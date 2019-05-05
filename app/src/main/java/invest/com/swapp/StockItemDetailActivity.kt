@@ -64,20 +64,6 @@ class StockItemDetailActivity : AppCompatActivity() {
         txt_stock_volume.text = "${UtilityHelper.getInstance().formatVolume(volume.toDouble())}"
         txt_company_description.text = "${name}"
 
-//        if (savedInstanceState == null) {
-//            val fragment = StockItemDetailFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(StockItemDetailFragment.ARG_ITEM_ID,
-//                            intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_ID))
-//                }
-//            }
-//            supportFragmentManager.beginTransaction()
-//                    .add(R.id.stockitem_detail_container, fragment)
-//                    .commit()
-//        }
-
-
-
         btn_watch_stock.setOnClickListener { doWatchStock(symbol) }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
         btn_watch_invest.setOnClickListener { doInvest(symbol) }

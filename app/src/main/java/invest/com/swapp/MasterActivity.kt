@@ -23,6 +23,7 @@ import invest.com.swapp.model.Stock
 import kotlinx.android.synthetic.main.activity_master.*
 import okhttp3.*
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import org.jsoup.Jsoup
 
@@ -76,6 +77,7 @@ class MasterActivity : AppCompatActivity(){
 
 
         getAllStocks()
+        getAllStocks2()
 // TODO: Add adView to your view hierarchy.
 
     }
@@ -237,7 +239,39 @@ class MasterActivity : AppCompatActivity(){
             }
         }
 
+    fun getAllStocks2(){
 
+
+//        val urlRequest = Uri.Builder().scheme(MasterActivity.URL_SCHEME_LOCAL)
+//                .authority(MasterActivity.URL_AUTHORIT_LOCAL)
+//                .appendPath(MasterActivity.URL_PATH_1_LOCAL)
+//                .build().toString()
+
+
+        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/history.php")
+                Log.d("_url", urlRequest.toString())
+
+        val request = Request.Builder().url(urlRequest.toString()).build()
+
+        client.newCall(request).enqueue(object : Callback{
+
+            override fun onResponse(call: Call, response: Response) {
+
+//                if(response == null){
+//                    return
+//                }
+
+                var r = response.body()!!.string()
+                runOnUiThread {
+                    toast(r)
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("_json", e.message)
+            }
+        })
+    }
 
 
     fun getAllStocks(){
@@ -260,5 +294,11 @@ class MasterActivity : AppCompatActivity(){
             private val URL_AUTHORITY = "phisix-api2.appspot.com"
             private val URL_PATH_1 = "stocks.json"
 
+            private val URL_SCHEME_LOCAL = "http"
+            private val URL_AUTHORIT_LOCAL = "10.0.33.150:8080"
+            private val URL_PATH_1_LOCAL = "history.php"
+
         }
+
+
 }
