@@ -3,6 +3,7 @@ package invest.com.swapp
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -27,8 +28,12 @@ import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import invest.com.swapp.model.HistoryData
+import invest.com.swapp.model.Stock
+import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.IOException
+import java.lang.reflect.InvocationTargetException
 import java.util.ArrayList
 
 
@@ -38,6 +43,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
 
     private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var client: OkHttpClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +80,10 @@ class StockItemDetailActivity : AppCompatActivity() {
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
+        client = OkHttpClient()
 
-        setupCandle(string)
+        //setupCandle(string)
+        searchSecurityToLoad()
 
     }
 
@@ -177,6 +185,61 @@ class StockItemDetailActivity : AppCompatActivity() {
 
 
 
+    }
+
+    fun searchSecurityToLoad(){
+        try{
+
+            val file_name = "stocksinfo.json"
+            val json_string = application.assets.open(file_name).bufferedReader().use {
+                it.readText()
+            }
+
+            val json = JSONObject(json_string)
+            val jsonArray = json.getJSONArray("records")
+            for(i in 0 until jsonArray.length()){
+                val stock = jsonArray.get(i).toString()
+                val obj = JSONObject(stock)
+
+                    if(intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL) == "${obj.getString("securitySymbol")}"){
+                        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/history.php?cid=${obj.getString("companyId")}&sid=${obj.getString("securityID")}").toString()
+                        val request = Request.Builder().url(urlRequest).build()
+                        client.newCall(request).enqueue(object : Callback {
+
+                            override fun onResponse(call: Call, response: Response) {
+
+                                if(response == null){
+                                    toast("could not connect to api, try again.")
+                                    return
+                                }
+
+                                var r = response.body()!!.string()
+                                try {
+                                    runOnUiThread {
+                                        Log.d("candle value",r)
+                                        setupCandle(r)
+                                    }
+                                }catch (e: InvocationTargetException){
+                                    e.printStackTrace()
+                                    val cause = e.cause
+                                    Log.d("_json_error", "${cause}")
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call, e: IOException) {
+                                Log.d("_json_network_error", e.message)
+
+                            }
+                        })
+                    }
+
+                Log.d("_securities", "${obj.getString("securitySymbol")}  ${obj.getString("securityID")} ${obj.getString("companyId")}")
+            }
+
+        }catch (ex:Exception){
+            ex.printStackTrace()
+        }
     }
 
     fun setupCandle(string: String){

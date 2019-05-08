@@ -80,7 +80,6 @@ class MasterActivity : AppCompatActivity(){
 
 
         getAllStocks()
-        getAllStocks2()
 // TODO: Add adView to your view hierarchy.
 
     }
@@ -242,65 +241,7 @@ class MasterActivity : AppCompatActivity(){
             }
         }
 
-    fun getAllStocks2(){
 
-        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/")
-                Log.d("_url", urlRequest.toString())
-
-        val request = Request.Builder().url(urlRequest.toString()).build()
-
-        client.newCall(request).enqueue(object : Callback{
-
-            override fun onResponse(call: Call, response: Response) {
-
-                if(response == null){
-                    return
-                }
-
-                var r = response.body()!!.string()
-                runOnUiThread {
-                    try{
-
-                        toast(r)
-
-                        val rootJsonObject = JSONObject(r)
-                        var roots = rootJsonObject.getJSONArray("records")
-                       for (i in 0 until roots.length()) {
-                            val stock = roots.get(i).toString()
-                            val obj = JSONObject(stock)
-
-//                            val imageModel = Stock("${obj.getString("name")}",
-//                                    obj.getString("symbol"), "",
-//                                    obj.getString("percent_change"),
-//                                    obj.getString("volume"),
-//                                    obj.getJSONObject("price").getString("amount"))
-//                            database.use {
-//                                insert(DBHelper.tblStockCache,
-//                                        "symbol" to "${obj.getString("securitySymbol")}",
-//                                        "securityId" to "${obj.getString("securityID")}",
-//                                        "companyId" to "${obj.getString("companyId")}"
-//                                )
-//
-//                                toast("stock has been saved ${obj.getString("securityID")}")
-//
-//                            }
-
-                           Log.d("_response", "${obj.getString("name")}")
-                        }
-
-
-
-                    }catch (e: Exception){
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("_json", e.message)
-            }
-        })
-    }
 
 
     fun getAllStocks(){
