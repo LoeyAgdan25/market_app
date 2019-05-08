@@ -204,7 +204,7 @@ class StockItemListActivity : AppCompatActivity() {
             holder.idView.text = item.symbol
             holder.contentView.text = item.name
             holder.percentView.text = item.percent + "%"
-            holder.price.text = item.price + " PHP"
+            holder.price.text = item.price + ""
 
             if(item.percent.contains("-")){
                 holder.imageIndicator.setImageResource(R.drawable.sort_down)

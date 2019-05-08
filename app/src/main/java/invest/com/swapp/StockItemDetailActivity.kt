@@ -202,7 +202,7 @@ class StockItemDetailActivity : AppCompatActivity() {
                 val obj = JSONObject(stock)
 
                     if(intent.getStringExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL) == "${obj.getString("securitySymbol")}"){
-                        val urlRequest = Uri.parse("http://10.0.33.150:8888/scraping/history.php?cid=${obj.getString("companyId")}&sid=${obj.getString("securityID")}").toString()
+                        val urlRequest = Uri.parse("http://52.14.187.143/history.php?cid=${obj.getString("companyId")}&sid=${obj.getString("securityID")}").toString()
                         val request = Request.Builder().url(urlRequest).build()
                         client.newCall(request).enqueue(object : Callback {
 
@@ -324,10 +324,6 @@ class StockItemDetailActivity : AppCompatActivity() {
         candleStickChart.data = data
         candleStickChart.invalidate()
     }
-
-
-
-
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
