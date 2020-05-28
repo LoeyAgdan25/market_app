@@ -2,35 +2,45 @@ package invest.com.swapp.auth
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
-
-import kotlinx.android.synthetic.main.activity_signup.*
-import kotlinx.android.synthetic.main.content_signup.*
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
-import java.lang.Exception
 import android.content.Intent
-import android.provider.ContactsContract
-import invest.com.swapp.AppHelper
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.work.*
 import invest.com.swapp.MasterActivity
 import invest.com.swapp.R
+import invest.com.swapp.communication.AuthManager
+import invest.com.swapp.viewmodel.AuthViewModel
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.android.synthetic.main.content_signup.*
+import kotlinx.android.synthetic.main.content_signup.field_layout_container
+import kotlinx.android.synthetic.main.content_signup.linear_progress_circular
+import kotlinx.android.synthetic.main.content_signup.password_layout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
-import android.util.Patterns;
-import android.view.inputmethod.InputMethodManager
-import org.jetbrains.anko.contentView
+import org.w3c.dom.Text
 import java.util.regex.Pattern
+
 
 class SignupActivity : AppCompatActivity() {
 
     private val PASSWORD_POLICY = """Password should be minimum 8 characters long,
             |at least one number""".trimMargin()
 
-    var indeterminateP:ProgressDialog? = null
+    lateinit var authViewModel:AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,28 +48,84 @@ class SignupActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         this.supportActionBar!!.title = "Sign Up"
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        window.statusBarColor = resources.getColor(R.color.colorAccent)
 
-        AppHelper.init(baseContext)
+        authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        authViewModel.response.observe(this, Observer {
+            //toast("value $it")
+            //TODO:- Add validation here...
+        })
+
         btn_signup.setOnClickListener{
-            if(validateEmail(txt_email.text.toString()) && validatePassword(txt_password_2.text.toString())){
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                indeterminateP = indeterminateProgressDialog("Please wait... ", "Sign up")
-                doSignUpTapped()
+            var validEmail = validateEmail(txt_email.text.toString())
+            var validPassword = validatePassword(txt_password_2.text.toString())
+
+            if(!validEmail){
+                if(txt_email.text!!.isEmpty()){
+                    txt_email_layout.error = "this field cannot be empty"
+                }else{
+                    txt_email_layout.error = "Invalid email"
+                }
+            }
+
+            if(!validPassword){
+                password_layout.error = "Should be 8 character long"
+            }
+
+            if(!comparePassword()){
+                password_layout_verify.error = "Password mismatched"
+            }
+
+            if(validEmail && validPassword && comparePassword()){
+
+                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                 imm.hideSoftInputFromWindow( contentView!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                 linear_progress_circular.visibility = View.VISIBLE
+                 field_layout_container.visibility = View.GONE
+                 doSignUpTapped()
             }
         }
+
+        txt_email.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {
+                txt_email_layout.error = null}
+
+            override fun onTextChanged(s: CharSequence, start: Int,before: Int, count: Int) {
+                if (s.isNotEmpty()){}
+            }
+        })
+
+        txt_password_2.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                password_layout.error = null
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        txt_password_2_verify.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                password_layout_verify.error = null
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+
     }
 
 
 
     private fun doSignUpTapped(){
-        var cognitoUserAttr = CognitoUserAttributes()
-        cognitoUserAttr.addAttribute("email",txt_email.text.toString())
-        cognitoUserAttr.addAttribute("profile","FREE")
-        //this.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_1.text.toString(),cognitoUserAttr,null,handler)
-
-        AppHelper.userPool!!.signUpInBackground(txt_email.text.toString(),txt_password_2.text.toString(),cognitoUserAttr,null,handler)
-        indeterminateP!!.show()
+       GlobalScope.launch {
+            authViewModel.register(txt_email.text.toString(), txt_email.text.toString(), txt_password_2.text.toString())
+       }
     }
 
     /**
@@ -71,10 +137,15 @@ class SignupActivity : AppCompatActivity() {
         if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()){
             return true
         }
-            alert("Invalid Email Address",""){
-                positiveButton("Ok",{})
-            }.show()
             return false
+    }
+
+    private fun comparePassword(): Boolean{
+        if(txt_password_2_verify.text.toString() == txt_password_2.text.toString()){
+            return true
+        }
+
+        return false
     }
 
     private fun validatePassword(password: String, updateUI: Boolean = true): Boolean{
@@ -95,44 +166,16 @@ class SignupActivity : AppCompatActivity() {
 
         if (updateUI) {
             val error: String? = if (valid) null else PASSWORD_POLICY
-            if(error != null){
-                alert(error!!,""){
-                    positiveButton("Ok",{})
-                }.show()
-            }
+            if(error != null){}
+        }
+
+        if(password.contains(" ")){
+            return false
         }
 
         return valid
     }
 
-    /**
-     *  AWS Handler...
-     *
-     * */
-
-    val handler = object: SignUpHandler{
-        override fun onSuccess(user: CognitoUser?, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails?) {
-            indeterminateP!!.dismiss()
-            val intent = Intent(baseContext, MasterActivity::class.java)
-            intent.putExtra("email", txt_email.text.toString())
-            startActivity(intent)
-
-        }
-
-        override fun onFailure(exception: Exception?) {
-            indeterminateP!!.dismiss()
-            var error = ""
-            if(exception.toString().contains("UsernameExist", ignoreCase = true)){
-                error = "User already exist"
-            }
-
-            alert("${error}","Error"){
-                positiveButton("Ok",{
-
-                })
-            }.show()
-        }
-    }
 
 }
 

@@ -3,83 +3,180 @@ package invest.com.swapp
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.os.Handler
+import android.text.InputType
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.work.*
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import invest.com.swapp.adapter.StocksRecyclerAdapter
+import invest.com.swapp.adapter.WatchedRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
-import invest.com.swapp.db.DBHelper
-import invest.com.swapp.db.database
 import invest.com.swapp.helper.ConnectivityManager
-import invest.com.swapp.model.Stock
-import kotlinx.android.synthetic.main.activity_invest.*
+import invest.com.swapp.listener.WatchListener
+import invest.com.swapp.model.Stock2
+import invest.com.swapp.model.StocksWatched
+import invest.com.swapp.viewmodel.StocksViewModel
+import invest.com.swapp.work.WatchStockUpdates
 import kotlinx.android.synthetic.main.activity_master.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.*
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
 import org.jetbrains.anko.toast
-import org.json.JSONObject
-import org.jsoup.Jsoup
-
-import java.io.IOException
-import java.lang.Exception
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
+import java.util.concurrent.TimeUnit
 
+//todo:- transfer to new master activity
+// fragmented view pager2
 
-class MasterActivity : AppCompatActivity(){
+class MasterActivity : AppCompatActivity(), WatchListener{
 
-    private var stockList: ArrayList<Stock> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: StocksRecyclerAdapter
-    private val stockListAll = ArrayList<Stock>()
-    private lateinit var client: OkHttpClient
+    private lateinit var adapter: WatchedRecyclerAdapter
     lateinit var mAdView : AdView
+    var watchListener:WatchListener? = null
+
+    /*mvvm*/
+    private lateinit var stockViewModel: StocksViewModel
+    private lateinit var stockListAll:List<Stock2>
+    private lateinit var stockValue: LiveData<Stock2>
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
-        AppHelper.init(baseContext)
 
         //Production ca-app-pub-4268048783942748~4717310066
         //Testing ca-app-pub-3940256099942544~3347511713
         //Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
 
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
-
-        linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerViewMain.layoutManager = linearLayoutManager
-        adapter = StocksRecyclerAdapter(stockList)
-        recyclerViewMain.adapter = adapter
-
-
-        client = OkHttpClient()
-        btn_dashboard_search.setOnClickListener { doSearchStock() }
-
-
-        if(checkConnectivity(this)) {
-            stockListAll.clear()
-            setupRecyclerView(recyclerViewMain)
-        }else{
-            status_main.text = "Internet is not connecting :("
-            empty_view.visibility = View.VISIBLE
-        }
-
 
         //Uncomment the ADS
-
         mAdView = findViewById(R.id.adView)
         mAdView.visibility = View.GONE
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+
+
+        /*mvvm*/
+
+        stockViewModel = ViewModelProviders.of(this).get(StocksViewModel::class.java)
+        stockViewModel.watchedStocks.observe(this, Observer {
+                adapter = WatchedRecyclerAdapter(it,MasterActivity@this)
+                adapter.watchListener = this
+                recyclerViewMain.adapter = adapter
+
+                for(watch: StocksWatched in it){
+                    if(watch.buy_price == watch.price.toFloat()){
+                        toast("buy price marked is reached ${watch.symbol}")
+                        //push this to notification
+                    }
+
+                    if(watch.sell_price == watch.price.toFloat()){
+                        toast("buy price marked is reached ${watch.symbol}")
+                        //push this to notification
+                    }
+                }
+        })
+
+        //todo:- run updating time workmanager
+
+        //initialise get all stocks json
+        GlobalScope.launch {
+            stockViewModel.getStocks()
+        }
+
+        btn_search.setOnClickListener {
+            startActivity(Intent(this, StockItemListActivity::class.java))
+        }
+
+        watchListener = this
+        //work manager
+        //check recurring work
+
+        val constraints = Constraints.Builder().setRequiresCharging(false).setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val requestWorker = PeriodicWorkRequestBuilder<WatchStockUpdates>(1, TimeUnit.SECONDS).setConstraints(constraints).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("TAG",ExistingPeriodicWorkPolicy.KEEP,requestWorker)
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(requestWorker.id).observe(this, Observer {
+            if(it != null){
+
+            }
+
+            Log.d("_dataobserve",it.toString())
+        })
+
+        //get updates periodically
+        //move to background task JobIntent or Service Intent with Broadcast Receiver...
+
+        val handler = Handler()
+        val runnable = Runnable {
+            GlobalScope.launch {
+                //check date and time
+                //check time of day
+                stockViewModel.getStocks()
+                Log.d("_running","test")
+            }
+        }
+
+
+//        Uncomment to run on API level 23
+//        this will be added to background service
+//        var day = Date()
+//        val londonZone = ZoneId.of("Asia/Manila")
+//        val philLocalDate = ZonedDateTime.now(londonZone)
+//
+//        //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
+//        Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
+//
+//        //move to view model
+//        //add to broadcast receiver...
+//        if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
+//            if(philLocalDate.hour in 7..4){
+//                //timer.start()
+//                val timer: Job = update(6000,5000){
+//                    handler.post(runnable)
+//                }
+//                //check api version
+//                //timer.start()
+//            }
+//        }
+    }
+
+    //time
+    private inline fun update(delayMillis: Long = 0, repeatMillis: Long = 0, crossinline action: () -> Unit) = GlobalScope.launch {
+        delay(delayMillis)
+        if (repeatMillis > 0) {
+            while (true) {
+                action()
+                delay(repeatMillis)
+            }
+        } else {
+            action()
+        }
     }
 
     override fun onResume() {
@@ -93,108 +190,24 @@ class MasterActivity : AppCompatActivity(){
     }
 
 
-    fun checkConnectivity(context: Context): Boolean {
+    private fun checkConnectivity(context: Context): Boolean {
             val cm = ConnectivityManager()
             getSystemService(Context.CONNECTIVITY_SERVICE)
             return cm.isConnectingToInternet(this)
     }
 
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        val urlRequest = Uri.Builder().scheme(URL_SCHEME)
-                .authority(URL_AUTHORITY)
-                .appendPath(URL_PATH_1)
-                .build().toString()
-        val request = Request.Builder().url(urlRequest).build()
-        client.newCall(request).enqueue(object : Callback{
-                override fun onResponse(call: Call, response: Response) {
-
-                    if(response == null){
-                       return
-                    }
-
-                    var r = response.body()!!.string()
-                        runOnUiThread {
-
-                            try{
-                                val rootJsonObject = JSONObject(r)
-                                var roots = rootJsonObject.getJSONArray("stock")
-                                for (i in 0 until roots.length()) {
-                                    val stock = roots.get(i).toString()
-                                    val obj = JSONObject(stock)
-
-                                    val imageModel = Stock("${obj.getString("name")}",
-                                            obj.getString("symbol"), "",
-                                            obj.getString("percent_change"),
-                                            obj.getString("volume"),
-                                            obj.getJSONObject("price").getString("amount"))
-                                    stockListAll.add(imageModel)
-                                }
-
-                                filter(stockListAll)
-                                Log.d("_json", rootJsonObject.toString())
-                                Log.d("_json", "date: " + rootJsonObject.getString("as_of"))
-
-                            }catch (e: Exception){
-                                e.printStackTrace()
-                            }
-                        }
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.d("_json", e.message)
-                }
-            })
-
-        }
-
-        private fun filter(stocks: ArrayList<Stock>){
-            val list = ArrayList<String>()
-
-            database.use {
-                select(DBHelper.tblWatchlist,"symbol").limit(5).exec {
-                    while (moveToNext()){
-                        Log.d("_symbol", getString(getColumnIndex("symbol")) )
-                        list.add(getString(getColumnIndex("symbol")))
-                    }
-                }
-            }
-
-            if(list.size > 0){
-                recyclerViewMain.visibility = View.VISIBLE
-                var array = arrayOfNulls<String>(list.size)
-                list.toArray(array)
-
-                Log.d("array", array.toString())
-
-                var list = mutableListOf<Stock>()
-                val filtered: List<Stock> = stocks.filter{array.contains(it.symbol)}
-
-                Log.d("_list","${filtered.size} array size ${array!!.size} stock list ${stocks.size}" )
-                recyclerViewMain.adapter = StocksRecyclerAdapter(ArrayList(filtered))
-                empty_view.visibility = View.INVISIBLE
-            }else{
-                empty_view.visibility = View.VISIBLE
-                recyclerViewMain.visibility = View.INVISIBLE
-            }
-        }
-
-        fun doSearchStock(){
-            startActivity(Intent(baseContext, StockItemListActivity::class.java))
-        }
-
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
             menuInflater.inflate(
                     R.menu.option_menu,
                     menu
             )
             return super.onCreateOptionsMenu(menu)
-        }
+    }
 
-        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
             return when(item!!.itemId){
                 R.id.logout_menu -> {
-                    AppHelper.userPool!!.currentUser.signOut()
                     startActivity(Intent(baseContext, LoginActivity::class.java))
                     finish()
                     true
@@ -204,17 +217,33 @@ class MasterActivity : AppCompatActivity(){
                     startActivity(Intent(baseContext, NewsActivity::class.java))
                     true
                 }
-
                 else -> super.onOptionsItemSelected(item)
             }
-        }
+    }
 
-        companion object {
-            private val URL_SCHEME = "http"
-            private val URL_AUTHORITY = "phisix-api2.appspot.com"
-            private val URL_PATH_1 = "stocks.json"
+    override fun onWatchedAction(stockWatched: StocksWatched) {
 
-        }
+            var editTextBuy = EditText(this)
+            var editTextSell = EditText(this)
 
+            //todo:- must call external layout
 
+                    MaterialAlertDialogBuilder(this).setMessage(stockWatched.symbol)
+                    .setView(editTextBuy)
+                    .setPositiveButton("Save"){
+                        dialog, which ->
+                        GlobalScope.launch {
+                           stockWatched.buy_price = editTextBuy.text.toString().toFloat()
+                           stockViewModel.updateWatched(stockWatched)
+                        }
+
+                    }
+                    .setNegativeButton("Delete"){
+                        dialog, which ->
+                        GlobalScope.launch {
+                            stockViewModel.deleteWatched(stockWatched)
+                        }
+                    }
+                    .show()
+    }
 }

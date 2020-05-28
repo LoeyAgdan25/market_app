@@ -8,7 +8,9 @@
         <item
             android:id="@+id/logout_menu"
             android:title="Logout"
-            app:showAsAction="always" />
+            app:showAsAction="always"
+            android:visible="true"
+            />
 
 </menu>
 

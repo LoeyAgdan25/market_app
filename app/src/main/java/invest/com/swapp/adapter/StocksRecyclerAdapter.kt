@@ -1,7 +1,8 @@
 package invest.com.swapp.adapter
 
 import android.content.Intent
-import android.support.v7.widget.RecyclerView
+import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,25 +10,31 @@ import android.widget.ImageView
 import android.widget.TextView
 import invest.com.swapp.*
 import invest.com.swapp.model.Stock
+import invest.com.swapp.model.Stock2
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 
-class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){
+class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){
 
     private val onClickListener: View.OnClickListener
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as Stock
+            val item = v.tag as Stock2
+            Log.d("_details","${item.companyId} : ${item.securityID}")
 
             val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
                 putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
                 putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
                 putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
-                putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent)
+                putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent_change)
                 putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
                 putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
+                putExtra(StockItemDetailFragment.ARG_SEC_ID, item.securityID)
+                putExtra(StockItemDetailFragment.ARG_COMP_ID, item.companyId)
 
             }
             v.context.startActivity(intent)
+
+
         }
     }
 
@@ -43,11 +50,11 @@ class StocksRecyclerAdapter(private val stocks:ArrayList<Stock>) : RecyclerView.
         val item = stocks[p1]
         p0.idView.text = item.symbol
         p0.contentView.text = item.name
-        p0.percentView.text = item.percent + "%"
+        p0.percentView.text = item.percent_change + "%"
         p0.currentPrice.text = item.price + " PHP"
 
 
-        if(item.percent.contains("-")){
+        if(item.percent_change.contains("-")){
             p0.imageIndicator.setImageResource(R.drawable.sort_down)
         }else{
             p0.imageIndicator.setImageResource(R.drawable.sort_up)

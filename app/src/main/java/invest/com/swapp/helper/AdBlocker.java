@@ -2,7 +2,7 @@ package invest.com.swapp.helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import java.io.IOException;
 import java.io.InputStream;

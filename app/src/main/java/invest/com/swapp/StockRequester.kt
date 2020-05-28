@@ -39,7 +39,7 @@ class StockRequester(listeningActivity: Activity){
 
         client.newCall(request).enqueue(object :Callback{
             override fun onResponse(call: Call, response: Response) {
-                Log.d("_json", response.body()!!.string())
+                Log.d("_json", response.body!!.string())
 
 
             }

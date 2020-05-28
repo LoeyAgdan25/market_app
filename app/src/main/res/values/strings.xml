@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Swapp</string>
+    <string name="app_name">Babylon</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">phisix-api2.appspot.com</domain>
+        <domain includeSubdomains="true">codezzila.com</domain>
+    </domain-config>
+</network-security-config>

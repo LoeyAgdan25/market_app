@@ -1,7 +1,7 @@
 package invest.com.swapp
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,5 +60,7 @@ class StockItemDetailFragment : Fragment() {
         const val ARG_ITEM_PERCENTAGE = "item_percentage"
         const val ARG_ITEM_PRICE = "item_price"
         const val ARG_ITEM_STATUS = "item_status"
+        const val ARG_SEC_ID = "security_id"
+        const val ARG_COMP_ID = "company_id"
     }
 }
