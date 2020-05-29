@@ -2,6 +2,7 @@ package invest.com.swapp.db.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import invest.com.swapp.model.Stock2
 import invest.com.swapp.model.StocksWatched
 
 @Dao

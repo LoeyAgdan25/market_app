@@ -94,17 +94,17 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 adapter.watchListener = this
                 recyclerViewMain.adapter = adapter
 
-                for(watch: StocksWatched in it){
-                    if(watch.buy_price == watch.price.toFloat()){
-                        toast("buy price marked is reached ${watch.symbol}")
-                        //push this to notification
-                    }
-
-                    if(watch.sell_price == watch.price.toFloat()){
-                        toast("buy price marked is reached ${watch.symbol}")
-                        //push this to notification
-                    }
-                }
+            //todo:- move to service
+            //this has issue on looping 5 times
+//                for(watch: StocksWatched in it){
+//                    if(watch.buy_price == watch.price.toFloat()){
+//                        toast("buy price marked is reached ${watch.symbol}")
+//                    }
+//
+//                    if(watch.sell_price == watch.price.toFloat()){
+//                        toast("buy price marked is reached ${watch.symbol}")
+//                    }
+//                }
 
                 if(it.isEmpty()){
                     empty_view.visibility = View.VISIBLE

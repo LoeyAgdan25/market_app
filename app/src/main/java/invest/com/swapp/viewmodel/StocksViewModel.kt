@@ -35,8 +35,8 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
         repository.getAllStocks()
     }
 
-    suspend fun checkMatched(){
-        
+    suspend fun isWatched(symbol: String):Boolean{
+        return true
     }
 
     suspend fun getStock(symbol: String):LiveData<Stock2>{

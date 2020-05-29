@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -74,7 +75,19 @@ class StockItemDetailActivity : AppCompatActivity() {
         supportActionBar!!.title = ""
 
         txt_stock_symbol.text = "${symbol}"
-        txt_stock_percent.text = "${percent}"
+
+        if(percent.contains("-")){
+            txt_stock_percent.setBackgroundColor(Color.RED)
+            txt_stock_percent.text = "${percent}"
+        }else{
+
+            txt_stock_percent.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+            txt_stock_percent.text = "+${percent}"
+            if(percent == "0"){
+                txt_stock_percent.setBackgroundColor(Color.parseColor("#FF9800"))
+            }
+        }
+
         txt_stock_price.text = "${UtilityHelper.getInstance().formatCurrency(price.toDouble())}"
         txt_stock_status.text = "${status}"
         txt_stock_volume.text = "${UtilityHelper.getInstance().formatVolume(volume.toDouble())}"
@@ -94,7 +107,13 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         GlobalScope.async {
             stockViewModel.getStockHistory(securityID,companyId)
+            if(stockViewModel.isWatched(symbol)){
+                btn_watch_stock.visibility = View.GONE
+            }
         }
+
+
+
 
         btn_watch_stock.setOnClickListener {
            GlobalScope.async {

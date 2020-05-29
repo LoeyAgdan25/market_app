@@ -54,11 +54,13 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
                     />
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txt_stock_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
+                    android:textColor="@color/colorWhite"
+                    android:padding="5dp"
                     android:text="Percentage"
                     style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_gravity="right"
