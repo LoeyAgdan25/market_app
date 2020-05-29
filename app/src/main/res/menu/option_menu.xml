@@ -4,13 +4,16 @@
         <item
             android:id="@+id/news_menu"
             android:title="News"
+            android:icon="@drawable/ic_action_news"
+            android:iconTint="@color/colorWhite"
             app:showAsAction="always" />
         <item
             android:id="@+id/logout_menu"
             android:title="Logout"
+            android:icon="@drawable/ic_action_logout"
+            android:iconTint="@color/colorWhite"
             app:showAsAction="always"
             android:visible="true"
             />
-
 </menu>
 

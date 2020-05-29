@@ -71,7 +71,6 @@ class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adap
         val percentView: TextView = view.percent
         val imageIndicator: ImageView = view.indicator
         val currentPrice: TextView = view.tv_price
-
     }
 
 

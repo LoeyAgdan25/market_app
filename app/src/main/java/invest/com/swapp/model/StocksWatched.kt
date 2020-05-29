@@ -20,8 +20,10 @@ class StocksWatched (
     @SerializedName("buy_price")
     @ColumnInfo(name = "buy_price")var buy_price:Float,
 
+
     val price:String = "",
-    val percent_change:String = ""
+    val percent_change:String = "",
+    val name:String = ""
 //,
 //        foreignKeys = arrayOf(ForeignKey(entity = Stock2::class, parentColumns = arrayOf("symbol"), childColumns = arrayOf("symbol"), onDelete = ForeignKey.CASCADE))
 //    @ForeignKey(entity = Stock2::class,parentColumns = arrayOf("symbol"), childColumns = arrayOf("symbol"), onDelete = NO_ACTION)

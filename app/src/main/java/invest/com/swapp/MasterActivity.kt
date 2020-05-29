@@ -34,6 +34,8 @@ import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
 import invest.com.swapp.work.WatchStockUpdates
 import kotlinx.android.synthetic.main.activity_master.*
+import kotlinx.android.synthetic.main.layout_buy_sell_prompt.*
+import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -65,6 +67,9 @@ class MasterActivity : AppCompatActivity(), WatchListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_master)
+        title = ""
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_account)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //Production ca-app-pub-4268048783942748~4717310066
         //Testing ca-app-pub-3940256099942544~3347511713
@@ -117,17 +122,17 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         //work manager
         //check recurring work
 
-        val constraints = Constraints.Builder().setRequiresCharging(false).setRequiredNetworkType(NetworkType.CONNECTED).build()
-        val requestWorker = PeriodicWorkRequestBuilder<WatchStockUpdates>(1, TimeUnit.SECONDS).setConstraints(constraints).build()
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("TAG",ExistingPeriodicWorkPolicy.KEEP,requestWorker)
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(requestWorker.id).observe(this, Observer {
-            if(it != null){
-
-            }
-
-            Log.d("_dataobserve",it.toString())
-        })
+        //        val constraints = Constraints.Builder().setRequiresCharging(false).setRequiredNetworkType(NetworkType.CONNECTED).build()
+        //        val requestWorker = PeriodicWorkRequestBuilder<WatchStockUpdates>(1, TimeUnit.SECONDS).setConstraints(constraints).build()
+        //
+        //        WorkManager.getInstance(this).enqueueUniquePeriodicWork("TAG",ExistingPeriodicWorkPolicy.KEEP,requestWorker)
+        //        WorkManager.getInstance(this).getWorkInfoByIdLiveData(requestWorker.id).observe(this, Observer {
+        //            if(it != null){
+        //
+        //            }
+        //
+        //            Log.d("_dataobserve",it.toString())
+        //        })
 
         //get updates periodically
         //move to background task JobIntent or Service Intent with Broadcast Receiver...
@@ -143,27 +148,27 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         }
 
 
-//        Uncomment to run on API level 23
-//        this will be added to background service
-//        var day = Date()
-//        val londonZone = ZoneId.of("Asia/Manila")
-//        val philLocalDate = ZonedDateTime.now(londonZone)
-//
-//        //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
-//        Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
-//
-//        //move to view model
-//        //add to broadcast receiver...
-//        if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
-//            if(philLocalDate.hour in 7..4){
-//                //timer.start()
-//                val timer: Job = update(6000,5000){
-//                    handler.post(runnable)
-//                }
-//                //check api version
-//                //timer.start()
-//            }
-//        }
+        //        Uncomment to run on API level 23
+        //        this will be added to background service
+        //        var day = Date()
+        //        val londonZone = ZoneId.of("Asia/Manila")
+        //        val philLocalDate = ZonedDateTime.now(londonZone)
+        //
+        //        //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
+        //        Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
+        //
+        //        //move to view model
+        //        //add to broadcast receiver...
+        //        if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
+        //            if(philLocalDate.hour in 7..4){
+        //                //timer.start()
+        //                val timer: Job = update(6000,5000){
+        //                    handler.post(runnable)
+        //                }
+        //                //check api version
+        //                //timer.start()
+        //            }
+        //        }
     }
 
     //time
@@ -189,7 +194,6 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         }
     }
 
-
     private fun checkConnectivity(context: Context): Boolean {
             val cm = ConnectivityManager()
             getSystemService(Context.CONNECTIVITY_SERVICE)
@@ -213,6 +217,11 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     true
                 }
 
+                R.id.home ->{
+
+                    true
+                }
+
                 R.id.news_menu -> {
                     startActivity(Intent(baseContext, NewsActivity::class.java))
                     true
@@ -222,23 +231,30 @@ class MasterActivity : AppCompatActivity(), WatchListener{
     }
 
     override fun onWatchedAction(stockWatched: StocksWatched) {
-
-            var editTextBuy = EditText(this)
-            var editTextSell = EditText(this)
-
-            //todo:- must call external layout
-
-                    MaterialAlertDialogBuilder(this).setMessage(stockWatched.symbol)
-                    .setView(editTextBuy)
+            var view:View = layoutInflater.inflate(R.layout.layout_buy_sell_prompt,null)
+                    MaterialAlertDialogBuilder(MasterActivity@this,R.style.AlertDialogTheme).setTitle(stockWatched.symbol)
+                    .setView(view)
                     .setPositiveButton("Save"){
                         dialog, which ->
+                        var buyPrice = view.txt_buy_price.text.toString()
+                        var sellPrice = view.txt_sell_price.text.toString()
+
+                        if(buyPrice.isEmpty()){
+                            buyPrice = "0"
+                        }
+
+                        if(sellPrice.isEmpty()){
+                            sellPrice = "0"
+                        }
+
                         GlobalScope.launch {
-                           stockWatched.buy_price = editTextBuy.text.toString().toFloat()
+                           stockWatched.buy_price = buyPrice.toFloat()
+                           stockWatched.sell_price = sellPrice.toFloat()
                            stockViewModel.updateWatched(stockWatched)
                         }
 
                     }
-                    .setNegativeButton("Delete"){
+                    .setNegativeButton("Remove"){
                         dialog, which ->
                         GlobalScope.launch {
                             stockViewModel.deleteWatched(stockWatched)

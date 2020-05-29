@@ -1,11 +1,15 @@
 package invest.com.swapp.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -47,13 +51,22 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
 
     override fun getItemCount(): Int = stocks.size
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = stocks[p1]
         p0.symbol.text = item.symbol
-        p0.buy.text = item.buy_price.toString()
-        p0.sell.text = item.sell_price.toString()
+        p0.buy.text = "Buy: ${item.buy_price}"
+        p0.sell.text = "Sell: ${item.sell_price}"
         p0.price.text = item.price // database not resetting...
         p0.percentChange.text = item.percent_change
+        p0.companyName.text = item.name
+
+        if(item.percent_change.contains("-")){
+            p0.percentChange.setBackgroundColor(Color.RED)
+        }else{
+            p0.percentChange.setBackgroundColor(context.getColor(R.color.colorPrimary))
+            p0.percentChange.text = "+${item.percent_change}"
+        }
 
         p0.btnAction.setOnClickListener {
                 watchListener!!.onWatchedAction(item)
@@ -67,6 +80,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
         val price: TextView = view.current_price
         val percentChange: TextView = view.percent_change
         val btnAction:MaterialButton = view.btn_buy_sell
+        val companyName:TextView = view.company_name
     }
 
 }

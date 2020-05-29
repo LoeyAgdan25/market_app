@@ -80,7 +80,7 @@ class StockItemDetailActivity : AppCompatActivity() {
         txt_stock_volume.text = "${UtilityHelper.getInstance().formatVolume(volume.toDouble())}"
         txt_company_description.text = "${name}"
 
-        btn_watch_stock.setOnClickListener { doWatchStock(symbol) }
+        //btn_watch_stock.setOnClickListener { doWatchStock(symbol) }
         btn_watch_remove.setOnClickListener { doRemoveWatched(symbol) }
         btn_watch_invest.setOnClickListener { doInvest(symbol) }
         doFindStock(symbol)
@@ -164,8 +164,6 @@ class StockItemDetailActivity : AppCompatActivity() {
 //        if (mInterstitialAd.isLoaded) {
 //            mInterstitialAd.show()
 //        }
-
-
 
         Log.d("event","watching stock")
             database.use {
