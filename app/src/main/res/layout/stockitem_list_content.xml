@@ -43,47 +43,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="symbol"
-                    android:textColor="#424242"
                     />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
-            android:gravity="right"
+            android:layout_weight="1"
             >
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_price"
+                android:textColor="#000"
+                android:text="price"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:textSize="16sp"
+                android:layout_toLeftOf="@id/percent"
+                />
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/percent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="percent"
-                android:textColor="#424242"
-                android:layout_marginBottom="5dp"
-                />
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_margin="5dp"
+                android:gravity="left"
+                android:textColor="#fff"
+                android:background="@color/colorPrimary"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_price"
-                    android:textColor="#000"
-                    style="@style/Base.TextAppearance.AppCompat.Large"
-                    android:text="price"
-                    android:layout_marginBottom="10dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="P"
-                    android:layout_toLeftOf="@id/tv_price"
-                    />
-            </RelativeLayout>
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                />
+        </RelativeLayout>
 
  </RelativeLayout>
 </androidx.cardview.widget.CardView>

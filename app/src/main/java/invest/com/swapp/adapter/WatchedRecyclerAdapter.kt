@@ -65,7 +65,12 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
             p0.percentChange.setBackgroundColor(Color.RED)
         }else{
             p0.percentChange.setBackgroundColor(context.getColor(R.color.colorPrimary))
-            p0.percentChange.text = "+${item.percent_change}"
+
+            if(item.percent_change == "0"){
+                p0.percentChange.setBackgroundColor(Color.parseColor("#FF9100"))
+            }else{
+                p0.percentChange.text = "+${item.percent_change}"
+            }
         }
 
         p0.btnAction.setOnClickListener {

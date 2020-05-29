@@ -1,6 +1,7 @@
 package invest.com.swapp.adapter
 
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -50,14 +51,22 @@ class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adap
         val item = stocks[p1]
         p0.idView.text = item.symbol
         p0.contentView.text = item.name
-        p0.percentView.text = item.percent_change + "%"
-        p0.currentPrice.text = item.price + " PHP"
+        p0.percentView.text = item.percent_change
+        p0.currentPrice.text = item.price
 
 
         if(item.percent_change.contains("-")){
             p0.imageIndicator.setImageResource(R.drawable.sort_down)
+            p0.percentView.setBackgroundColor(Color.RED)
         }else{
             p0.imageIndicator.setImageResource(R.drawable.sort_up)
+            p0.percentView.setBackgroundColor(Color.parseColor("#008b00"))
+
+            if(item.percent_change == "0"){
+                p0.percentView.setBackgroundColor(Color.parseColor("#FF9100"))
+            }else{
+                p0.percentView.text = "+${item.percent_change}"
+            }
         }
         with(p0.itemView) {
             tag = item

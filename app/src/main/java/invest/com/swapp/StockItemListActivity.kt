@@ -2,11 +2,15 @@ package invest.com.swapp
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import invest.com.swapp.adapter.StocksRecyclerAdapter
@@ -26,13 +30,15 @@ class StockItemListActivity : AppCompatActivity() {
     private lateinit var stockViewModel:StocksViewModel
     private lateinit var stockListAll:List<Stock2>
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stockitem_list)
         setSupportActionBar(toolbar)
 
-        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.title = title
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        window.statusBarColor = this.getColor(R.color.colorPrimary)
+        title = ""
 
         if (stockitem_detail_container != null) {
             twoPane = true
@@ -57,16 +63,21 @@ class StockItemListActivity : AppCompatActivity() {
         GlobalScope.launch {
             stockViewModel.getStocks()
         }
+
+
     }
 
     //search menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu2,menu)
+
         val searchView = menu?.findItem(R.id.searchMenu)?.actionView as SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.setOnSearchClickListener {}
+        searchView.setOnSearchClickListener {
+
+        }
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
@@ -88,7 +99,7 @@ class StockItemListActivity : AppCompatActivity() {
             }
         })
         searchView.setOnCloseListener {
-            stockitem_list!!.adapter = StocksRecyclerAdapter( stockListAll)
+            //stockitem_list!!.adapter = StocksRecyclerAdapter( stockListAll)
             false
         }
         return super.onCreateOptionsMenu(menu)

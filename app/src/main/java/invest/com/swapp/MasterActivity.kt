@@ -105,6 +105,13 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                         //push this to notification
                     }
                 }
+
+                if(it.isEmpty()){
+                    empty_view.visibility = View.VISIBLE
+                }else{
+                    empty_view.visibility = View.GONE
+                }
+
         })
 
         //todo:- run updating time workmanager
