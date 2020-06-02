@@ -2,29 +2,23 @@ package invest.com.swapp
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.text.InputType
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.work.*
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import invest.com.swapp.adapter.StocksRecyclerAdapter
 import invest.com.swapp.adapter.WatchedRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.helper.ConnectivityManager
@@ -32,20 +26,15 @@ import invest.com.swapp.listener.WatchListener
 import invest.com.swapp.model.Stock2
 import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
-import invest.com.swapp.work.WatchStockUpdates
 import kotlinx.android.synthetic.main.activity_master.*
-import kotlinx.android.synthetic.main.layout_buy_sell_prompt.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.*
-import org.jetbrains.anko.toast
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 //todo:- transfer to new master activity
 // fragmented view pager2
@@ -59,8 +48,6 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     /*mvvm*/
     private lateinit var stockViewModel: StocksViewModel
-    private lateinit var stockListAll:List<Stock2>
-    private lateinit var stockValue: LiveData<Stock2>
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,6 +57,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         title = ""
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_account)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        watchListener = this
 
         //Production ca-app-pub-4268048783942748~4717310066
         //Testing ca-app-pub-3940256099942544~3347511713
@@ -90,21 +78,21 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
         stockViewModel = ViewModelProviders.of(this).get(StocksViewModel::class.java)
         stockViewModel.watchedStocks.observe(this, Observer {
-                adapter = WatchedRecyclerAdapter(it,MasterActivity@this)
+                adapter = WatchedRecyclerAdapter(it)
                 adapter.watchListener = this
                 recyclerViewMain.adapter = adapter
 
             //todo:- move to service
             //this has issue on looping 5 times
-//                for(watch: StocksWatched in it){
-//                    if(watch.buy_price == watch.price.toFloat()){
-//                        toast("buy price marked is reached ${watch.symbol}")
-//                    }
-//
-//                    if(watch.sell_price == watch.price.toFloat()){
-//                        toast("buy price marked is reached ${watch.symbol}")
-//                    }
-//                }
+            //                for(watch: StocksWatched in it){
+            //                    if(watch.buy_price == watch.price.toFloat()){
+            //                        toast("buy price marked is reached ${watch.symbol}")
+            //                    }
+            //
+            //                    if(watch.sell_price == watch.price.toFloat()){
+            //                        toast("buy price marked is reached ${watch.symbol}")
+            //                    }
+            //                }
 
                 if(it.isEmpty()){
                     empty_view.visibility = View.VISIBLE
@@ -114,35 +102,9 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
         })
 
-        //todo:- run updating time workmanager
-
-        //initialise get all stocks json
-        GlobalScope.launch {
-            stockViewModel.getStocks()
-        }
-
         btn_search.setOnClickListener {
             startActivity(Intent(this, StockItemListActivity::class.java))
         }
-
-        watchListener = this
-        //work manager
-        //check recurring work
-
-        //        val constraints = Constraints.Builder().setRequiresCharging(false).setRequiredNetworkType(NetworkType.CONNECTED).build()
-        //        val requestWorker = PeriodicWorkRequestBuilder<WatchStockUpdates>(1, TimeUnit.SECONDS).setConstraints(constraints).build()
-        //
-        //        WorkManager.getInstance(this).enqueueUniquePeriodicWork("TAG",ExistingPeriodicWorkPolicy.KEEP,requestWorker)
-        //        WorkManager.getInstance(this).getWorkInfoByIdLiveData(requestWorker.id).observe(this, Observer {
-        //            if(it != null){
-        //
-        //            }
-        //
-        //            Log.d("_dataobserve",it.toString())
-        //        })
-
-        //get updates periodically
-        //move to background task JobIntent or Service Intent with Broadcast Receiver...
 
         val handler = Handler()
         val runnable = Runnable {
@@ -157,25 +119,25 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
         //        Uncomment to run on API level 23
         //        this will be added to background service
-        //        var day = Date()
-        //        val londonZone = ZoneId.of("Asia/Manila")
-        //        val philLocalDate = ZonedDateTime.now(londonZone)
-        //
-        //        //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
-        //        Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
-        //
-        //        //move to view model
-        //        //add to broadcast receiver...
-        //        if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
-        //            if(philLocalDate.hour in 7..4){
-        //                //timer.start()
-        //                val timer: Job = update(6000,5000){
-        //                    handler.post(runnable)
-        //                }
-        //                //check api version
-        //                //timer.start()
-        //            }
-        //        }
+                var day = Date()
+                val londonZone = ZoneId.of("Asia/Manila")
+                val philLocalDate = ZonedDateTime.now(londonZone)
+
+                //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
+                Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
+
+                //move to view model
+                //add to broadcast receiver...
+                if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
+                    if(philLocalDate.hour in 7..4){
+                        //timer.start()
+                        val timer: Job = update(6000,5000){
+                            handler.post(runnable)
+                        }
+                        //check api version
+                        //timer.start()
+                    }
+                }
     }
 
     //time
@@ -225,7 +187,6 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 }
 
                 R.id.home ->{
-
                     true
                 }
 

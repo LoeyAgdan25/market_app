@@ -23,19 +23,9 @@ class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adap
             Log.d("_details","${item.companyId} : ${item.securityID}")
 
             val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
-                putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
-                putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
-                putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
-                putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent_change)
-                putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
-                putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
-                putExtra(StockItemDetailFragment.ARG_SEC_ID, item.securityID)
-                putExtra(StockItemDetailFragment.ARG_COMP_ID, item.companyId)
-
+                    putExtra("stockDetail", item)
             }
             v.context.startActivity(intent)
-
-
         }
     }
 

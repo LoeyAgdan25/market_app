@@ -54,17 +54,9 @@ class StockItemListActivity : AppCompatActivity() {
             }
         })
 
-//        stockViewModel.watchedStocks.observe(this, Observer {
-//            for(stock: StocksWatched in it){
-//                Log.d("_stockwatched", stock.symbol)
-//            }
-//        })
-
         GlobalScope.launch {
             stockViewModel.getStocks()
         }
-
-
     }
 
     //search menu
