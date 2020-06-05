@@ -23,7 +23,7 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
         stocksDao.insert(stock)
     }
 
-    suspend fun getStock(symbol:String): LiveData<Stock2>{
+    suspend fun getStock(symbol:String): Stock2{
         return stocksDao.getStock(symbol)
     }
 

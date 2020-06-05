@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -229,5 +230,15 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                         }
                     }
                     .show()
+    }
+
+    override fun onSelectWatched(symbol: String) {
+        GlobalScope.launch {
+            var stock = stockViewModel.getStock(symbol)
+            var i = Intent(this@MasterActivity, StockItemDetailActivity::class.java)
+            i.putExtra("stockDetail", stock)
+            startActivity(i)
+        }
+
     }
 }

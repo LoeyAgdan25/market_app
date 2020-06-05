@@ -5,4 +5,5 @@ import invest.com.swapp.model.StocksWatched
 
 interface WatchListener {
     fun onWatchedAction(stockWatched: StocksWatched)
+    fun onSelectWatched(symbol:String)
 }

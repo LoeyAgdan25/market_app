@@ -15,7 +15,7 @@ interface StocksDao {
     suspend fun insert(stock: Stock2)
 
     @Query("SELECT * FROM stocks_table WHERE symbol = :symbol")
-    fun getStock(symbol:String): LiveData<Stock2>
+    fun getStock(symbol:String): Stock2
 
     @Update
     suspend fun updateStock(vararg watched: Stock2)

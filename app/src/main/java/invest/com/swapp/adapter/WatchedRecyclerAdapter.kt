@@ -32,17 +32,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
     init {
         onClickListener = View.OnClickListener { v ->
             val item = v.tag as Stock2
-            //todo:- add open details syncronized
-//            Log.d("_details","${item.companyId} : ${item.securityID}")
             val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
-//                putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
-//                putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
-//                putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
-//                putExtra(StockItemDetailFragment.ARG_ITEM_PERCENTAGE, item.percent_change)
-//                putExtra(StockItemDetailFragment.ARG_ITEM_VOLUME,item.volume)
-//                putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
-//                putExtra(StockItemDetailFragment.ARG_SEC_ID, item.securityID)
-//                putExtra(StockItemDetailFragment.ARG_COMP_ID, item.companyId)
                 putExtra("stockDetail", item)
             }
             //v.context.startActivity(intent)
@@ -88,10 +78,8 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
         }
 
         p0.h.setOnClickListener {
-            //reference stock data2
-            //open intent
-            Log.d("_view","selected view passed here...")
 
+            watchListener!!.onSelectWatched(item.symbol)
         }
 
 
