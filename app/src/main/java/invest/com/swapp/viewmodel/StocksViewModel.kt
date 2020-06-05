@@ -39,7 +39,7 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
         return true
     }
 
-    suspend fun getStock(symbol: String):LiveData<Stock2>{
+    suspend fun getStock(symbol: String):Stock2{
        return repository.getStock(symbol)
     }
 
