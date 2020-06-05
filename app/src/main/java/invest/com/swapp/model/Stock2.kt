@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(tableName = "stocks_table")
 class Stock2 (@PrimaryKey
@@ -30,5 +31,5 @@ class Stock2 (@PrimaryKey
               @ColumnInfo(name="securityID") val securityID: Int,
 
               @SerializedName("price")
-              @ColumnInfo(name = "price") val price:String){
+              @ColumnInfo(name = "price") val price:String):Serializable{
 }

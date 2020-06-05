@@ -1,34 +1,40 @@
 package invest.com.swapp.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import invest.com.swapp.R
+import invest.com.swapp.StockItemDetailActivity
 import invest.com.swapp.helper.UtilityHelper
 import invest.com.swapp.listener.WatchListener
+import invest.com.swapp.model.Stock2
 import invest.com.swapp.model.StocksWatched
 import kotlinx.android.synthetic.main.watch_list_content.view.*
 
-class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val context: Context) : RecyclerView.Adapter<WatchedRecyclerAdapter.ViewHolder>(){
+class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerView.Adapter<WatchedRecyclerAdapter.ViewHolder>(){
 
     var watchListener:WatchListener? = null
     private val onClickListener: View.OnClickListener
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as StocksWatched
+            val item = v.tag as Stock2
             //todo:- add open details syncronized
 //            Log.d("_details","${item.companyId} : ${item.securityID}")
-//            val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
+            val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
 //                putExtra(StockItemDetailFragment.ARG_ITEM_ID, item.name)
 //                putExtra(StockItemDetailFragment.ARG_ITEM_SYMBOL, item.symbol)
 //                putExtra(StockItemDetailFragment.ARG_ITEM_NAME, item.name)
@@ -37,8 +43,10 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
 //                putExtra(StockItemDetailFragment.ARG_ITEM_PRICE,item.price)
 //                putExtra(StockItemDetailFragment.ARG_SEC_ID, item.securityID)
 //                putExtra(StockItemDetailFragment.ARG_COMP_ID, item.companyId)
-//            }
-//            v.context.startActivity(intent)
+                putExtra("stockDetail", item)
+            }
+            //v.context.startActivity(intent)
+            Toast.makeText(v.context,item.companyId,Toast.LENGTH_LONG)
         }
 
         //watchListener = this.watchListener
@@ -66,7 +74,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
         if(item.percent_change.contains("-")){
             p0.percentChange.setBackgroundColor(Color.RED)
         }else{
-            p0.percentChange.setBackgroundColor(context.getColor(R.color.colorPrimary))
+            p0.percentChange.setBackgroundColor(Color.GREEN)
 
             if(item.percent_change == "0"){
                 p0.percentChange.setBackgroundColor(Color.parseColor("#FF9100"))
@@ -78,6 +86,15 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
         p0.btnAction.setOnClickListener {
                 watchListener!!.onWatchedAction(item)
         }
+
+        p0.h.setOnClickListener {
+            //reference stock data2
+            //open intent
+            Log.d("_view","selected view passed here...")
+
+        }
+
+
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -88,6 +105,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>, private val
         val percentChange: TextView = view.percent_change
         val btnAction:MaterialButton = view.btn_buy_sell
         val companyName:TextView = view.company_name
+        val h = view.watchlist_card
     }
 
 }
