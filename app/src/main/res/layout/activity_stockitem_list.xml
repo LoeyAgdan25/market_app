@@ -25,8 +25,9 @@
         android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:scrollbars="vertical"
+        >
         <include layout="@layout/stockitem_list" />
     </FrameLayout>
 

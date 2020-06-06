@@ -14,7 +14,7 @@ import invest.com.swapp.model.Stock
 import invest.com.swapp.model.Stock2
 import kotlinx.android.synthetic.main.stockitem_list_content.view.*
 
-class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){
+class StocksRecyclerAdapter(private var stocks:List<Stock2>) : RecyclerView.Adapter<StocksRecyclerAdapter.ViewHolder>(){
 
     private val onClickListener: View.OnClickListener
     init {
@@ -70,6 +70,10 @@ class StocksRecyclerAdapter(private val stocks:List<Stock2>) : RecyclerView.Adap
         val percentView: TextView = view.percent
         val imageIndicator: ImageView = view.indicator
         val currentPrice: TextView = view.tv_price
+    }
+
+    fun updateList(stocks: List<Stock2>){
+        this.stocks = stocks
     }
 
 

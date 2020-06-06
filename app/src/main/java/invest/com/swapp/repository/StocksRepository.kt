@@ -52,10 +52,14 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
                 val rootObject = JSONObject(r)
                 var roots = rootObject.getJSONArray("stock")
 
+                var isExist = false
+                if(stocksDao.getCountStocks() > 0){
+                    isExist = true
+                }
+
                 for (i in 0 until roots.length()) {
                     val stock = roots.get(i).toString()
                     val obj = JSONObject(stock)
-                    Log.d("_json", obj.getString("symbol"))
 
                     var symbol = obj.getString("symbol")
                     var nme = obj.getString("name")
@@ -65,13 +69,17 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
                     var cid = obj.getString("companyId")
                     var sid = obj.getString("securityID")
                     var stockThis = Stock2(nme,symbol,"",change,volume,cid.toInt(),sid.toInt(),price)
-                    stocksDao.insert(stockThis)
-                    stocksDao.updateStock(stockThis)
-                    //todo:- add stock update in the background...
-                    Log.d("values","$nme, $symbol,$change, $volume, $cid, $sid, $price")
-                }
 
-                Log.d("_logs","r")
+                    if(isExist){
+                        stocksDao.updateStock(stockThis)
+                    }else{
+                        stocksDao.insert(stockThis)
+                    }
+
+
+                    //todo:- add stock update in the background...
+                }
+                //notify
             }catch (ex:JSONException){
                 ex.printStackTrace()
             }

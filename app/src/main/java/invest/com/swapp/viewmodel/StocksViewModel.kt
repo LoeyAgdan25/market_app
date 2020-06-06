@@ -2,12 +2,15 @@ package invest.com.swapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
 import invest.com.swapp.db.room.StocksRoomDatabase
 import invest.com.swapp.model.HistoryData
 import invest.com.swapp.model.Stock
 import invest.com.swapp.model.Stock2
 import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.repository.StocksRepository
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class StocksViewModel(application: Application): AndroidViewModel(application){
@@ -18,6 +21,8 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
     var historyData: MutableLiveData<ArrayList<HistoryData>> = MutableLiveData()
     var watchedStocks: LiveData<List<StocksWatched>>
 
+    //val stockList2:LiveData<PagedList<Stock2>>
+
     init {
         val stocksDao = StocksRoomDatabase.getDatabase(application,viewModelScope).stockDao()
         val watchedDao = StocksRoomDatabase.getDatabase(application,viewModelScope).watchDao()
@@ -25,12 +30,14 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
         repository = StocksRepository(stocksDao,watchedDao)
         stocks = repository.allStocks
         watchedStocks = repository.allWatched
+        //åstockList2 = stocksDao.pagedStockList().toLiveData(pageSize = 20)
     }
 
     fun insert(stock: Stock2) = viewModelScope.launch{
         repository.insert(stock)
     }
 
+    //download all the stocks
     suspend fun getStocks(){
         repository.getAllStocks()
     }

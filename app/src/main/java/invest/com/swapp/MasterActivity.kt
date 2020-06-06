@@ -42,6 +42,8 @@ import java.util.*
 
 class MasterActivity : AppCompatActivity(), WatchListener{
 
+    //todo:- workmanager to update watchlist
+
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: WatchedRecyclerAdapter
     lateinit var mAdView : AdView
@@ -59,6 +61,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_account)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         watchListener = this
+
 
         //Production ca-app-pub-4268048783942748~4717310066
         //Testing ca-app-pub-3940256099942544~3347511713
@@ -107,38 +110,35 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             startActivity(Intent(this, StockItemListActivity::class.java))
         }
 
-        val handler = Handler()
-        val runnable = Runnable {
-            GlobalScope.launch {
-                //check date and time
-                //check time of day
-                stockViewModel.getStocks()
-                Log.d("_running","test")
-            }
-        }
-
-
-        //        Uncomment to run on API level 23
-        //        this will be added to background service
-                var day = Date()
-                val londonZone = ZoneId.of("Asia/Manila")
-                val philLocalDate = ZonedDateTime.now(londonZone)
-
-                //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
-                Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
-
-                //move to view model
-                //add to broadcast receiver...
-                if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
-                    if(philLocalDate.hour in 7..4){
-                        //timer.start()
-                        val timer: Job = update(6000,5000){
-                            handler.post(runnable)
-                        }
-                        //check api version
-                        //timer.start()
-                    }
-                }
+//        val handler = Handler()
+//        val runnable = Runnable {
+//            GlobalScope.launch {
+//                stockViewModel.getStocks()
+//            }
+//        }
+//
+//
+//        //        Uncomment to run on API level 23
+//        //        this will be added to background service
+//                var day = Date()
+//                val londonZone = ZoneId.of("Asia/Manila")
+//                val philLocalDate = ZonedDateTime.now(londonZone)
+//
+//                //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
+//                Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
+//
+//                //move to view model
+//                //add to broadcast receiver...
+//                if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
+//                    if(philLocalDate.hour in 7..4){
+//                        //timer.start()
+//                        val timer: Job = update(6000,5000){
+//                            handler.post(runnable)
+//                        }
+//                        //check api version
+//                        //timer.start()
+//                    }
+//                }
     }
 
     //time

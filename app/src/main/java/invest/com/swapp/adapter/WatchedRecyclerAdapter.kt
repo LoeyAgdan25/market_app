@@ -1,22 +1,16 @@
 package invest.com.swapp.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import invest.com.swapp.R
 import invest.com.swapp.StockItemDetailActivity
 import invest.com.swapp.helper.UtilityHelper
@@ -32,15 +26,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
     init {
         onClickListener = View.OnClickListener { v ->
             val item = v.tag as Stock2
-            val intent = Intent(v.context, StockItemDetailActivity::class.java).apply {
-                putExtra("stockDetail", item)
-            }
-            //v.context.startActivity(intent)
-            Toast.makeText(v.context,item.companyId,Toast.LENGTH_LONG)
         }
-
-        //watchListener = this.watchListener
-
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -64,8 +50,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
         if(item.percent_change.contains("-")){
             p0.percentChange.setBackgroundColor(Color.RED)
         }else{
-            p0.percentChange.setBackgroundColor(Color.GREEN)
-
+            p0.percentChange.setBackgroundColor(Color.parseColor("#008b00"))
             if(item.percent_change == "0"){
                 p0.percentChange.setBackgroundColor(Color.parseColor("#FF9100"))
             }else{
@@ -74,15 +59,12 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
         }
 
         p0.btnAction.setOnClickListener {
-                watchListener!!.onWatchedAction(item)
+            watchListener!!.onWatchedAction(item)
         }
 
         p0.h.setOnClickListener {
-
             watchListener!!.onSelectWatched(item.symbol)
         }
-
-
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
