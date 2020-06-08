@@ -41,15 +41,15 @@
         <activity
             android:name=".MasterActivity"
             android:launchMode="standard">
-
-        </activity>
-        <activity
-            android:name=".auth.LoginActivity"
-            android:label="swapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".auth.LoginActivity"
+            android:label="swapp">
+
         </activity>
         <activity
             android:name=".auth.SignupActivity"

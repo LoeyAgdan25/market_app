@@ -5,15 +5,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.ads.AdRequest
@@ -24,13 +21,13 @@ import invest.com.swapp.adapter.WatchedRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
 import invest.com.swapp.helper.ConnectivityManager
 import invest.com.swapp.listener.WatchListener
-import invest.com.swapp.model.Stock2
 import invest.com.swapp.model.StocksWatched
+import invest.com.swapp.security.SSharedPreferenceManager
+import invest.com.swapp.viewmodel.AuthViewModel
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.ZoneId
@@ -51,6 +48,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     /*mvvm*/
     private lateinit var stockViewModel: StocksViewModel
+    private lateinit var authViewModel: AuthViewModel
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,7 +77,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
 
         /*mvvm*/
-
+        authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         stockViewModel = ViewModelProviders.of(this).get(StocksViewModel::class.java)
         stockViewModel.watchedStocks.observe(this, Observer {
                 adapter = WatchedRecyclerAdapter(it)
@@ -156,11 +154,8 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     override fun onResume() {
         super.onResume()
-        if(checkConnectivity(this)) {
-
-        }else{
-            status_main.text = "Internet not connected."
-            empty_view.visibility = View.VISIBLE
+        if(!authViewModel.userRepository.isCredentialValid()){
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
@@ -182,6 +177,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
             return when(item!!.itemId){
                 R.id.logout_menu -> {
+                    authViewModel.logout()
                     startActivity(Intent(baseContext, LoginActivity::class.java))
                     finish()
                     true

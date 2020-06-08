@@ -13,27 +13,33 @@ import androidx.lifecycle.*
 import invest.com.swapp.*
 import invest.com.swapp.R
 import invest.com.swapp.helper.ConnectivityManager
+import invest.com.swapp.security.SSharedPreferenceManager
 import invest.com.swapp.viewmodel.AuthViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
+import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity(){
 
     private var connectivityManager: ConnectivityManager = ConnectivityManager()
     private lateinit var authViewModel:AuthViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar!!.hide()
+        App.context = applicationContext
 
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         authViewModel.response.observe(this@LoginActivity, Observer {
-            if(it.contains("jwt")){
+
+
+
+            if(it.contains("Successful")){
                 startActivity(Intent(this,MasterActivity::class.java))
-                finish()
             }else{
                 toast("Authentication error, please check your credential")
                 txt_username.text!!.clear()
