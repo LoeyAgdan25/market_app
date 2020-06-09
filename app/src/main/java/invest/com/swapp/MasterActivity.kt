@@ -108,6 +108,8 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             startActivity(Intent(this, StockItemListActivity::class.java))
         }
 
+
+
 //        val handler = Handler()
 //        val runnable = Runnable {
 //            GlobalScope.launch {
