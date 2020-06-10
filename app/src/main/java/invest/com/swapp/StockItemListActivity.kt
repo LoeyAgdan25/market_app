@@ -62,10 +62,6 @@ class StockItemListActivity : AppCompatActivity() {
                 stockitem_list!!.adapter!!.notifyDataSetChanged()
         })
 
-        GlobalScope.launch {
-            stockViewModel.getStocks()
-        }
-
     }
 
     //search menu

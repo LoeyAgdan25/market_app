@@ -2,7 +2,6 @@ package invest.com.swapp.work
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -13,10 +12,12 @@ import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class StocksUpdateService: Service() {
@@ -28,7 +29,7 @@ class StocksUpdateService: Service() {
     //todo:- do data update the db and save...
     override fun onCreate() {
         super.onCreate()
-        Toast.makeText(this,"service started",Toast.LENGTH_LONG).show()
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -83,22 +84,40 @@ class StocksUpdateService: Service() {
                     }
                 }
 
-        //todo:if 1-5 do data update
         //todo:else get update from server any push notification for ads.!!!
+        //todo:- add when device is restarted
+        val timeZone: TimeZone = TimeZone.getTimeZone("GMT+8:00")
+        val c: Calendar = Calendar.getInstance(timeZone)
+        val day = c.get(Calendar.DAY_OF_WEEK)
+        val hour: Int = c.get(Calendar.HOUR_OF_DAY)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            while (isServiceStarted){
-                launch(Dispatchers.IO){
-                    doDataUpdate()
+        Log.d("_timezoneValue", "day:$day hour: $hour")
+        //todo:- check if database is empty to update once
+
+        if(day in 2..6) {
+            if (hour in 8..15) {
+                GlobalScope.launch(Dispatchers.IO) {
+                    while (isServiceStarted) {
+                        launch(Dispatchers.IO) {
+                            doDataUpdate()
+                        }
+                        delay(60000)
+                    }
                 }
-                delay(1000)
+            }else{
+                stopService()
             }
+        }else{
+            //check if database is empty
+            //before stopping the service
+            stopService()
         }
-
     }
 
-    private fun doDataUpdate(){
-        Log.d("_service", "do data update...")
+    private suspend fun doDataUpdate(){
+        val stockViewModel = StocksViewModel(application)
+        stockViewModel.getStocks()
+
     }
 
     private fun stopService(){
