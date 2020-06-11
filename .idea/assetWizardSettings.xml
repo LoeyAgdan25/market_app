@@ -149,7 +149,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/alert/ic_error_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_trending_up_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -181,8 +181,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
-                                      <entry key="outputName" value="ic_error_mode" />
+                                      <entry key="outputName" value="ic_trend_up" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -192,7 +191,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="outputIconType" value="NOTIFICATION" />
                           </map>
                         </option>
                       </PersistentState>

@@ -3,6 +3,7 @@ package invest.com.swapp
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
 import androidx.work.*
@@ -27,9 +28,14 @@ class App : Application() {
         val workManager = WorkManager.getInstance(this)
         //workManager.enqueue(work)
 
-        actionOnService(Actions.START)
 
+        //check if there is internet connectivity
+        if(invest.com.swapp.helper.ConnectivityManager().isConnectingToInternet(this)){
+            actionOnService(Actions.START)
+        }
     }
+
+
 
     private fun actionOnService(action: Actions) {
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return

@@ -1,30 +1,37 @@
 package invest.com.swapp.work
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.LifecycleService
+import invest.com.swapp.MasterActivity
+import invest.com.swapp.R
+import invest.com.swapp.db.room.WatchedDao
+import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class StocksUpdateService: Service() {
+class StocksUpdateService: LifecycleService(){
 
     private var wakeLock: PowerManager.WakeLock? = null
     private var isServiceStarted = false
     val CHANNEL_ID = "ForegroundServiceChannel"
+
 
     //todo:- do data update the db and save...
     override fun onCreate() {
@@ -32,7 +39,10 @@ class StocksUpdateService: Service() {
 
     }
 
+    private var mainIntent: Intent? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        mainIntent = intent
         if (intent != null) {
             val action = intent.action
             when(action){
@@ -42,21 +52,16 @@ class StocksUpdateService: Service() {
         } else {
         }
 
-        Log.d("_service","service should started...")
 
+
+        Log.d("_service","service should started...")
         return START_NOT_STICKY
     }
 
 
-
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Toast.makeText(this,"service destroy",Toast.LENGTH_LONG).show()
-
     }
 
     private fun startService(){
@@ -93,13 +98,13 @@ class StocksUpdateService: Service() {
 
         Log.d("_timezoneValue", "day:$day hour: $hour")
         //todo:- check if database is empty to update once
-
+        val stockViewModel = StocksViewModel(application)
         if(day in 2..6) {
             if (hour in 8..15) {
                 GlobalScope.launch(Dispatchers.IO) {
                     while (isServiceStarted) {
                         launch(Dispatchers.IO) {
-                            doDataUpdate()
+                            stockViewModel.getStocks()
                         }
                         delay(60000)
                     }
@@ -112,13 +117,101 @@ class StocksUpdateService: Service() {
             //before stopping the service
             stopService()
         }
+
+            stockViewModel.watchedStocks.observe(this, androidx.lifecycle.Observer {
+                            for(watch: StocksWatched in it){
+                                if(watch.buy_price == watch.price.toFloat()){
+                                    addToNotifyList("${watch.symbol}:${watch.price}:buy")
+                                }
+
+                                if(watch.sell_price == watch.price.toFloat()){
+                                    addToNotifyList("${watch.symbol}:${watch.price}:sell")
+                                }
+                            }
+            })
+
+
+
+
+
     }
 
-    private suspend fun doDataUpdate(){
-        val stockViewModel = StocksViewModel(application)
-        stockViewModel.getStocks()
+    var notifyList = ArrayList<String>()
+
+    fun addToNotifyList(notifyString: String){
+        //check if this is already in notification
+        //ad if not
+        if(!notifyList.contains(notifyString)){
+            notifyList.add(notifyString)
+            NotificationManagerCompat.from(this).apply {
+                notify(notifyList.count()+1, createNotification("symbol $notifyString"))
+            }
+        }
+    }
+
+    private fun generateNotify(notify: String){
 
     }
+
+    private fun createNotification(text:String): Notification {
+        val notificationChannelId = "PRICE_CHANNEL"
+
+        // depending on the Android API that we're dealing with we will have
+        // to use a specific method to create the notification
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                    notificationChannelId,
+                    "Endless Service notifications channel",
+                    NotificationManager.IMPORTANCE_HIGH
+            ).let {
+                it.description = text
+                it.enableLights(true)
+                it.lightColor = Color.RED
+                it.enableVibration(true)
+                it.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+                it
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val pendingIntent: PendingIntent = Intent(this, MasterActivity::class.java).let { notificationIntent ->
+            PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        }
+
+        val builder: Notification.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
+                this,
+                notificationChannelId
+        ) else Notification.Builder(this)
+
+        return builder
+                .setContentTitle(text)
+                .setContentText("$text")
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.ic_trend_up)
+                .setTicker("Ticker text")
+                .setGroup("GROUP_NOTIFICATION")
+                .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
+                .build()
+    }
+
+    private fun groupNotification(c: Int){
+        //val notification1 = createNotification("Symbol 1")
+        //val notification2 = createNotification("Symbol 2")
+        //val notification3 = createNotification("Symbol 3")
+
+        if(c != 0) {
+
+            //todo do group later...
+            NotificationManagerCompat.from(this).apply {
+                for (x in 1..c) {
+                    notify(x, createNotification("symbol $x"))
+                }
+            }
+        }
+    }
+
+
 
     private fun stopService(){
         try {

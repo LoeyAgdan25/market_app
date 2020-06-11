@@ -18,6 +18,7 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
     val retStocks = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
     val allStocks: LiveData<List<Stock2>> = stocksDao.getAllStocks()
     val allWatched: LiveData<List<StocksWatched>> = watchedDao.getAllWatched() //todo: must get current price and change...
+    val watchedNotify = listOf<Stock2>()
 
     suspend fun insert(stock: Stock2){
         stocksDao.insert(stock)
