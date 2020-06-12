@@ -1,4 +1,4 @@
-package invest.com.swapp.work
+package invest.com.swapp.service
 
 import android.app.*
 import android.content.Context
@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
-import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
@@ -15,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
 import invest.com.swapp.MasterActivity
 import invest.com.swapp.R
-import invest.com.swapp.db.room.WatchedDao
 import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +29,7 @@ class StocksUpdateService: LifecycleService(){
     private var wakeLock: PowerManager.WakeLock? = null
     private var isServiceStarted = false
     val CHANNEL_ID = "ForegroundServiceChannel"
+    var stockViewModel: StocksViewModel? = null
 
 
     //todo:- do data update the db and save...
@@ -49,10 +48,7 @@ class StocksUpdateService: LifecycleService(){
                 Actions.START.name -> startService()
                 Actions.STOP.name -> stopService()
             }
-        } else {
-        }
-
-
+        } else {}
 
         Log.d("_service","service should started...")
         return START_NOT_STICKY
@@ -71,13 +67,11 @@ class StocksUpdateService: LifecycleService(){
         if(isServiceStarted) return
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
-                .setContentText("running in background updates")
-//                .setSmallIcon(R.drawable.ic_stat_name)
-//                .setContentIntent(pendingIntent)
+                .setContentTitle("PesoMetrics")
+                .setContentText("Updating the market price...")
+                .setSmallIcon(R.drawable.ic_trend_up)
+//                .setContentIntent(pendingIntent) //todo:do the intent pending
                 .build()
-
-
         startForeground(1, notification)
 
         isServiceStarted = true
@@ -98,13 +92,13 @@ class StocksUpdateService: LifecycleService(){
 
         Log.d("_timezoneValue", "day:$day hour: $hour")
         //todo:- check if database is empty to update once
-        val stockViewModel = StocksViewModel(application)
+        stockViewModel = StocksViewModel(application)
         if(day in 2..6) {
-            if (hour in 8..15) {
+            if (hour in 8..5) {
                 GlobalScope.launch(Dispatchers.IO) {
                     while (isServiceStarted) {
                         launch(Dispatchers.IO) {
-                            stockViewModel.getStocks()
+                            stockViewModel!!.getStocks()
                         }
                         delay(60000)
                     }
@@ -118,7 +112,7 @@ class StocksUpdateService: LifecycleService(){
             stopService()
         }
 
-            stockViewModel.watchedStocks.observe(this, androidx.lifecycle.Observer {
+            stockViewModel!!.watchedStocks.observe(this, androidx.lifecycle.Observer {
                             for(watch: StocksWatched in it){
                                 if(watch.buy_price == watch.price.toFloat()){
                                     addToNotifyList("${watch.symbol}:${watch.price}:buy")
@@ -130,10 +124,6 @@ class StocksUpdateService: LifecycleService(){
                             }
             })
 
-
-
-
-
     }
 
     var notifyList = ArrayList<String>()
@@ -144,17 +134,14 @@ class StocksUpdateService: LifecycleService(){
         if(!notifyList.contains(notifyString)){
             notifyList.add(notifyString)
             NotificationManagerCompat.from(this).apply {
-                notify(notifyList.count()+1, createNotification("symbol $notifyString"))
+                notify(notifyList.count()+1, createNotification("$notifyString"))
             }
         }
     }
 
-    private fun generateNotify(notify: String){
-
-    }
-
     private fun createNotification(text:String): Notification {
         val notificationChannelId = "PRICE_CHANNEL"
+        val arr = text.split(":").toTypedArray()
 
         // depending on the Android API that we're dealing with we will have
         // to use a specific method to create the notification
@@ -184,13 +171,13 @@ class StocksUpdateService: LifecycleService(){
                 notificationChannelId
         ) else Notification.Builder(this)
 
+
         return builder
-                .setContentTitle(text)
-                .setContentText("$text")
+                .setContentTitle(arr[2].toUpperCase() + " ALERT for " + arr[0] )
+                .setContentText("Stock at price PHP " + arr[1])
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_trend_up)
-                .setTicker("Ticker text")
-                .setGroup("GROUP_NOTIFICATION")
+                .setTicker("")
                 .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
                 .build()
     }

@@ -40,6 +40,10 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
         watchedDao.insert(watched)
     }
 
+    suspend fun getWatched(symbol:String){
+        watchedDao.getWatchedStock(symbol)
+    }
+
     suspend fun getAllStocks(){
 
         //todo:- move to work manager for everyday update of price

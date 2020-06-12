@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         android:name=".App"
         >
-        <service android:name=".work.StocksUpdateService"
+        <service android:name=".service.StocksUpdateService"
             android:enabled="true"
             android:exported="false"
             />

@@ -54,6 +54,10 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
        return repository.getStock(symbol)
     }
 
+    suspend fun getWatched(symbol: String) {
+        return repository.getWatched(symbol)
+    }
+
     suspend fun updateWatched(watched: StocksWatched){
         repository.updateWatched(watched)
     }

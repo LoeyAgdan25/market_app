@@ -19,4 +19,8 @@ interface WatchedDao {
     @Delete
     suspend fun deleteWatched(vararg watched: StocksWatched)
 
+    //todo get watched
+    @Query("SELECT * FROM stocks_watched_table WHERE symbol = :symbol")
+    fun getWatchedStock(symbol:String): StocksWatched
+
 }

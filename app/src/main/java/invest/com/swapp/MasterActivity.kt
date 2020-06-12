@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.toast
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -83,18 +84,17 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 adapter = WatchedRecyclerAdapter(it)
                 adapter.watchListener = this
                 recyclerViewMain.adapter = adapter
+                            for(watch: StocksWatched in it){
+                                if(watch.buy_price == watch.price.toFloat()){
+                                    //toast("buy price marked is reached ${watch.symbol}")
+                                    //todo:do same logic as in service
 
-            //todo:- move to service
-            //this has issue on looping 5 times
-            //                for(watch: StocksWatched in it){
-            //                    if(watch.buy_price == watch.price.toFloat()){
-            //                        toast("buy price marked is reached ${watch.symbol}")
-            //                    }
-            //
-            //                    if(watch.sell_price == watch.price.toFloat()){
-            //                        toast("buy price marked is reached ${watch.symbol}")
-            //                    }
-            //                }
+                                }
+
+                                if(watch.sell_price == watch.price.toFloat()){
+                                    //toast("buy price marked is reached ${watch.symbol}")
+                                }
+                            }
 
                 if(it.isEmpty()){
                     empty_view.visibility = View.VISIBLE
@@ -107,51 +107,6 @@ class MasterActivity : AppCompatActivity(), WatchListener{
         btn_search.setOnClickListener {
             startActivity(Intent(this, StockItemListActivity::class.java))
         }
-
-
-
-//        val handler = Handler()
-//        val runnable = Runnable {
-//            GlobalScope.launch {
-//                stockViewModel.getStocks()
-//            }
-//        }
-//
-//
-//        //        Uncomment to run on API level 23
-//        //        this will be added to background service
-//                var day = Date()
-//                val londonZone = ZoneId.of("Asia/Manila")
-//                val philLocalDate = ZonedDateTime.now(londonZone)
-//
-//                //toast("day is ${day.day} hour is ${day.hours}  $philLocalDate")
-//                Log.d("_day","day is ${day.day} hour is ${day.hours}  ${philLocalDate.dayOfWeek}  ${philLocalDate.hour}")
-//
-//                //move to view model
-//                //add to broadcast receiver...
-//                if((!philLocalDate.equals("SUNDAY") || !philLocalDate.equals("SATURDAY"))){
-//                    if(philLocalDate.hour in 7..4){
-//                        //timer.start()
-//                        val timer: Job = update(6000,5000){
-//                            handler.post(runnable)
-//                        }
-//                        //check api version
-//                        //timer.start()
-//                    }
-//                }
-    }
-
-    //time
-    private inline fun update(delayMillis: Long = 0, repeatMillis: Long = 0, crossinline action: () -> Unit) = GlobalScope.launch {
-        delay(delayMillis)
-        if (repeatMillis > 0) {
-            while (true) {
-                action()
-                delay(repeatMillis)
-            }
-        } else {
-            action()
-        }
     }
 
     override fun onResume() {
@@ -160,13 +115,6 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
-
-    private fun checkConnectivity(context: Context): Boolean {
-            val cm = ConnectivityManager()
-            getSystemService(Context.CONNECTIVITY_SERVICE)
-            return cm.isConnectingToInternet(this)
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
             menuInflater.inflate(
@@ -184,11 +132,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     finish()
                     true
                 }
-
-                R.id.home ->{
-                    true
-                }
-
+                R.id.home ->{   true    }
                 R.id.news_menu -> {
                     startActivity(Intent(baseContext, NewsActivity::class.java))
                     true
@@ -237,6 +181,5 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             i.putExtra("stockDetail", stock)
             startActivity(i)
         }
-
     }
 }

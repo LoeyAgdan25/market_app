@@ -3,11 +3,10 @@ package invest.com.swapp
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
 import androidx.work.*
-import invest.com.swapp.work.*
+import invest.com.swapp.service.*
 import java.util.concurrent.TimeUnit
 
 //import androidx.security.crypto.EncryptedSharedPreferences
