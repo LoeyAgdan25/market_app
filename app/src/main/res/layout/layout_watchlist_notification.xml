@@ -26,12 +26,12 @@
             android:textStyle="bold"
             android:text="Price stock watchlist alert on "
             />
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"
-            android:text="Open Broker website"
-            />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            android:text="Open Broker website"-->
+<!--            />-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

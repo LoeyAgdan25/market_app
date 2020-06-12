@@ -2,8 +2,6 @@ package invest.com.swapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
-import androidx.paging.PagedList
-import androidx.paging.toLiveData
 import invest.com.swapp.db.room.StocksRoomDatabase
 import invest.com.swapp.model.HistoryData
 import invest.com.swapp.model.Stock
@@ -12,6 +10,7 @@ import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.repository.StocksRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
 
 class StocksViewModel(application: Application): AndroidViewModel(application){
 
@@ -64,6 +63,17 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
 
     suspend fun deleteWatched(watched: StocksWatched){
         repository.deleteWatched(watched)
+    }
+
+    fun buildWatchlistAlertMessage(list: List<String>):String{
+        var strBuff = StringBuffer()
+        for(l in list){
+            var arr = l.split(":")
+
+            strBuff.append(arr[2].toUpperCase() + " alert for " + arr[0] + " at price " + arr[1] + "\n")
+        }
+
+        return strBuff.toString()
     }
 
 

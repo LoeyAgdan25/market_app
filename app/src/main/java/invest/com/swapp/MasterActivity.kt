@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.ads.AdRequest
@@ -49,6 +50,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
     private lateinit var adapter: WatchedRecyclerAdapter
     lateinit var mAdView : AdView
     var watchListener:WatchListener? = null
+    val listen: MutableLiveData<List<String>> = MutableLiveData()
 
     /*mvvm*/
     private lateinit var stockViewModel: StocksViewModel
@@ -106,57 +108,59 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     empty_view.visibility = View.GONE
                 }
 
+            listen.value = notifyList
+
         })
 
         btn_search.setOnClickListener {
             startActivity(Intent(this, StockItemListActivity::class.java))
         }
 
+        listen.observe(this, Observer {
+            Log.d("listener", "count ${it.size}")
+            if(it.isNotEmpty()){
+                if(!notifyWatched) {
+                    notifyWatchedPrice()
+                }
+            }
+        })
 
     }
 
     var notifyList = ArrayList<String>()
 
-    fun addToNotifyList(notifyString: String){
-
-        if(notifyList.count() > 0){
-            notifyWatchedPrice()
-        }
-
+    private fun addToNotifyList(notifyString: String){
         if(!notifyList.contains(notifyString)){
             notifyList.add(notifyString)
-
         }
     }
+
+    var notifyWatched = false
 
     fun notifyWatchedPrice(){
         var view:View = layoutInflater.inflate(R.layout.layout_watchlist_notification,null)
         //todo: add this inflater to view up as notification, to clear
+
+        view.watchlist_price_alert.text = stockViewModel.buildWatchlistAlertMessage(listen.value!!)
+
         var alertPrice = MaterialAlertDialogBuilder(MasterActivity@this,R.style.AlertDialogTheme).setTitle("Watchlist Alert")
                 .setView(view)
-                .setPositiveButton("Save"){
-                    dialog, which ->
-                    var message = view.watchlist_price_alert.text.toString()
-
-
-                    GlobalScope.launch {
-
-                    }
+                .setPositiveButton("Open Broker"){
+                    dialog, _ ->
+                    //call browser open same as in news opening...
 
                 }
-                .setNegativeButton("Remove"){
-                    dialog, which ->
-                    GlobalScope.launch {
-
-                    }
+                .setNegativeButton("Cancel"){
+                    dialog, _ ->
+                    dialog.cancel()
                 }
 
-        if(!alertPrice.create().isShowing){
+        alertPrice.setCancelable(false)
+
+        //if(!alertPrice.create().isShowing){
             alertPrice.show()
-        }else{
-            //if there is changes
-            //alertPrice.setMessage("notifiy changes")
-        }
+            notifyWatched = true
+        //}
     }
 
     override fun onResume() {
@@ -215,12 +219,17 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                         }
 
                     }
-                    .setNegativeButton("Remove"){
+                    .setNegativeButton("Unwatched"){
                         dialog, which ->
                         GlobalScope.launch {
                             stockViewModel.deleteWatched(stockWatched)
                         }
                     }
+//                    .setNeutralButton("Cancel"){
+//                        dialog, _ ->
+//                                    dialog.cancel()
+//                            }
+//                            .setCancelable(false)
                     .show()
     }
 

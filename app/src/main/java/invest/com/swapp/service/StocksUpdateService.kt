@@ -61,7 +61,7 @@ class StocksUpdateService: LifecycleService(){
 
     override fun onDestroy() {
         super.onDestroy()
-        Toast.makeText(this,"service destroy",Toast.LENGTH_LONG).show()
+        //Toast.makeText(this,"service destroy",Toast.LENGTH_LONG).show()
     }
 
     private fun startService(){
@@ -97,8 +97,9 @@ class StocksUpdateService: LifecycleService(){
         Log.d("_timezoneValue", "day:$day hour: $hour")
         //todo:- check if database is empty to update once
         stockViewModel = StocksViewModel(application)
+        //todo: set launch date inside view model
         if(day in 2..6) {
-//            if (hour in 8..17) {
+            if (hour in 8..17) {
                 GlobalScope.launch(Dispatchers.IO) {
                     while (isServiceStarted) {
                         launch(Dispatchers.IO) {
@@ -107,9 +108,9 @@ class StocksUpdateService: LifecycleService(){
                         delay(60000)
                     }
                 }
-//            }else{
-//                stopService()
-//            }
+            }else{
+                stopService()
+            }
         }else{
             //check if database is empty
             //before stopping the service
