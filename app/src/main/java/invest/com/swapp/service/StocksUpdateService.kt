@@ -1,10 +1,14 @@
 package invest.com.swapp.service
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Binder
 import android.os.Build
 import android.os.PowerManager
 import android.util.Log
@@ -94,7 +98,7 @@ class StocksUpdateService: LifecycleService(){
         //todo:- check if database is empty to update once
         stockViewModel = StocksViewModel(application)
         if(day in 2..6) {
-            if (hour in 8..5) {
+//            if (hour in 8..17) {
                 GlobalScope.launch(Dispatchers.IO) {
                     while (isServiceStarted) {
                         launch(Dispatchers.IO) {
@@ -103,9 +107,9 @@ class StocksUpdateService: LifecycleService(){
                         delay(60000)
                     }
                 }
-            }else{
-                stopService()
-            }
+//            }else{
+//                stopService()
+//            }
         }else{
             //check if database is empty
             //before stopping the service

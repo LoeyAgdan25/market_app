@@ -1,5 +1,6 @@
 package invest.com.swapp
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -27,6 +28,7 @@ import invest.com.swapp.viewmodel.AuthViewModel
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
+import kotlinx.android.synthetic.main.layout_watchlist_notification.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,6 +36,7 @@ import org.jetbrains.anko.toast
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import kotlin.collections.ArrayList
 
 //todo:- transfer to new master activity
 // fragmented view pager2
@@ -88,11 +91,12 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                                 if(watch.buy_price == watch.price.toFloat()){
                                     //toast("buy price marked is reached ${watch.symbol}")
                                     //todo:do same logic as in service
-
+                                    addToNotifyList("${watch.symbol}:${watch.price}:buy")
                                 }
 
                                 if(watch.sell_price == watch.price.toFloat()){
                                     //toast("buy price marked is reached ${watch.symbol}")
+                                    addToNotifyList("${watch.symbol}:${watch.price}:sell")
                                 }
                             }
 
@@ -106,6 +110,52 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
         btn_search.setOnClickListener {
             startActivity(Intent(this, StockItemListActivity::class.java))
+        }
+
+
+    }
+
+    var notifyList = ArrayList<String>()
+
+    fun addToNotifyList(notifyString: String){
+
+        if(notifyList.count() > 0){
+            notifyWatchedPrice()
+        }
+
+        if(!notifyList.contains(notifyString)){
+            notifyList.add(notifyString)
+
+        }
+    }
+
+    fun notifyWatchedPrice(){
+        var view:View = layoutInflater.inflate(R.layout.layout_watchlist_notification,null)
+        //todo: add this inflater to view up as notification, to clear
+        var alertPrice = MaterialAlertDialogBuilder(MasterActivity@this,R.style.AlertDialogTheme).setTitle("Watchlist Alert")
+                .setView(view)
+                .setPositiveButton("Save"){
+                    dialog, which ->
+                    var message = view.watchlist_price_alert.text.toString()
+
+
+                    GlobalScope.launch {
+
+                    }
+
+                }
+                .setNegativeButton("Remove"){
+                    dialog, which ->
+                    GlobalScope.launch {
+
+                    }
+                }
+
+        if(!alertPrice.create().isShowing){
+            alertPrice.show()
+        }else{
+            //if there is changes
+            //alertPrice.setMessage("notifiy changes")
         }
     }
 
