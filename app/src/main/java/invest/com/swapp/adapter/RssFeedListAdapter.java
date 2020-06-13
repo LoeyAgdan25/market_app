@@ -70,7 +70,7 @@ public class RssFeedListAdapter
 
         ((TextView)holder.rssFeedView.findViewById(R.id.linkText)).setVisibility(View.GONE);
         try {
-            Picasso.with(context).load(new Content().execute(rssFeedModel.title, position + "").get()).into(img);
+            //Picasso.with(context).load(new Content().execute(rssFeedModel.title, position + "").get()).into(img);
         }catch (Exception ex){
 
         }

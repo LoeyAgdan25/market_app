@@ -69,7 +69,6 @@ class StocksViewModel(application: Application): AndroidViewModel(application){
         var strBuff = StringBuffer()
         for(l in list){
             var arr = l.split(":")
-
             strBuff.append(arr[2].toUpperCase() + " alert for " + arr[0] + " at price " + arr[1] + "\n")
         }
 

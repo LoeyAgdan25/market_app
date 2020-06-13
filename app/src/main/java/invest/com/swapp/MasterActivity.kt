@@ -1,43 +1,33 @@
 package invest.com.swapp
 
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import invest.com.swapp.adapter.WatchedRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
-import invest.com.swapp.helper.ConnectivityManager
 import invest.com.swapp.listener.WatchListener
 import invest.com.swapp.model.StocksWatched
-import invest.com.swapp.security.SSharedPreferenceManager
 import invest.com.swapp.viewmodel.AuthViewModel
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.android.synthetic.main.layout_watchlist_notification.view.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.toast
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.*
-import kotlin.collections.ArrayList
 
 //todo:- transfer to new master activity
 // fragmented view pager2
@@ -148,6 +138,10 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 .setPositiveButton("Open Broker"){
                     dialog, _ ->
                     //call browser open same as in news opening...
+                    val intent = Intent(this, ViewNews::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.putExtra("link", "https://www.colfinancial.com")
+                    startActivity(intent)
 
                 }
                 .setNegativeButton("Cancel"){

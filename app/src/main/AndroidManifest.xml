@@ -29,7 +29,11 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".ViewNews" />
+        <activity android:name=".ViewNews" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="invest.com.swapp.MasterActivity" />
+        </activity>
         <activity android:name=".NewsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -10,7 +10,7 @@ android:id="@+id/linear_news_row"
     android:layout_height="150dp"
     android:id="@+id/img_feature_news"
     android:layout_marginBottom="10dp"
-    android:visibility="visible"
+    android:visibility="gone"
     android:scaleType="fitXY"
     />
 <TextView
