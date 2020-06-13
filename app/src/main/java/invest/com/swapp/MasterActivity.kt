@@ -160,7 +160,10 @@ class MasterActivity : AppCompatActivity(), WatchListener{
     override fun onResume() {
         super.onResume()
         if(!authViewModel.userRepository.isCredentialValid()){
-            startActivity(Intent(this, LoginActivity::class.java))
+            var i = Intent(this, LoginActivity::class.java)
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(i)
         }
     }
 
@@ -176,7 +179,10 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             return when(item!!.itemId){
                 R.id.logout_menu -> {
                     authViewModel.logout()
-                    startActivity(Intent(baseContext, LoginActivity::class.java))
+                    var i = Intent(baseContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(i)
                     finish()
                     true
                 }
@@ -185,9 +191,12 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     startActivity(Intent(baseContext, NewsActivity::class.java))
                     true
                 }
+
                 else -> super.onOptionsItemSelected(item)
             }
     }
+
+
 
     override fun onWatchedAction(stockWatched: StocksWatched) {
             var view:View = layoutInflater.inflate(R.layout.layout_buy_sell_prompt,null)

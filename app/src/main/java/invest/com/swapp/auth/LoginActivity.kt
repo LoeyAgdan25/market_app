@@ -39,7 +39,9 @@ class LoginActivity : AppCompatActivity(){
 
 
             if(it.contains("Successful")){
-                startActivity(Intent(this,MasterActivity::class.java))
+                var intent = Intent(this,MasterActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }else{
                 toast("Authentication error, please check your credential")
                 txt_username.text!!.clear()
@@ -98,6 +100,11 @@ class LoginActivity : AppCompatActivity(){
 
     private fun doLogin(){
         GlobalScope.launch { authViewModel.login(txt_username.text.toString(), password.text.toString())}
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        //do nothing
     }
 
     private fun attemptSignup(){
