@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MasterActivity"
-    android:background="@color/browser_actions_bg_grey"
-    >
+    android:background="@color/browser_actions_bg_grey">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMain"
         android:layout_width="match_parent"

@@ -180,12 +180,17 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     finish()
                     true
                 }
-                R.id.home ->{   true    }
+                android.R.id.home ->{
+                    var view = layoutInflater.inflate(R.layout.layout_user_profile_account, null)
+                    MaterialAlertDialogBuilder(MasterActivity@this, R.style.AlertDialogTheme)
+                            .setView(view)
+                            .show()
+                    true
+                }
                 R.id.news_menu -> {
                     startActivity(Intent(baseContext, NewsActivity::class.java))
                     true
                 }
-
                 else -> super.onOptionsItemSelected(item)
             }
     }
