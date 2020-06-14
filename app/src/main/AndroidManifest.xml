@@ -48,19 +48,17 @@
             android:value="ca-app-pub-4268048783942748~4717310066" />
 
         <activity
-            android:name=".MasterActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".MasterActivity">
+
         </activity>
         <activity
             android:name=".auth.LoginActivity"
             android:label="swapp"
-            android:launchMode="singleTask"
             >
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".auth.SignupActivity"

@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity(){
 
             if(it.contains("Successful")){
                 var intent = Intent(this,MasterActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }else{
                 toast("Authentication error, please check your credential")
@@ -105,6 +105,16 @@ class LoginActivity : AppCompatActivity(){
     override fun onBackPressed() {
         super.onBackPressed()
         //do nothing
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(authViewModel.userRepository.isCredentialValid()){
+            var i = Intent(this, MasterActivity::class.java)
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(i)
+        }
     }
 
     private fun attemptSignup(){

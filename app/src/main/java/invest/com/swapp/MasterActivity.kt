@@ -159,12 +159,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     override fun onResume() {
         super.onResume()
-        if(!authViewModel.userRepository.isCredentialValid()){
-            var i = Intent(this, LoginActivity::class.java)
-//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(i)
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -180,8 +175,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 R.id.logout_menu -> {
                     authViewModel.logout()
                     var i = Intent(baseContext, LoginActivity::class.java)
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(i)
                     finish()
                     true
