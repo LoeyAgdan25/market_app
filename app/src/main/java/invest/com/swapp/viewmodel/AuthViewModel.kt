@@ -3,7 +3,6 @@ package invest.com.swapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import invest.com.swapp.api.SignInBody
 import invest.com.swapp.api.UserBody
 import invest.com.swapp.repository.UserRepository

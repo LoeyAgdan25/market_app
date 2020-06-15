@@ -52,8 +52,14 @@ class SignupActivity : AppCompatActivity() {
 
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         authViewModel.response.observe(this, Observer {
-            //toast("value $it")
-            //TODO:- Add validation here...
+            if(it.contains("success")){
+                toast("Congratulations your account is created.")
+                var intent = Intent(this, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }else{
+                toast("Oops. There something wrong. Please try again later.")
+            }
         })
 
         btn_signup.setOnClickListener{

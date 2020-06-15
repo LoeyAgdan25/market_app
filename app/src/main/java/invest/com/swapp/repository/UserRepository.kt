@@ -53,6 +53,8 @@ class UserRepository(app: Application){
             }
         //}
         //process.wait()
+
+        Log.d("_signupResult", result)
         return result
     }
 

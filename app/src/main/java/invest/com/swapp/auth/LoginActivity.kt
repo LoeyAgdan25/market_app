@@ -36,8 +36,6 @@ class LoginActivity : AppCompatActivity(){
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         authViewModel.response.observe(this@LoginActivity, Observer {
 
-
-
             if(it.contains("Successful")){
                 var intent = Intent(this,MasterActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
