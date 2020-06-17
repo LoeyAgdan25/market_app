@@ -53,15 +53,27 @@
                 android:hint="My broker URL"
                 android:id="@+id/txt_broker_url"
                 android:inputType="textUri"
-                android:text="https://"
-                />
+                android:text="https://www.colfinancial.com"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_gravity="center"
-            >
-        </com.google.android.material.button.MaterialButton>
+<!--        <RelativeLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal" >-->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Save"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_gravity="center">-->
+<!--        </com.google.android.material.button.MaterialButton>-->
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/account_open_broker"-->
+<!--                android:text="Open"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_gravity="center">-->
+<!--            </com.google.android.material.button.MaterialButton>-->
+<!--        </RelativeLayout>-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

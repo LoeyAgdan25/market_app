@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import invest.com.swapp.adapter.WatchedRecyclerAdapter
 import invest.com.swapp.auth.LoginActivity
@@ -25,6 +26,7 @@ import invest.com.swapp.viewmodel.AuthViewModel
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
+import kotlinx.android.synthetic.main.layout_user_profile_account.*
 import kotlinx.android.synthetic.main.layout_watchlist_notification.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -115,6 +117,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             }
         })
 
+
     }
 
     var notifyList = ArrayList<String>()
@@ -138,10 +141,8 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 .setPositiveButton("Open Broker"){
                     dialog, _ ->
                     //call browser open same as in news opening...
-                    val intent = Intent(this, ViewNews::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    intent.putExtra("link", "https://www.colfinancial.com")
-                    startActivity(intent)
+                    //todo:put this to shared preference link value
+                    openBroker()
 
                 }
                 .setNegativeButton("Cancel"){
@@ -184,7 +185,16 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     var view = layoutInflater.inflate(R.layout.layout_user_profile_account, null)
                     MaterialAlertDialogBuilder(MasterActivity@this, R.style.AlertDialogTheme)
                             .setView(view)
+                            .setPositiveButton("Save"){
+                                dialog, which ->
+                                //save to shared preference
+                            }
+                            .setNegativeButton("Open"){
+                                dialog, which ->
+                                openBroker()
+                            }
                             .show()
+
                     true
                 }
                 R.id.news_menu -> {
@@ -242,5 +252,12 @@ class MasterActivity : AppCompatActivity(), WatchListener{
             i.putExtra("stockDetail", stock)
             startActivity(i)
         }
+    }
+
+    fun openBroker(){
+        val intent = Intent(this, ViewNews::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("link", "https://www.colfinancial.com") //get this from shared preference
+        startActivity(intent)
     }
 }
