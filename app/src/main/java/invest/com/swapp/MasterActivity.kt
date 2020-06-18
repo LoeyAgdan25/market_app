@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -195,8 +196,11 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 android.R.id.home ->{
                     var view = layoutInflater.inflate(R.layout.layout_user_profile_account, null)
                     var txtLink = view.findViewById<TextInputEditText>(R.id.txt_broker_url)
+                    var txtEmail = view.findViewById<TextView>(R.id.tv_email)
 
                     txtLink.setText(pref.getString("_broker",""))
+                    txtEmail.text = pref.getString("email","")
+
 
                     MaterialAlertDialogBuilder(MasterActivity@this, R.style.AlertDialogTheme)
                             .setView(view)
