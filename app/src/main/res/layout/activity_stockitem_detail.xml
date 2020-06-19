@@ -59,48 +59,42 @@
         app:srcCompat="@android:drawable/stat_notify_chat"
         android:visibility="gone"
         />
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="bottom"
-        >
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_watch_invest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:background="@color/design_default_color_primary"
             android:elevation="0dp"
-            android:layout_margin="5dp"
             android:text="Invest"
             android:textColor="#ffff"
-            android:visibility="gone"
-            android:textSize="20sp" />
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_watch_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorPrimary"
-            android:elevation="0dp"
-            android:layout_margin="5dp"
-            android:text="Watch Stock"
-            android:drawableLeft="@drawable/ic_watched"
-            android:textColor="#ffff"
-            android:textAllCaps="false"
-            app:cornerRadius="15dp"
-            android:layout_marginBottom="20dp"
-            />
-        <Button
-            android:id="@+id/btn_watch_remove"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="0dp"
-            android:background="@drawable/button_bg_secondary"
-            android:layout_margin="5dp"
-            android:text="Remove"
-            android:visibility="gone"
-            android:textAllCaps="false"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
+
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_watch_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_watched"
+        android:elevation="0dp"
+        android:text="Watch"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        app:cornerRadius="15dp"
+        app:layout_anchor="@+id/linearLayout2"
+        app:layout_anchorGravity="center" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

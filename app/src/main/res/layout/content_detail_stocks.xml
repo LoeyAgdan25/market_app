@@ -31,7 +31,7 @@
             <TextView
                 android:id="@+id/txt_company_description"
                 android:layout_width="200dp"
-                android:height="100dp"
+                android:height="45dp"
                 android:layout_height="wrap_content"
                 android:scrollHorizontally="false"
                 android:text="Company Description"
@@ -40,6 +40,39 @@
                 style="@style/Base.TextAppearance.AppCompat.Small"
                 android:layout_marginLeft="10dp"
                 />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_company_description"
+                    >
+                <com.google.android.material.button.MaterialButton
+
+                    android:id="@+id/btn_view_fundamentals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    app:icon="@drawable/ic_action_news"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:cornerRadius="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="Funda."
+                    android:textSize="10sp"
+                    android:textAllCaps="false"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_view_news"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:elevation="0dp"
+                    app:icon="@drawable/ic_action_news"
+                    app:cornerRadius="15dp"
+                    android:textAllCaps="false"
+                    android:layout_below="@id/txt_company_description"
+                    android:layout_marginLeft="10dp"
+                    android:text="News"
+                    android:textSize="10sp"
+                    />
+                </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -93,6 +126,7 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="right"
                 />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

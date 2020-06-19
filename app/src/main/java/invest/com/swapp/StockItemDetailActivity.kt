@@ -37,6 +37,8 @@ class StockItemDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_stockitem_detail)
         setSupportActionBar(toolbar)
 
+        //todo:- convert to view pager fragment
+
         stockViewModel = ViewModelProviders.of(this).get(StocksViewModel::class.java)
         stockViewModel.historyData.observe(this, Observer {
             setupCandle2(it)
