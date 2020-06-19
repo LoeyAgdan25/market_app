@@ -30,6 +30,7 @@ import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.android.synthetic.main.layout_watchlist_notification.view.*
+import kotlinx.android.synthetic.main.watch_list_content.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
@@ -95,13 +96,27 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 recyclerViewMain!!.adapter!!.notifyDataSetChanged()
                             for(watch: StocksWatched in it){
                                 //todo:- do plan for logic and add stoploss logic
-                                if(watch.buy_price == watch.price.toFloat()){
+                                /*if(watch.buy_price == watch.price.toFloat()){
                                     addToNotifyList("${watch.symbol}:${watch.price}:buy")
                                 }
 
                                 if(watch.sell_price == watch.price.toFloat()){
                                     //toast("buy price marked is reached ${watch.symbol}")
                                     addToNotifyList("${watch.symbol}:${watch.price}:sell")
+                                } */
+                                //if(watch.sell_price >= watch.price.toFloat()){
+
+                                var exit = watch.sell_price
+                                var entry = watch.buy_price
+                                var stop = watch.stop_loss
+                                var current = watch.price.toFloat()
+
+                                if(current >= exit && current > entry){
+                                    addToNotifyList("${watch.symbol}:${watch.price}:exit")
+                                }
+
+                                if(current < entry && entry > stop && current <= stop){
+                                    addToNotifyList("${watch.symbol}:${watch.price}:stop-loss")
                                 }
                             }
 
@@ -171,7 +186,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     override fun onResume() {
         super.onResume()
-        
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -242,6 +257,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                         dialog, which ->
                         var buyPrice = view.txt_buy_price.text.toString()
                         var sellPrice = view.txt_sell_price.text.toString()
+                        var stopLoss = view.txt_stop_loss.text.toString()
 
                         if(buyPrice.isEmpty()){
                             buyPrice = "0"
@@ -251,9 +267,14 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                             sellPrice = "0"
                         }
 
+                        if(stopLoss.isEmpty()){
+                            stopLoss = "0"
+                        }
+
                         GlobalScope.launch {
                            stockWatched.buy_price = buyPrice.toFloat()
                            stockWatched.sell_price = sellPrice.toFloat()
+                           stockWatched.stop_loss = stopLoss.toFloat()
                            stockViewModel.updateWatched(stockWatched)
                         }
 

@@ -41,8 +41,9 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = stocks[p1]
         p0.symbol.text = item.symbol
-        p0.buy.text = "Buy: ${item.buy_price}"
-        p0.sell.text = "Sell: ${item.sell_price}"
+        p0.buy.text = "Entry Price: ${item.buy_price}"
+        p0.sell.text = "Exit Price: ${item.sell_price}"
+        p0.stop.text = "Stop Loss: ${item.stop_loss}"
         p0.price.text = UtilityHelper.getInstance().formatCurrency(item.price.toDouble())
         p0.percentChange.text = item.percent_change
         p0.companyName.text = item.name
@@ -71,6 +72,7 @@ class WatchedRecyclerAdapter(private val stocks:List<StocksWatched>) : RecyclerV
         val symbol: TextView = view.watched_symbol
         val buy: TextView = view.watched_buy
         val sell: TextView = view.watched_sell
+        val stop:TextView = view.watched_stop_loss
         val price: TextView = view.current_price
         val percentChange: TextView = view.percent_change
         val btnAction:MaterialButton = view.btn_buy_sell

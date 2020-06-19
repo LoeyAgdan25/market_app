@@ -12,11 +12,8 @@ import android.view.View
 import android.widget.SearchView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import invest.com.swapp.adapter.StocksRecyclerAdapter
 import invest.com.swapp.model.Stock2
 import invest.com.swapp.viewmodel.StocksViewModel
@@ -24,8 +21,6 @@ import kotlinx.android.synthetic.main.activity_stockitem_list.*
 import kotlinx.android.synthetic.main.stockitem_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
-import org.jetbrains.anko.toast
 
 
 //todo:- correct the data from api

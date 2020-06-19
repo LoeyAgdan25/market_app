@@ -28,7 +28,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Buy Price"
+                android:hint="Entry"
                 android:id="@+id/txt_buy_price"
                 android:inputType="numberDecimal"
                 />
@@ -44,9 +44,25 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sell Price"
+                android:hint="Exit"
                 android:inputType="numberDecimal"
                 android:id="@+id/txt_sell_price"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_stop_loss_layout"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Stop Loss"
+                android:inputType="numberDecimal"
+                android:id="@+id/txt_stop_loss"
                 />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
