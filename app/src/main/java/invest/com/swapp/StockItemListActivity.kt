@@ -107,6 +107,14 @@ class StockItemListActivity : AppCompatActivity() {
         Log.d("_filtered", filtered.size.toString())
         stockitem_list!!.adapter = StocksRecyclerAdapter(ArrayList(filtered))
         stockitem_list!!.adapter!!.notifyDataSetChanged()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        if(stockListAll.isEmpty()){
+            GlobalScope.launch {
+                stockViewModel.getStocks()
+            }
+        }
     }
 }

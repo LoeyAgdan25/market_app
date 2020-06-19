@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.toast
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -112,8 +113,6 @@ class StocksUpdateService: LifecycleService(){
                 stopService()
             }
         }else{
-            //check if database is empty
-            //before stopping the service
             stopService()
         }
 

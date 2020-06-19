@@ -91,7 +91,7 @@
         android:background="@color/colorPrimary"
         android:drawableLeft="@drawable/ic_watched"
         android:elevation="0dp"
-        android:text="Watch"
+        android:text="Watch Stock"
         android:textAllCaps="false"
         android:textColor="#ffff"
         app:cornerRadius="15dp"

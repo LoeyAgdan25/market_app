@@ -20,6 +20,8 @@ class StocksWatched (
     @SerializedName("buy_price")
     @ColumnInfo(name = "buy_price")var buy_price:Float,
 
+    @SerializedName("stop_loss")
+    @ColumnInfo(name = "stop_loss")var stop_loss:Float,
 
     val price:String = "",
     val percent_change:String = "",

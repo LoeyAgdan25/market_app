@@ -95,7 +95,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         btn_watch_stock.setOnClickListener {
            GlobalScope.async {
-               stockViewModel.watched(StocksWatched(symbol,0f,0f))
+               stockViewModel.watched(StocksWatched(symbol,0f,0f,0f))
            }
         }
     }

@@ -171,7 +171,7 @@ class MasterActivity : AppCompatActivity(), WatchListener{
 
     override fun onResume() {
         super.onResume()
-
+        
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

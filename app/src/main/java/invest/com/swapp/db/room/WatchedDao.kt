@@ -7,7 +7,7 @@ import invest.com.swapp.model.StocksWatched
 
 @Dao
 interface WatchedDao {
-    @Query("SELECT stocks_watched_table.buy_price, stocks_watched_table.sell_price, stocks_watched_table.symbol,stocks_table.symbol, stocks_table.price, stocks_table.percent_change, stocks_table.name  FROM stocks_watched_table INNER JOIN stocks_table ON stocks_watched_table.symbol = stocks_table.symbol")
+    @Query("SELECT stocks_watched_table.stop_loss, stocks_watched_table.buy_price, stocks_watched_table.sell_price, stocks_watched_table.symbol,stocks_table.symbol, stocks_table.price, stocks_table.percent_change, stocks_table.name  FROM stocks_watched_table INNER JOIN stocks_table ON stocks_watched_table.symbol = stocks_table.symbol")
     fun getAllWatched(): LiveData<List<StocksWatched>>
 
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
