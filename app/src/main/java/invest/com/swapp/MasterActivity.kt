@@ -94,9 +94,8 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                 watchList.addAll(it)
                 recyclerViewMain!!.adapter!!.notifyDataSetChanged()
                             for(watch: StocksWatched in it){
+                                //todo:- do plan for logic and add stoploss logic
                                 if(watch.buy_price == watch.price.toFloat()){
-                                    //toast("buy price marked is reached ${watch.symbol}")
-                                    //todo:do same logic as in service
                                     addToNotifyList("${watch.symbol}:${watch.price}:buy")
                                 }
 

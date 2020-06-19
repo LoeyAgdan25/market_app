@@ -62,11 +62,10 @@ public class ViewNews extends AppCompatActivity {
         }
         @Override
         public void onPageFinished(WebView view, String url) {
-            // TODO Auto-generated method stub
             webView.getSettings().setUseWideViewPort(true);
             webView.getSettings().setLoadWithOverviewMode(true);
             webView.getSettings().setBuiltInZoomControls(true);
-            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             super.onPageFinished(view, url);
         }
     }
