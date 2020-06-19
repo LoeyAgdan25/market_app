@@ -44,17 +44,18 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         var stock = intent.getSerializableExtra("stockDetail") as? Stock2
         var symbol = stock!!.symbol
-        var name = stock!!.name
+        var name = stock!!.description
         var volume = stock!!.volume
         var percent = stock!!.percent_change
         var price = stock!!.price
-        var status = ""
+        var status = stock!!.lastTradedDate
         var companyId = stock.companyId
         var securityID = stock.securityID
 
 
 
         GlobalScope.async {
+            //todo: do loading call for ux
             stockViewModel.getStockHistory(securityID,companyId)
         }
 
@@ -77,7 +78,7 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         txt_stock_price.text = "${UtilityHelper.getInstance().formatCurrency(price.toDouble())}"
         txt_stock_status.text = "${status}"
-        txt_stock_volume.text = "${UtilityHelper.getInstance().formatVolume(volume.toDouble())}"
+        txt_stock_volume.text = "Volume: ${UtilityHelper.getInstance().formatVolume(volume.toDouble())}"
         txt_company_description.text = "${name}"
 
         btn_watch_invest.setOnClickListener { doInvest(symbol) }

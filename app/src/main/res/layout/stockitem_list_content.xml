@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="symbol"
                     />
+
         </LinearLayout>
         <RelativeLayout
             android:layout_width="120dp"
@@ -78,6 +79,15 @@
 
                 android:layout_alignParentRight="true"
                 android:padding="5dp"
+                />
+            <TextView
+                android:layout_below="@id/percent"
+                android:layout_width="match_parent"
+                android:textAlignment="textEnd"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="Volume: "
+                android:id="@+id/volume_traded_on_list"
                 />
         </RelativeLayout>
 

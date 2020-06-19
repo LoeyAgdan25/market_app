@@ -67,13 +67,16 @@ class StocksRepository(private val stocksDao: StocksDao, private val watchedDao:
                     val obj = JSONObject(stock)
 
                     var symbol = obj.getString("symbol")
-                    var nme = obj.getString("name")
-                    var price = obj.getString("price")
-                    var volume = obj.getString("volume")
-                    var change = obj.getString("percent_change")
                     var cid = obj.getString("companyId")
                     var sid = obj.getString("securityID")
-                    var stockThis = Stock2(nme,symbol,"",change,volume,cid.toInt(),sid.toInt(),price)
+                    var secName = obj.getString("securityName")
+                    var price = obj.getString("price")
+                    var nme = obj.getString("name")
+                    var volume = obj.getString("volume")
+                    var change = obj.getString("percent_change")
+                    var lastTrade = obj.getString("lastTradeDate")
+
+                    var stockThis = Stock2(nme,symbol,secName,change,volume,cid.toInt(),sid.toInt(),price, lastTrade)
 
                     if(isExist){
                         stocksDao.updateStock(stockThis)

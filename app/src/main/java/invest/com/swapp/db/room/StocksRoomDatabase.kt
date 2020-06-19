@@ -10,7 +10,7 @@ import invest.com.swapp.model.StocksWatched
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Stock2::class, StocksWatched::class), version = 8, exportSchema = false)
+@Database(entities = arrayOf(Stock2::class, StocksWatched::class), version = 9, exportSchema = false)
 abstract class StocksRoomDatabase : RoomDatabase(){
 
     abstract fun stockDao(): StocksDao

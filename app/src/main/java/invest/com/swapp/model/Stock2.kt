@@ -31,5 +31,10 @@ class Stock2 (@PrimaryKey
               @ColumnInfo(name="securityID") val securityID: Int,
 
               @SerializedName("price")
-              @ColumnInfo(name = "price") val price:String):Serializable{
+              @ColumnInfo(name = "price") val price:String,
+
+              @SerializedName("lastTradeDate")
+              @ColumnInfo(name="lastTradeDate")val lastTradedDate: String
+
+    ):Serializable{
 }
