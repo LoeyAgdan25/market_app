@@ -118,13 +118,38 @@ class StocksUpdateService: LifecycleService(){
 
             stockViewModel!!.watchedStocks.observe(this, androidx.lifecycle.Observer {
                             for(watch: StocksWatched in it){
-                                if(watch.buy_price == watch.price.toFloat()){
-                                    addToNotifyList("${watch.symbol}:${watch.price}:buy")
+
+
+                                var exit = watch.sell_price
+                                var entry = watch.buy_price
+                                var stop = watch.stop_loss
+                                var current = watch.price.toFloat()
+
+
+                                if(exit != 0f && entry != 0f && stop != 0f){
+                                    if(current >= exit && current > entry){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:exit")
+                                    }
+
+                                    if(current < entry && entry > stop && current <= stop){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:stop-loss")
+                                    }
                                 }
 
-                                if(watch.sell_price == watch.price.toFloat()){
-                                    addToNotifyList("${watch.symbol}:${watch.price}:sell")
+                                if(exit == 0f && entry != 0f && stop == 0f){
+                                    if(current <= entry){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:buy")
+                                    }
                                 }
+
+
+//                                if(watch.buy_price == watch.price.toFloat()){
+//                                    addToNotifyList("${watch.symbol}:${watch.price}:buy")
+//                                }
+//
+//                                if(watch.sell_price == watch.price.toFloat()){
+//                                    addToNotifyList("${watch.symbol}:${watch.price}:sell")
+//                                }
                             }
             })
 

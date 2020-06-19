@@ -110,13 +110,20 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                                 var entry = watch.buy_price
                                 var stop = watch.stop_loss
                                 var current = watch.price.toFloat()
+                                if(exit != 0f && entry != 0f && stop != 0f){
+                                    if(current >= exit && current > entry){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:exit")
+                                    }
 
-                                if(current >= exit && current > entry){
-                                    addToNotifyList("${watch.symbol}:${watch.price}:exit")
+                                    if(current < entry && entry > stop && current <= stop){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:stop-loss")
+                                    }
                                 }
 
-                                if(current < entry && entry > stop && current <= stop){
-                                    addToNotifyList("${watch.symbol}:${watch.price}:stop-loss")
+                                if(exit == 0f && entry != 0f && stop == 0f){
+                                    if(current <= entry){
+                                        addToNotifyList("${watch.symbol}:${watch.price}:buy")
+                                    }
                                 }
                             }
 
