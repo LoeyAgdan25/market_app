@@ -5,31 +5,35 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
-        android:name=".App"
-        >
-        <service android:name=".service.StocksUpdateService"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".FinancialReportActivity"></activity>
+
+        <service
+            android:name=".service.StocksUpdateService"
             android:enabled="true"
-            android:exported="false"
-            />
+            android:exported="false" />
+
         <activity
             android:name=".NavDrawer"
             android:label="@string/title_activity_nav_drawer"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".ViewNews" >
+        <activity android:name=".ViewNews">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="invest.com.swapp.MasterActivity" />
@@ -47,16 +51,13 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4268048783942748~4717310066" />
 
-        <activity
-            android:name=".MasterActivity">
-
-        </activity>
+        <activity android:name=".MasterActivity"></activity>
         <activity
             android:name=".auth.LoginActivity"
-            android:label="swapp"
-            >
+            android:label="swapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.ads.AdRequest
@@ -23,7 +22,6 @@ import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import okhttp3.*
 import java.util.ArrayList
 
 
@@ -91,7 +89,9 @@ class StockItemDetailActivity : AppCompatActivity() {
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
-
+        btn_view_fundamentals.setOnClickListener {
+            startActivity(Intent(this, FinancialReportActivity::class.java))
+        }
 
         btn_watch_stock.setOnClickListener {
            GlobalScope.async {
