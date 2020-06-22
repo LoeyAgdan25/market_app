@@ -4,17 +4,58 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.omapay.viewpagerfragmenttest.FragmentFundamental
+import com.omapay.viewpagerfragmenttest.FragmentMain
+import com.omapay.viewpagerfragmenttest.FragmentNews
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
 import org.jsoup.Jsoup
 
 
-class FinancialReportActivity : AppCompatActivity() {
+class FinancialReportActivity : FragmentActivity(){
+
+    private val NUM_PAGES = 3
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_financial_report)
+
+
+
+        viewPager = findViewById(R.id.pager)
+        val pagerAdapter = ScreenSlidePagerAdapter(this)
+        viewPager.adapter = pagerAdapter
+        val pageMarginPx = 20
+        val offsetPx = 30
+
+        viewPager.setPageTransformer{ page, position ->
+            val viewPager = page.parent.parent as ViewPager2
+            val offset = position * -(2 * offsetPx + pageMarginPx)
+            if (viewPager.orientation == ViewPager2.ORIENTATION_HORIZONTAL) {
+
+                if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                    page.translationX = -offset
+                } else {
+                    page.translationX = offset
+                }
+
+                page.apply {
+                    val r = 1 - Math.abs(position)
+                    page.alpha = 0.5f + r
+                    page.scaleY = 0.75f + r * 0.25f
+                }
+
+            } else {
+                page.translationY = offset
+            }
+        }
 
         //todo:- share this with news...
         //https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=624
@@ -89,41 +130,27 @@ class FinancialReportActivity : AppCompatActivity() {
             }
         }
 
-        /*
-             String query = param[0];
-            view = param[1];
 
-            String userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36";
-            String url = "https://www.google.com/search?site=imghp&tbm=isch&source=hp&q="+ query +"&gws_rd=cr";
+    }
 
-            List<String> resultUrls = new ArrayList<String>();
+    override fun onBackPressed() {
+        if(viewPager.currentItem == 0){
+            super.onBackPressed()
+        }else{
+            viewPager.currentItem = viewPager.currentItem -1
+        }
+    }
+}
 
-            try {
-                Document doc = Jsoup.connect(url).userAgent(userAgent).referrer("https://www.google.com/").get();
-
-                Elements elements = doc.select("div.rg_meta");
-
-                JSONObject jsonObject;
-
-                for (Element element : elements) {
-                    if (element.childNodeSize() > 0) {
-                        jsonObject = (JSONObject) new JSONObject(element.childNode(0).toString());
-                        resultUrls.add((String) jsonObject.get("ou"));
-                        Log.d("image=>" , (String) jsonObject.get("ou"));
-                        imgSrc = (String) jsonObject.get("ou");
-                        break;
-                    }
-                }
-
-                System.out.println("number of results: " + resultUrls.size());
-
-                for (String imageUrl : resultUrls) {
-                    System.out.println(imageUrl);
-                }
-
-            }  catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        */
+class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+    override fun getItemCount(): Int = 3
+    override fun createFragment(position: Int): Fragment {
+        if(position == 2){
+            return FragmentFundamental()
+        }
+        if(position == 1){
+            return FragmentNews()
+        }
+        return FragmentMain()
     }
 }
