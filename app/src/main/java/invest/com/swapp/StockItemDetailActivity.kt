@@ -90,7 +90,10 @@ class StockItemDetailActivity : AppCompatActivity() {
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         btn_view_fundamentals.setOnClickListener {
-            startActivity(Intent(this, FinancialReportActivity::class.java))
+            var i = Intent(this, FinReportActivity::class.java)
+            i.putExtra("cpid",companyId)
+            i.putExtra("cpn", name)
+            startActivity(i)
         }
 
         btn_watch_stock.setOnClickListener {

@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme"
         tools:ignore="MissingConstraints">
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -23,8 +22,8 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_width="403dp"
+        android:layout_height="593dp"
         android:animateLayoutChanges="true"
         android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"

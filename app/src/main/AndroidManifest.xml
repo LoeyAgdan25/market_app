@@ -16,8 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FinancialReportActivity"></activity>
-
+        <activity android:name=".FinReportActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="invest.com.swapp.FinReportActivity" />
+        </activity>
         <service
             android:name=".service.StocksUpdateService"
             android:enabled="true"
@@ -51,7 +54,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4268048783942748~4717310066" />
 
-        <activity android:name=".MasterActivity"></activity>
+        <activity android:name=".MasterActivity" />
         <activity
             android:name=".auth.LoginActivity"
             android:label="swapp">

@@ -8,7 +8,7 @@
     >
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_holder"
+        android:id="@+id/card_holder_fundamental"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:layout_marginLeft="30dp"
@@ -16,13 +16,22 @@
         android:layout_marginRight="30dp"
         android:elevation="3dp"
         app:cardCornerRadius="10dp">
-
-        <Button
-            style="?android:textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
-            android:text="test text" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linear_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            >-->
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="Financial Reports"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textSize="14sp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textStyle="bold"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textAlignment="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_margin="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textColor="#000000"&ndash;&gt;-->
+<!--&lt;!&ndash;                />&ndash;&gt;-->
+<!--        </LinearLayout>-->
     </androidx.cardview.widget.CardView>
 </FrameLayout>
