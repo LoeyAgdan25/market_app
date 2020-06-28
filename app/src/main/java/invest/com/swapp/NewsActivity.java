@@ -47,6 +47,7 @@ public class NewsActivity extends AppCompatActivity {
     private String mFeedDescription;
     private String mFeedImage;
     public ArrayList<String> imageURL;
+    public String[] ls = new String[]{};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +66,26 @@ public class NewsActivity extends AppCompatActivity {
         mFeedLinkTextView = (TextView) findViewById(R.id.feedLink);
         imageURL = new ArrayList<>();
 
+        if(getIntent().getStringExtra("cpnews") != null){
+            //if(getIntent().getStringExtra("cpnews").equals("cpnews")){
+                ls = new String[]{getIntent().getStringExtra("cpnews")};
+
+                Toast.makeText(this,"",Toast.LENGTH_LONG).show();
+//            }
+        }else{
+            ls = new String[]{"https://data.gmanews.tv/gno/rss/money/economy/feed.xml",
+                    "https://www.philstar.com/rss/business-as-usual",
+                    "https://data.gmanews.tv/gno/rss/money/personalfinance/feed.xml",
+                    "https://business.mb.com.ph/category/business-news/feed/"};
+        }
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new FetchFeedTask().execute((Void) null);
+        new FetchFeedTask(ls).execute((Void) null);
 
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new FetchFeedTask().execute((Void) null);
+                new FetchFeedTask(ls).execute((Void) null);
             }
         });
     }
@@ -169,6 +183,12 @@ public class NewsActivity extends AppCompatActivity {
 
         //TODO:- Load Image...
 
+        String[] linkListings = new String[]{};
+
+        FetchFeedTask(String[] newLink){
+            linkListings = newLink;
+        }
+
         private String urlLink;
 
         @Override
@@ -181,12 +201,26 @@ public class NewsActivity extends AppCompatActivity {
             mFeedDescriptionTextView.setText("Feed Description: " + mFeedDescription);
             mFeedLinkTextView.setText("Feed Link: " + mFeedLink);
 
-            String[] linkListings = {"https://data.gmanews.tv/gno/rss/money/economy/feed.xml",
-                    "https://www.philstar.com/rss/business-as-usual",
-                    "https://data.gmanews.tv/gno/rss/money/personalfinance/feed.xml",
-                    "https://business.mb.com.ph/category/business-news/feed/"};
+
+
+//            linkListings = new String[]{"https://data.gmanews.tv/gno/rss/money/economy/feed.xml",
+//                    "https://www.philstar.com/rss/business-as-usual",
+//                    "https://data.gmanews.tv/gno/rss/money/personalfinance/feed.xml",
+//                    "https://business.mb.com.ph/category/business-news/feed/"};
+
+            //String[] linkListings = {"https://news.google.com/news?q=jollibee&output=rss"};
+
             Random random = new Random();
-            urlLink = linkListings[random.nextInt(3)];
+
+
+            if(linkListings.length == 1){
+                urlLink = linkListings[0];
+            }else{
+                urlLink = linkListings[random.nextInt(linkListings.length)];
+            }
+
+            //urlLink = linkListings[random.nextInt(3)];
+            //urlLink = linkListings[0];
         }
 
         @Override

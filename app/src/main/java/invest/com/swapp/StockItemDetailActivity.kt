@@ -96,6 +96,14 @@ class StockItemDetailActivity : AppCompatActivity() {
             startActivity(i)
         }
 
+        //${txt_company_description.text.toString().replace(" ","%20")}
+
+        btn_view_news.setOnClickListener {
+            var i = Intent(this, NewsActivity::class.java)
+            i.putExtra("cpnews","https://news.google.com/news?q=${txt_company_description.text.toString().replace(" ","%20")}&output=rss")
+            startActivity(i)
+        }
+
         btn_watch_stock.setOnClickListener {
            GlobalScope.async {
                stockViewModel.watched(StocksWatched(symbol,0f,0f,0f))
