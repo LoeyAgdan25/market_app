@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import invest.com.swapp.adapter.WatchedRecyclerAdapter
@@ -30,7 +31,6 @@ import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.android.synthetic.main.activity_master.*
 import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
 import kotlinx.android.synthetic.main.layout_watchlist_notification.view.*
-import kotlinx.android.synthetic.main.watch_list_content.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
@@ -212,6 +212,14 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(i)
                     finish()
+                    true
+                }
+
+                R.id.trade_portfolio ->{
+                    val dialogView: View = layoutInflater.inflate(R.layout.bottom_sheet_menu, null)
+                    val dialog = BottomSheetDialog(this)
+                    dialog.setContentView(dialogView)
+                    dialog.show()
                     true
                 }
                 android.R.id.home ->{

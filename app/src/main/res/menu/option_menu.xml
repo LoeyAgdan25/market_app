@@ -8,6 +8,13 @@
             android:iconTint="@color/colorWhite"
             app:showAsAction="always" />
         <item
+            android:id="@+id/trade_portfolio"
+            android:title="Trades"
+            android:icon="@drawable/ic_work_white_24dp"
+            android:iconTint="@color/colorWhite"
+            app:showAsAction="always"
+                />
+        <item
             android:id="@+id/logout_menu"
             android:title="Logout"
             android:icon="@drawable/ic_action_logout"
