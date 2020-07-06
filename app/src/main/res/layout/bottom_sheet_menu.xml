@@ -10,28 +10,41 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="3"
+        android:padding="10dp"
         >
         <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
+            android:drawableTop="@drawable/trades"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:id="@+id/btn_trades"
             android:text="Trades"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@android:color/transparent"
             />
         <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
+            android:drawableTop="@drawable/capital"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:id="@+id/btn_capital"
             android:text="Capital"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@android:color/transparent"
             />
         <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
+            android:drawableTop="@drawable/portfolio"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/btn_portfolio"
             android:text="Portfolio"
             android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@android:color/transparent"
             />
     </LinearLayout>
 </LinearLayout>

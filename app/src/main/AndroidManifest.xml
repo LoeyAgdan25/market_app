@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CompanyNews"></activity>
+        <activity android:name=".TradeActivity"></activity>
+        <activity android:name=".CompanyNews" />
         <activity android:name=".FinReportActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

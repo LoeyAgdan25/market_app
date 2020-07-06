@@ -20,6 +20,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import invest.com.swapp.adapter.WatchedRecyclerAdapter
@@ -220,6 +221,22 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                     val dialog = BottomSheetDialog(this)
                     dialog.setContentView(dialogView)
                     dialog.show()
+
+                    var trades = dialog.findViewById<MaterialButton>(R.id.btn_trades)
+                    var capital = dialog.findViewById<MaterialButton>(R.id.btn_capital)
+                    var portfolio = dialog.findViewById<MaterialButton>(R.id.btn_portfolio)
+
+                    trades!!.setOnClickListener {
+                        startActivity(Intent(MasterActivity@this, TradeActivity::class.java))
+                        dialog.dismiss()
+                    }
+                    capital!!.setOnClickListener { toast("show capital")
+                        dialog.dismiss()
+                    }
+                    portfolio!!.setOnClickListener { toast("show portfolio")
+                        dialog.dismiss()
+                    }
+
                     true
                 }
                 android.R.id.home ->{
