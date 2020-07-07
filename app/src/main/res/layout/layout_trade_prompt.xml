@@ -17,6 +17,37 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="10dp"
         >
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@+id/view_below" >
+            <RadioButton
+                android:id="@+id/radioBuy"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="BUY" />
+
+            <RadioButton
+                android:id="@+id/radioSell"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="SELL" />
+        </RadioGroup>
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbl_total_value"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="0"
+            />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_buy_price_layout_ti"
             android:layout_width="fill_parent"
@@ -27,7 +58,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Amount"
+                android:hint="Price"
                 android:textAlignment="viewEnd"
                 android:id="@+id/txt_buy_price1"
                 android:inputType="numberDecimal"
@@ -62,6 +93,38 @@
                 android:textAlignment="viewEnd"
                 android:hint="Tax"
                 android:id="@+id/txt_tax"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_buy_commision_layout_ti"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:hint="Commission"
+                android:id="@+id/txt_commission"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_buy_others_layout_ti"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:hint="Others"
+                android:id="@+id/txt_others"
                 android:inputType="numberDecimal"
                 />
         </com.google.android.material.textfield.TextInputLayout>
