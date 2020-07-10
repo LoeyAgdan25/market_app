@@ -49,6 +49,22 @@
             android:text="0"
             />
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_stock_code_ti"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Stock Code"
+                android:textAlignment="viewEnd"
+                android:id="@+id/txt_stock_code"
+                android:inputType="text"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_buy_price_layout_ti"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -126,6 +142,22 @@
                 android:hint="Others"
                 android:id="@+id/txt_others"
                 android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_buy_reason_layout_ti"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:hint="Reasons of trading"
+                android:id="@+id/txt_reason"
+                android:inputType="text"
                 />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

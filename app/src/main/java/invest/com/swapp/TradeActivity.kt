@@ -6,20 +6,37 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
+import invest.com.swapp.adapter.TradeListAdapter
+import invest.com.swapp.model.StockTrade
 import kotlinx.android.synthetic.main.activity_trade.*
-import kotlinx.android.synthetic.main.layout_buy_sell_prompt.view.*
-import kotlinx.android.synthetic.main.layout_trade_prompt.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class TradeActivity : AppCompatActivity() {
+
+
+    private lateinit var stockTrade:ArrayList<StockTrade>
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trade)
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        stockTrade = ArrayList()
+        stockTrade.add(StockTrade("CEB",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+        stockTrade.add(StockTrade("SCC",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+        stockTrade.add(StockTrade("MER",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+
+
+        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyler_trades_list.layoutManager = linearLayoutManager
+        var tradeAdapter = TradeListAdapter(stockTrade)
+        recyler_trades_list.adapter = tradeAdapter
 
 
         fab_new_trade.setOnClickListener {
@@ -28,9 +45,7 @@ class TradeActivity : AppCompatActivity() {
                     .setView(view)
                     .setPositiveButton("Save"){
                         dialog, which ->
-
                     }.show()
-
 
             var txtPrice = view.findViewById<TextInputEditText>(R.id.txt_buy_price1)
             var txtShares =  view.findViewById<TextInputEditText>(R.id.txt_shares)
