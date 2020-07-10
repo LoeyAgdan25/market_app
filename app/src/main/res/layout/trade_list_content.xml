@@ -40,7 +40,7 @@
             android:backgroundTint="@color/colorDownTrend"
             android:text="delete"
             android:layout_margin="5dp"
-            android:textSize="10sp"
+            android:textSize="9sp"
             android:layout_height="wrap_content"/>
         <com.google.android.material.button.MaterialButton
             android:drawableTop="@drawable/ic_action_list_empty"
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:layout_margin="5dp"
             android:text="edit"
-            android:textSize="10sp"
+            android:textSize="9sp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
