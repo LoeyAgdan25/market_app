@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Stock Code"
                     android:textAlignment="viewStart"
-                    android:id="@+id/txt_stock_code"
+                    android:id="@+id/txt_stock_code_trade"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -173,7 +173,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
+                android:textAlignment="viewStart"
                 android:hint="Reasons of trading"
                 android:id="@+id/txt_reason"
                 android:inputType="text"

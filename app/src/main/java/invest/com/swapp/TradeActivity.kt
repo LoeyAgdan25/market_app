@@ -6,19 +6,25 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelStores
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import invest.com.swapp.adapter.TradeListAdapter
 import invest.com.swapp.model.StockTrade
+import invest.com.swapp.viewmodel.TradeViewModel
 import kotlinx.android.synthetic.main.activity_trade.*
+import org.jetbrains.anko.toast
 
 class TradeActivity : AppCompatActivity() {
 
 
     private lateinit var stockTrade:ArrayList<StockTrade>
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var stockTradeViewModel: TradeViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +34,9 @@ class TradeActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         stockTrade = ArrayList()
-        stockTrade.add(StockTrade("CEB",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
-        stockTrade.add(StockTrade("SCC",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
-        stockTrade.add(StockTrade("MER",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+//        stockTrade.add(StockTrade("CEB",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+//        stockTrade.add(StockTrade("SCC",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
+//        stockTrade.add(StockTrade("MER",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
 
 
         linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -38,27 +44,51 @@ class TradeActivity : AppCompatActivity() {
         var tradeAdapter = TradeListAdapter(stockTrade)
         recyler_trades_list.adapter = tradeAdapter
 
+        stockTradeViewModel = ViewModelProviders.of(this).get(TradeViewModel::class.java)
+        stockTradeViewModel.trades.observe(this, Observer {
+            stockTrade.clear()
+            stockTrade.addAll(it)
+            recyler_trades_list!!.adapter!!.notifyDataSetChanged()
+        })
+
+
+
 
         fab_new_trade.setOnClickListener {
             var view: View = layoutInflater.inflate(R.layout.layout_trade_prompt,null)
-            MaterialAlertDialogBuilder(TradeActivity@this,R.style.AlertDialogTheme).setTitle("Trade")
-                    .setView(view)
-                    .setPositiveButton("Save"){
-                        dialog, which ->
-                    }.show()
-
-            var txtPrice = view.findViewById<TextInputEditText>(R.id.txt_buy_price1)
-            var txtShares =  view.findViewById<TextInputEditText>(R.id.txt_shares)
-            var lblTotal = view.findViewById<MaterialTextView>(R.id.lbl_total_value)
-            var txtTax = view.findViewById<TextInputEditText>(R.id.txt_tax)
-            var txtComm = view.findViewById<TextInputEditText>(R.id.txt_commission)
-            var txtOthers = view.findViewById<TextInputEditText>(R.id.txt_others)
+                var txtPrice = view.findViewById<TextInputEditText>(R.id.txt_buy_price1)
+                var txtShares =  view.findViewById<TextInputEditText>(R.id.txt_shares)
+                var lblTotal = view.findViewById<MaterialTextView>(R.id.lbl_total_value)
+                var txtTax = view.findViewById<TextInputEditText>(R.id.txt_tax)
+                var txtComm = view.findViewById<TextInputEditText>(R.id.txt_commission)
+                var txtOthers = view.findViewById<TextInputEditText>(R.id.txt_others)
+                var txtStockCode = view.findViewById<TextInputEditText>(R.id.txt_stock_code_trade)
+                var txtReasons = view.findViewById<TextInputEditText>(R.id.txt_reason)
 
             var price = 0f
             var shares = 0f
             var tax = 0f
             var comm = 0f
             var others = 0f
+
+            MaterialAlertDialogBuilder(TradeActivity@this,R.style.AlertDialogTheme).setTitle("Trade")
+                    .setView(view)
+                    .setPositiveButton("Save"){
+                        dialog, which ->
+                        var stockTradeNew = StockTrade(0
+                                ,txtStockCode.text.toString()
+                                ,0,0f
+                                ,txtPrice.text.toString().toFloat()
+                                ,lblTotal.text.toString().toFloat()
+                                ,0f,txtShares.text.toString().toFloat()
+                                ,comm
+                                ,tax
+                                ,others,txtReasons.text.toString(),"","",""
+                            )
+                        stockTradeViewModel.saveTrade(stockTradeNew)
+                        toast("trade is saved.")
+                    }.show()
+
 
             txtPrice.addTextChangedListener(object:TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {

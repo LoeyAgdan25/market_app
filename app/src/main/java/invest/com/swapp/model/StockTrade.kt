@@ -7,7 +7,10 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "stock_trades")
 class StockTrade (
-        @PrimaryKey
+        @PrimaryKey(autoGenerate = true)
+        @SerializedName("id")
+        @ColumnInfo(name = "id") val id: Int,
+
         @SerializedName("code")
         @ColumnInfo(name = "code") val code:String,
 
@@ -39,9 +42,13 @@ class StockTrade (
         @SerializedName("others")
         @ColumnInfo(name = "others")var others:Float,
 
+        @SerializedName("reasons")
+        @ColumnInfo(name = "reasons")var reasons:String,
+
         val price:String = "",
         val percent_change:String = "",
         val name:String = ""
+
 //,
 //        foreignKeys = arrayOf(ForeignKey(entity = Stock2::class, parentColumns = arrayOf("symbol"), childColumns = arrayOf("symbol"), onDelete = ForeignKey.CASCADE))
 //    @ForeignKey(entity = Stock2::class,parentColumns = arrayOf("symbol"), childColumns = arrayOf("symbol"), onDelete = NO_ACTION)

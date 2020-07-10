@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import invest.com.swapp.R
 import invest.com.swapp.model.StockTrade
 import kotlinx.android.synthetic.main.trade_list_content.*
@@ -33,11 +34,16 @@ class TradeListAdapter(private val stocks:List<StockTrade>) : RecyclerView.Adapt
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = stocks[p1]
         p0.symbol.text = item.code
+        p0.price.text = item.buy_price.toString()
+        p0.shares.text = item.shares.toString()
+        p0.total.text = item.total_amount.toString()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val symbol: TextView = view.stock_code_trade_list
-
+        val price: MaterialTextView = view.buy_price_trade_list
+        val shares:MaterialTextView = view.no_share_trade_list
+        val total:MaterialTextView = view.no_total_cost_list
     }
 
 }
