@@ -55,7 +55,7 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("News");
+        getSupportActionBar().setTitle("Stock News");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mEditText = (EditText) findViewById(R.id.rssFeedEditText);
@@ -70,7 +70,7 @@ public class NewsActivity extends AppCompatActivity {
             //if(getIntent().getStringExtra("cpnews").equals("cpnews")){
                 ls = new String[]{getIntent().getStringExtra("cpnews")};
 
-                Toast.makeText(this,"",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"",Toast.LENGTH_LONG).show();
 //            }
         }else{
             ls = new String[]{"https://data.gmanews.tv/gno/rss/money/economy/feed.xml",

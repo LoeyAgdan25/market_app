@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Build;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +67,17 @@ public class RssFeedListAdapter
     public void onBindViewHolder(FeedModelViewHolder holder, int position) {
         final RssFeedModel rssFeedModel = mRssFeedModels.get(position);
         ((TextView)holder.rssFeedView.findViewById(R.id.titleText)).setText(rssFeedModel.title);
-        ((TextView)holder.rssFeedView.findViewById(R.id.descriptionText)).setText(rssFeedModel.description);
+
+
+
+        TextView tvDescription = ((TextView)holder.rssFeedView.findViewById(R.id.descriptionText));
+       // tvDescription.setText(rssFeedModel.description);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tvDescription.setText(Html.fromHtml(rssFeedModel.description, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            tvDescription.setText(Html.fromHtml(rssFeedModel.description));
+        }
         ImageView img = holder.rssFeedView.findViewById(R.id.img_feature_news);
 
 

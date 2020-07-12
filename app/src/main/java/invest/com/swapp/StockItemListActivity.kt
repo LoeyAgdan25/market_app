@@ -10,10 +10,13 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import invest.com.swapp.App.Companion.context
 import invest.com.swapp.adapter.StocksRecyclerAdapter
 import invest.com.swapp.model.Stock2
 import invest.com.swapp.viewmodel.StocksViewModel
@@ -90,11 +93,72 @@ class StockItemListActivity : AppCompatActivity() {
             }
         })
 
+
+        val filterMenu = menu?.findItem(R.id.filterStockMenu)
+        filterMenu.setOnMenuItemClickListener {
+            val singleItems = arrayOf("All", "Gainers", "Looser")
+            val checkedItem = 0
+
+            var alert = MaterialAlertDialogBuilder(this@StockItemListActivity, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                    .setTitle("Filter Stocks")
+                    .setNeutralButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("Okay") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    // Single-choice items (initialized with checked item)
+                    .setSingleChoiceItems(singleItems, checkedItem) { dialog, which ->
+                        //Toast.makeText(this, singleItems[which], Toast.LENGTH_SHORT).show()
+                        //todo: call mvvm
+                        if(singleItems[which] == "All"){
+
+                        }
+
+                        if(singleItems[which] == "Gainers"){
+                            filter1(1)
+                        }
+
+                        if(singleItems[which] == "Looser"){
+                            filter1(2)
+                        }
+
+                        if(singleItems[which] == "All"){
+                            filter1(0)
+                        }
+
+                    }
+                    .show()
+
+           false
+        }
+
         searchView.setOnCloseListener {
             stockitem_list!!.adapter = StocksRecyclerAdapter( stockListAll)
             false
         }
         return super.onCreateOptionsMenu(menu)
+
+
+    }
+
+    private fun filter1(srt:Int){
+        var filtered:List<Stock2> = listOf()
+        if(srt == 1){
+             filtered = stockListAll.sortedWith(compareByDescending({it.percent_change.toFloat()}))
+        }
+
+        if(srt == 2){
+            filtered = stockListAll.sortedWith(compareBy({it.percent_change.toFloat()}))
+        }
+
+        if(srt == 0){
+            filtered = stockListAll.sortedWith(compareBy({it.name}))
+        }
+
+        Log.d("_filtered", filtered.size.toString())
+        stockitem_list!!.adapter = StocksRecyclerAdapter(ArrayList(filtered))
+        stockitem_list!!.adapter!!.notifyDataSetChanged()
     }
 
     private fun filter(str: String){

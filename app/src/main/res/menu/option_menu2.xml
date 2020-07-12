@@ -8,4 +8,10 @@
         android:title="@android:string/search_go"
         android:iconTint="@color/colorWhite"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/filterStockMenu"
+        android:icon="@drawable/ic_filter_stocks"
+        android:iconTint="@color/colorWhite"
+        app:showAsAction="always"
+        android:title="Filter" />
 </menu>

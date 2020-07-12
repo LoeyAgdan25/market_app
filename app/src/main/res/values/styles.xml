@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="statusBarBackground">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="dialogTheme">@style/AppTheme</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -15,8 +16,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSurface">@color/colorWhite</item>
+        <item name="colorOnSurface">#000000</item>
+<!--        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>-->
+<!--        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>-->
+<!--        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>-->
+<!--        <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>-->
+    </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
     </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" ></style>
 

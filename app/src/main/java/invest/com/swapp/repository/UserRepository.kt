@@ -25,19 +25,30 @@ class UserRepository(app: Application){
                 Log.d("_login", resBody)
 
                 var loginResponse = JSONObject(resBody)
-                    val jwt = loginResponse.getString("jwt")
-                    val email = loginResponse.getString("email")
-                    val expireAt = loginResponse.getInt("expireAt")
 
-                    Log.d("_login", "$jwt $email $expireAt")
-                    with (app.edit()) {
-                        putString("jwt",jwt)
-                        putString("email",email)
-                        putInt("expireAt",expireAt)
-                        commit()
+
+
+                    if(resBody.contains("jwt")){
+                        val jwt = loginResponse.getString("jwt")
+                        val email = loginResponse.getString("email")
+                        val expireAt = loginResponse.getInt("expireAt")
+
+                        Log.d("_login", "$jwt $email $expireAt")
+                        with (app.edit()) {
+                            putString("jwt",jwt)
+                            putString("email",email)
+                            putInt("expireAt",expireAt)
+                            commit()
+                        }
                     }
 
-                resBody = loginResponse.getString("message")
+                if(resBody.contains("message")) {
+                    resBody = loginResponse.getString("message")
+                }
+
+                if(resBody.contains("result")) {
+                    resBody = "result" //loginResponse.getString("result")
+                }
             }
         }
         value.await()
