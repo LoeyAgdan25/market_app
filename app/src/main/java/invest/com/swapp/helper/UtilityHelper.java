@@ -253,6 +253,11 @@ public class UtilityHelper {
         return formatter.format(amount);
     }
 
+    public String formatCurrency(Float amount){
+        DecimalFormat formatter = new DecimalFormat("#,###,###.000");
+        return formatter.format(amount);
+    }
+
     public String formatVolume(Double amount){
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         return formatter.format(amount);

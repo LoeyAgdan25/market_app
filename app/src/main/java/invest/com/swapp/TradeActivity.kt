@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.RadioGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.ViewModelStores
@@ -14,9 +15,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import invest.com.swapp.adapter.TradeListAdapter
+import invest.com.swapp.helper.UtilityHelper
 import invest.com.swapp.model.StockTrade
 import invest.com.swapp.viewmodel.TradeViewModel
 import kotlinx.android.synthetic.main.activity_trade.*
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 
 class TradeActivity : AppCompatActivity() {
@@ -56,6 +59,7 @@ class TradeActivity : AppCompatActivity() {
 
         fab_new_trade.setOnClickListener {
             var view: View = layoutInflater.inflate(R.layout.layout_trade_prompt,null)
+                var buysellGroup = view.findViewById<RadioGroup>(R.id.radio_group_buy_sell)
                 var txtPrice = view.findViewById<TextInputEditText>(R.id.txt_buy_price1)
                 var txtShares =  view.findViewById<TextInputEditText>(R.id.txt_shares)
                 var lblTotal = view.findViewById<MaterialTextView>(R.id.lbl_total_value)
@@ -65,6 +69,9 @@ class TradeActivity : AppCompatActivity() {
                 var txtStockCode = view.findViewById<TextInputEditText>(R.id.txt_stock_code_trade)
                 var txtReasons = view.findViewById<TextInputEditText>(R.id.txt_reason)
 
+
+                buysellGroup.setOnCheckedChangeListener { p0, p1 -> toast("$p1") }
+
             var price = 0f
             var shares = 0f
             var tax = 0f
@@ -73,6 +80,11 @@ class TradeActivity : AppCompatActivity() {
 
             MaterialAlertDialogBuilder(TradeActivity@this,R.style.AlertDialogTheme).setTitle("Trade")
                     .setView(view)
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel"){
+                        dialog, which ->
+                        dialog.dismiss()
+                    }
                     .setPositiveButton("Save"){
                         dialog, which ->
                         var stockTradeNew = StockTrade(0
@@ -86,7 +98,7 @@ class TradeActivity : AppCompatActivity() {
                                 ,others,txtReasons.text.toString(),"","",""
                             )
                         stockTradeViewModel.saveTrade(stockTradeNew)
-                        toast("trade is saved.")
+                        longToast("trade is saved.")
                     }.show()
 
 
@@ -95,7 +107,8 @@ class TradeActivity : AppCompatActivity() {
                     price = if(txtPrice.text.isNullOrEmpty()){0f}else{txtPrice.text.toString().toFloat()}
                     shares = if(txtShares.text.isNullOrEmpty()){ 0f }else{ txtShares.text.toString().toFloat() }
                     var total = price * shares
-                    lblTotal.setText(total.toString())
+                    //UtilityHelper.getInstance().formatCurrency(
+                    lblTotal.text = UtilityHelper.getInstance().formatCurrency(total.toString().toFloat())
                 }
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -110,7 +123,7 @@ class TradeActivity : AppCompatActivity() {
                     shares = if(txtShares.text.isNullOrEmpty()){ 0f }else{ txtShares.text.toString().toFloat() }
                     var total = price * shares
                     Log.d("_total", "" + total + " price & shares" + price + " " + shares)
-                    lblTotal.setText(total.toString())
+                    lblTotal.text = UtilityHelper.getInstance().formatCurrency(total.toString().toFloat())
                 }
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -121,43 +134,29 @@ class TradeActivity : AppCompatActivity() {
             txtTax.addTextChangedListener(object:TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
                     tax = if(txtTax.text.isNullOrEmpty()){0f}else{txtTax.text.toString().toFloat()}
-                    lblTotal.setText(((price * shares) - tax).toString())
+                    lblTotal.setText(UtilityHelper.getInstance().formatCurrency(((price * shares) - tax)))
                 }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
 
             txtComm.addTextChangedListener(object:TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
                     comm = if(txtComm.text.isNullOrEmpty()){0f}else{txtComm.text.toString().toFloat()}
-                    lblTotal.setText(((price * shares) - (tax + comm)).toString())
+                    lblTotal.text = UtilityHelper.getInstance().formatCurrency(((price * shares) - (tax + comm)))
                 }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
 
             txtOthers.addTextChangedListener(object:TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
                     others = if(txtOthers.text.isNullOrEmpty()){0f}else{txtOthers.text.toString().toFloat()}
-                    lblTotal.setText(((price * shares) - (tax + comm + others)).toString())
+                    lblTotal.text = UtilityHelper.getInstance().formatCurrency((price * shares) - (tax + comm + others))
                 }
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
             })
 
         }

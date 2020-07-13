@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import androidx.lifecycle.Observer
@@ -22,6 +23,8 @@ import invest.com.swapp.model.StocksWatched
 import invest.com.swapp.viewmodel.StocksViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import java.util.ArrayList
 
 
@@ -51,8 +54,11 @@ class StockItemDetailActivity : AppCompatActivity() {
         var status = stock!!.lastTradedDate
         var companyId = stock.companyId
         var securityID = stock.securityID
+        var watchSize = 0
 
-
+        stockViewModel.watchedStocks.observe(this, Observer {
+            watchSize = it.size
+        })
 
         GlobalScope.async {
             //todo: do loading call for ux
@@ -61,6 +67,10 @@ class StockItemDetailActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = ""
+
+        stockViewModel.watchedStocks.observe(this, Observer {
+            Log.d("_size", "${it.size}")
+        })
 
         txt_stock_symbol.text = "${symbol}"
 
@@ -105,9 +115,13 @@ class StockItemDetailActivity : AppCompatActivity() {
         }
 
         btn_watch_stock.setOnClickListener {
-           GlobalScope.async {
-               stockViewModel.watched(StocksWatched(symbol,0f,0f,0f))
-           }
+            if(watchSize < 10) {
+               GlobalScope.async {
+                       stockViewModel.watched(StocksWatched(symbol, 0f, 0f, 0f))
+               }
+            }else{
+                longToast("Sorry! maximum watched stock is 10 for experience optimization purposes")
+            }
         }
     }
 

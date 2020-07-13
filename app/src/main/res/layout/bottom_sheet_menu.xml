@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/btn_trades"
+            android:textAllCaps="false"
             android:text="Trades"
             android:textColor="@color/colorPrimary"
             android:backgroundTint="@android:color/transparent"
@@ -34,6 +35,7 @@
             android:id="@+id/btn_capital"
             android:text="Capital"
             android:textColor="@color/colorPrimary"
+            android:textAllCaps="false"
             android:backgroundTint="@android:color/transparent"
             />
         <com.google.android.material.button.MaterialButton
@@ -43,6 +45,7 @@
             android:id="@+id/btn_portfolio"
             android:text="Portfolio"
             android:layout_weight="1"
+            android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:backgroundTint="@android:color/transparent"
             />
