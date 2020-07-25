@@ -54,10 +54,25 @@ class TradeActivity : AppCompatActivity() {
             recyler_trades_list!!.adapter!!.notifyDataSetChanged()
         })
 
-
+        radio_sort_trade.setOnCheckedChangeListener { p0, p1 ->
+            if(p1 == R.id.radio_sort_all){
+                recyler_trades_list!!.adapter = TradeListAdapter(stockTrade)
+                recyler_trades_list!!.adapter!!.notifyDataSetChanged()
+            }else if(p1 == R.id.radio_sort_buy){
+                val filtered = stockTrade.filter { it.type == 0 }
+                recyler_trades_list!!.adapter = TradeListAdapter(ArrayList(filtered))
+                recyler_trades_list!!.adapter!!.notifyDataSetChanged()
+            }else if(p1 == R.id.radio_sort_sell){
+                val filtered = stockTrade.filter { it.type == 1 }
+                recyler_trades_list!!.adapter = TradeListAdapter(ArrayList(filtered))
+                recyler_trades_list!!.adapter!!.notifyDataSetChanged()
+            }
+        }
 
 
         fab_new_trade.setOnClickListener {
+            var type = 0;
+
             var view: View = layoutInflater.inflate(R.layout.layout_trade_prompt,null)
                 var buysellGroup = view.findViewById<RadioGroup>(R.id.radio_group_buy_sell)
                 var txtPrice = view.findViewById<TextInputEditText>(R.id.txt_buy_price1)
@@ -69,8 +84,13 @@ class TradeActivity : AppCompatActivity() {
                 var txtStockCode = view.findViewById<TextInputEditText>(R.id.txt_stock_code_trade)
                 var txtReasons = view.findViewById<TextInputEditText>(R.id.txt_reason)
 
-
-                buysellGroup.setOnCheckedChangeListener { p0, p1 -> toast("$p1") }
+                buysellGroup.setOnCheckedChangeListener { p0, p1 ->
+                    if(p1.equals(R.id.radioSell)){
+                        type = 1
+                    }else{
+                        type = 0
+                    }
+                }
 
             var price = 0f
             var shares = 0f
@@ -89,9 +109,9 @@ class TradeActivity : AppCompatActivity() {
                         dialog, which ->
                         var stockTradeNew = StockTrade(0
                                 ,txtStockCode.text.toString()
-                                ,0,0f
-                                ,txtPrice.text.toString().toFloat()
-                                ,lblTotal.text.toString().toFloat()
+                                ,type,0f
+                                ,txtPrice.text.toString().replace(",","").toFloat()
+                                ,lblTotal.text.toString().replace(",","").toFloat()
                                 ,0f,txtShares.text.toString().toFloat()
                                 ,comm
                                 ,tax
@@ -158,6 +178,13 @@ class TradeActivity : AppCompatActivity() {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
             })
+
+        }
+    }
+
+    fun sort(category: Int){
+        if(category == 1){
+
 
         }
     }

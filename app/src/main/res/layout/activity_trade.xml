@@ -7,7 +7,7 @@
     android:theme="@style/AppTheme"
     tools:context=".TradeActivity">
     <RadioGroup
-        android:id="@+id/radio_group"
+        android:id="@+id/radio_sort_trade"
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
@@ -17,21 +17,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <RadioButton
-            android:id="@+id/radioAllSort"
+            android:id="@+id/radio_sort_all"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
             android:text="ALL" />
         <RadioButton
-            android:id="@+id/radioBuySort"
+            android:id="@+id/radio_sort_buy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="BUY" />
 
         <RadioButton
-            android:id="@+id/radioSellSort"
+            android:id="@+id/radio_sort_sell"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,7 +44,7 @@
         android:layout_height="644dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/radio_sort_trade" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_trade"
