@@ -27,7 +27,7 @@ class TradeViewModel(application: Application): AndroidViewModel(application) {
         return repository.getTrade(id)
     }
 
-    suspend fun updateTrade(trade: StockTrade){
+    fun updateTrade(trade: StockTrade) = viewModelScope.launch{
         repository.updateTrade(trade)
     }
 

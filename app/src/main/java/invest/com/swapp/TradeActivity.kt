@@ -1,6 +1,5 @@
 package invest.com.swapp
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -10,7 +9,6 @@ import android.view.View
 import android.widget.RadioGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.ViewModelStores
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -79,7 +77,7 @@ class TradeActivity : AppCompatActivity(), TradeListener {
         fab_new_trade.setOnClickListener {
             //0 - Add
             //1 - Modify
-            AlertUtil().showTradeInput(this, stockTradeViewModel,0)
+            AlertUtil().showTradeInput(this, stockTradeViewModel,0, null)
 
         }
     }
@@ -93,6 +91,7 @@ class TradeActivity : AppCompatActivity(), TradeListener {
 
     override fun onEdit(trade: StockTrade) {
         toast("edit ${trade.id}")
+        AlertUtil().showTradeInput(this,stockTradeViewModel,1,trade)
     }
 
     override fun onDelete(trade: StockTrade) {
@@ -104,7 +103,7 @@ class TradeActivity : AppCompatActivity(), TradeListener {
 }
 
 class AlertUtil{
-    fun showTradeInput(ctx: TradeActivity, stockTradeViewModel: TradeViewModel, modify:Int){
+    fun showTradeInput(ctx: TradeActivity, stockTradeViewModel: TradeViewModel, modify:Int, trade: StockTrade? = null){
         var type = 0;
 
         var view: View = ctx.layoutInflater.inflate(R.layout.layout_trade_prompt,null)
@@ -132,6 +131,19 @@ class AlertUtil{
         var comm = 0f
         var others = 0f
 
+
+        if(modify == 1){
+            //load the stock trade here...
+            txtComm.setText(trade!!.commission.toString())
+            txtPrice.setText(trade!!.buy_price.toString())
+            txtShares.setText(trade!!.shares.toString())
+            lblTotal.setText(trade!!.total_amount.toString())
+            txtTax.setText(trade!!.tax.toString())
+            txtOthers.setText(trade!!.others.toString())
+            txtStockCode.setText(trade!!.code)
+            txtReasons.setText(trade!!.reasons)
+        }
+
         MaterialAlertDialogBuilder(ctx,R.style.AlertDialogTheme).setTitle("Trade")
                 .setView(view)
                 .setCancelable(false)
@@ -151,8 +163,15 @@ class AlertUtil{
                             ,tax
                             ,others,txtReasons.text.toString(),"","",""
                     )
-                    stockTradeViewModel.saveTrade(stockTradeNew)
-                    ctx.longToast("trade is saved.")
+
+                    if(modify == 0){
+                        stockTradeViewModel.saveTrade(stockTradeNew)
+                        ctx.longToast("trade is saved.")
+                    }else{
+                        stockTradeViewModel.updateTrade(stockTradeNew)
+                        ctx.longToast("trade is updated.")
+                    }
+
                 }.show()
 
 
