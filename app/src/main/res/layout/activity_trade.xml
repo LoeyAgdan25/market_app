@@ -6,46 +6,54 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
     tools:context=".TradeActivity">
-    <RadioGroup
-        android:id="@+id/radio_sort_trade"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/view_below"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <RadioButton
-            android:id="@+id/radio_sort_all"
-            android:layout_width="0dp"
+        >
+        <RadioGroup
+            android:id="@+id/radio_sort_trade"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="ALL" />
-        <RadioButton
-            android:id="@+id/radio_sort_buy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="BUY" />
+            android:layout_above="@+id/view_below"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <RadioButton
+                android:id="@+id/radio_sort_all"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="ALL" />
+            <RadioButton
+                android:id="@+id/radio_sort_buy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BUY" />
 
-        <RadioButton
-            android:id="@+id/radio_sort_sell"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SELL" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radio_sort_sell"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SELL" />
+        </RadioGroup>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyler_trades_list"
-        android:layout_width="match_parent"
-        android:layout_height="644dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_sort_trade" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyler_trades_list"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
 
+            app:layout_constraintTop_toBottomOf="@+id/radio_sort_trade"
+            android:scrollbars="vertical"
+            />
+    </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_trade"
         android:layout_width="56dp"
