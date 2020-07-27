@@ -230,10 +230,12 @@ class MasterActivity : AppCompatActivity(), WatchListener{
                         startActivity(Intent(MasterActivity@this, TradeActivity::class.java))
                         dialog.dismiss()
                     }
-                    capital!!.setOnClickListener { toast("show capital")
+                    capital!!.setOnClickListener {
+                        startActivity(Intent(MasterActivity@this, PortfolioActivity::class.java))
                         dialog.dismiss()
                     }
-                    portfolio!!.setOnClickListener { toast("show portfolio")
+                    portfolio!!.setOnClickListener {
+                        startActivity(Intent(MasterActivity@this, PortfolioActivity::class.java))
                         dialog.dismiss()
                     }
 

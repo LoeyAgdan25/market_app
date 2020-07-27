@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3"
+        android:weightSum="2"
         android:padding="10dp"
         >
         <com.google.android.material.button.MaterialButton
@@ -35,6 +35,7 @@
             android:id="@+id/btn_capital"
             android:text="Capital"
             android:textColor="@color/colorPrimary"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:backgroundTint="@android:color/transparent"
             />
