@@ -39,6 +39,7 @@ class TradeActivity : AppCompatActivity(), TradeListener {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         stockTrade = ArrayList()
+
 //        stockTrade.add(StockTrade("CEB",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
 //        stockTrade.add(StockTrade("SCC",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))
 //        stockTrade.add(StockTrade("MER",1,0f,0f,0f,0f,0f, 0f,0f,0f,"","",""))

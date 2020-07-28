@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -20,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import invest.com.swapp.adapter.PortfolioAdapter
 import invest.com.swapp.adapter.TradeListAdapter
 import invest.com.swapp.model.StockTrade
+import invest.com.swapp.viewmodel.TradeViewModel
 import kotlinx.android.synthetic.main.activity_portfolio.*
 import kotlinx.android.synthetic.main.activity_trade.*
 import kotlinx.android.synthetic.main.content_portfolio.*
@@ -28,16 +32,13 @@ import kotlinx.android.synthetic.main.content_portfolio.*
 class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, AdapterView.OnItemSelectedListener{
 
     private lateinit var stockTrade:ArrayList<StockTrade>
+    private lateinit var stockTradeViewModel: TradeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_portfolio)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         portfolio_pie_chart.setUsePercentValues(true)
         val xvalues = ArrayList<PieEntry>()
@@ -63,14 +64,43 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
 
         stockTrade = ArrayList()
 
-         stockTrade.add(StockTrade(0,"CEB",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
-         stockTrade.add(StockTrade(1,"SCC",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
-         stockTrade.add(StockTrade(2,"MER",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
+//         stockTrade.add(StockTrade(0,"CEB",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
+//         stockTrade.add(StockTrade(1,"SCC",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
+//         stockTrade.add(StockTrade(2,"MER",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
 
         var linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         portfolio_recycler.layoutManager = linearLayoutManager
         var portfolio = PortfolioAdapter(stockTrade)
         portfolio_recycler.adapter = portfolio
+
+        stockTradeViewModel = ViewModelProviders.of(this).get(TradeViewModel::class.java)
+        stockTradeViewModel.trades.observe(this, Observer { it ->
+
+            var filter = it.filter { it.type == 0 }
+
+            //build logic for adding and deducting sell on transaction
+            //or build separate table
+            stockTrade.clear()
+            stockTrade.addAll(filter)
+
+            portfolio_recycler!!.adapter!!.notifyDataSetChanged()
+
+            /*
+
+                    val filtered = stockTrade.filter { it.type == 0 }
+                    recyler_trades_list!!.adapter = TradeListAdapter(ArrayList(filtered))
+                    recyler_trades_list!!.adapter!!.notifyDataSetChanged()
+            */
+
+        })
+
+
+
+
+        fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
 
     }
 
@@ -115,14 +145,7 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//        if (e != null) {
-//            val pe = e as PieEntry
-//            Log.e("LABEL", pe.label)
-//            var intent = Intent(context, NextActivity::class.java)
-//            startActivity(intent)
-//        }
-    }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) { }
 
 }
 

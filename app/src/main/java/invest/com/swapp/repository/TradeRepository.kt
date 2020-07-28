@@ -2,6 +2,7 @@ package invest.com.swapp.repository
 
 import androidx.lifecycle.LiveData
 import invest.com.swapp.db.room.TradeDao
+import invest.com.swapp.model.Stock
 import invest.com.swapp.model.StockTrade
 
 class TradeRepository(private val stockTradeDao: TradeDao) {
