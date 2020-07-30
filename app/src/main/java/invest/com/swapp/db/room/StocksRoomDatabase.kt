@@ -6,17 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import invest.com.swapp.model.Stock2
+import invest.com.swapp.model.StockPortfolio
 import invest.com.swapp.model.StockTrade
 import invest.com.swapp.model.StocksWatched
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Stock2::class, StocksWatched::class, StockTrade::class), version = 11, exportSchema = false)
+@Database(entities = arrayOf(Stock2::class, StocksWatched::class, StockTrade::class, StockPortfolio::class), version = 13, exportSchema = false)
 abstract class StocksRoomDatabase : RoomDatabase(){
 
     abstract fun stockDao(): StocksDao
     abstract fun watchDao(): WatchedDao
     abstract fun tradeDao(): TradeDao
+    abstract fun portolioDao():PortfolioDao
 
     private class DatabaseCallback(
         private val scope: CoroutineScope
@@ -29,6 +31,7 @@ abstract class StocksRoomDatabase : RoomDatabase(){
                     var stockDao = database.stockDao()
                     var watchedDao = database.watchDao()
                     var tradeDao = database.tradeDao()
+                    var portfolioDao = database.portolioDao()
                     //loop things to insert here
                     //initialise database
                     //todo:- get data from database...

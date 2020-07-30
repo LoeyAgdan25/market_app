@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import invest.com.swapp.R
+import invest.com.swapp.model.StockPortfolio
 import invest.com.swapp.model.StockTrade
 import kotlinx.android.synthetic.main.portfolio_list_layout.view.*
 
-class PortfolioAdapter(private val stocks:List<StockTrade>) : RecyclerView.Adapter<PortfolioAdapter.ViewHolder>(){
+class PortfolioAdapter(private val stocks:List<StockPortfolio>) : RecyclerView.Adapter<PortfolioAdapter.ViewHolder>(){
 
     //var tradeListener:TradeListener? = null
     private val onClickListener: View.OnClickListener
@@ -32,8 +33,8 @@ class PortfolioAdapter(private val stocks:List<StockTrade>) : RecyclerView.Adapt
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = stocks[p1]
         p0.symbol.text = item.code.toUpperCase()
-        p0.price.text = "Price: ${item.buy_price}"
-//        p0.shares.text = "Shares: ${item.shares}"
+        p0.price.text = "Shares: ${item.total_shares}"
+        p0.share.text = "Price: ${item.total_amount}"
 
 
     }
@@ -41,6 +42,7 @@ class PortfolioAdapter(private val stocks:List<StockTrade>) : RecyclerView.Adapt
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val symbol: TextView = view.code_port
         val price: TextView = view.price_port
+        val share: TextView = view.shares_port
 //        val shares:MaterialTextView = view.no_share_trade_list
 
     }

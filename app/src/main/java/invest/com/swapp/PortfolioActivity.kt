@@ -22,6 +22,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.snackbar.Snackbar
 import invest.com.swapp.adapter.PortfolioAdapter
 import invest.com.swapp.adapter.TradeListAdapter
+import invest.com.swapp.model.StockPortfolio
 import invest.com.swapp.model.StockTrade
 import invest.com.swapp.viewmodel.TradeViewModel
 import kotlinx.android.synthetic.main.activity_portfolio.*
@@ -31,7 +32,7 @@ import kotlinx.android.synthetic.main.content_portfolio.*
 
 class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, AdapterView.OnItemSelectedListener{
 
-    private lateinit var stockTrade:ArrayList<StockTrade>
+    private lateinit var stockTrade:ArrayList<StockPortfolio>
     private lateinit var stockTradeViewModel: TradeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,14 +75,14 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
         portfolio_recycler.adapter = portfolio
 
         stockTradeViewModel = ViewModelProviders.of(this).get(TradeViewModel::class.java)
-        stockTradeViewModel.trades.observe(this, Observer { it ->
+        stockTradeViewModel.portfolio.observe(this, Observer { it ->
 
-            var filter = it.filter { it.type == 0 }
+           // var filter = it.filter { it.type == 0 }
 
             //build logic for adding and deducting sell on transaction
             //or build separate table
             stockTrade.clear()
-            stockTrade.addAll(filter)
+            stockTrade.addAll(it)
 
             portfolio_recycler!!.adapter!!.notifyDataSetChanged()
 
