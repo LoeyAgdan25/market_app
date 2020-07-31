@@ -33,8 +33,8 @@ class PortfolioAdapter(private val stocks:List<StockPortfolio>) : RecyclerView.A
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = stocks[p1]
         p0.symbol.text = item.code.toUpperCase()
-        p0.price.text = "Shares: ${item.total_shares}"
-        p0.share.text = "Price: ${item.total_amount}"
+        p0.price.text = "${item.total_shares}"
+        p0.share.text = "${item.total_amount}"
 
 
     }

@@ -26,7 +26,11 @@ class StockPortfolio (
 
     //todo:- how to get this average price?
     @SerializedName("average_price")
-    @ColumnInfo(name = "average_price")var average_price:Float
+    @ColumnInfo(name = "average_price")var average_price:Float,
+
+    //update with current price in database...
+    val price_changed:String = "",
+    val percent_changed:String = ""
 
     //todo:- get the current price...
 

@@ -2,21 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="4"
+    android:weightSum="5"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
     >
     <TextView
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/code_port"
-        android:text="CODE"
+        android:text=""
         />
     <TextView
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/shares_port"
-        android:text="SHARES"
+        android:text=""
         />
     <TextView
         android:layout_weight="1"
@@ -26,9 +28,16 @@
         android:text="0"
         />
     <TextView
+        android:id="@+id/current_market_price_port"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TOTAL / LOSS"
+        android:text="0.00"
         />
+    <TextView
+        android:id="@+id/percent_change_port"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"/>
 </LinearLayout>

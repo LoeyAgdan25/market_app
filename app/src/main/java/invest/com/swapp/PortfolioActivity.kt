@@ -60,14 +60,7 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
         portfolio_pie_chart.setOnChartValueSelectedListener(this)
         chartDetails(portfolio_pie_chart, Typeface.SANS_SERIF)
 
-
-        /*set detail to recyclerview*/
-
         stockTrade = ArrayList()
-
-//         stockTrade.add(StockTrade(0,"CEB",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
-//         stockTrade.add(StockTrade(1,"SCC",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
-//         stockTrade.add(StockTrade(2,"MER",0,0f,0f,0f,0f, 0f,0f,0f,0f,"",""))
 
         var linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         portfolio_recycler.layoutManager = linearLayoutManager
@@ -76,33 +69,15 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
 
         stockTradeViewModel = ViewModelProviders.of(this).get(TradeViewModel::class.java)
         stockTradeViewModel.portfolio.observe(this, Observer { it ->
-
-           // var filter = it.filter { it.type == 0 }
-
-            //build logic for adding and deducting sell on transaction
-            //or build separate table
             stockTrade.clear()
             stockTrade.addAll(it)
-
             portfolio_recycler!!.adapter!!.notifyDataSetChanged()
-
-            /*
-
-                    val filtered = stockTrade.filter { it.type == 0 }
-                    recyler_trades_list!!.adapter = TradeListAdapter(ArrayList(filtered))
-                    recyler_trades_list!!.adapter!!.notifyDataSetChanged()
-            */
-
         })
-
-
-
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-
     }
 
     fun chartDetails(mChart: PieChart, tf: Typeface) {

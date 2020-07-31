@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"/>
     </LinearLayout>
         <com.google.android.material.button.MaterialButton
-            android:drawableTop="@drawable/ic_action_list_empty"
             android:id="@+id/delete_trade"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -48,13 +47,14 @@
             android:layout_margin="5dp"
             android:textSize="9sp"
             app:cornerRadius="100dp"
+            android:text="Delete"
             android:layout_height="wrap_content"/>
         <com.google.android.material.button.MaterialButton
-            android:drawableTop="@drawable/ic_action_list_empty"
             android:id="@+id/edit_trade"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_margin="5dp"
+            android:text="Edit"
             android:textSize="9sp"
             app:cornerRadius="100dp"
             android:layout_height="wrap_content"/>
