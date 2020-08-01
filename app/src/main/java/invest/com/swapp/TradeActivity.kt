@@ -155,7 +155,7 @@ class AlertUtil{
                 .setPositiveButton("Save"){
                     dialog, which ->
                     var stockTradeNew = StockTrade(0
-                            ,txtStockCode.text.toString()
+                            ,txtStockCode.text.toString().toUpperCase()
                             ,type,0f
                             ,txtPrice.text.toString().replace(",","").toFloat()
                             ,lblTotal.text.toString().replace(",","").toFloat()

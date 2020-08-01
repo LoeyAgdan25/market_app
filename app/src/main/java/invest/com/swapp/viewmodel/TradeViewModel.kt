@@ -32,7 +32,7 @@ class TradeViewModel(application: Application): AndroidViewModel(application) {
     fun saveTrade(trade:StockTrade) = viewModelScope.launch {
 
         //convert stock trade to portfolio
-        var stockPortolio = StockPortfolio(0, trade.code, trade.total_amount, trade.shares, trade.type,0f)
+        var stockPortolio = StockPortfolio( trade.code, trade.total_amount, trade.shares, trade.type,0f)
         portfolioRepo.insert(stockPortolio)
         repository.insert(trade)
     }

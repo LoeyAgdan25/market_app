@@ -5,15 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "stock_portfolio")
+@Entity(tableName = "stock_portfolio_table")
 class StockPortfolio (
-
-    @PrimaryKey(autoGenerate = true)
-    @SerializedName("id")
-    @ColumnInfo(name = "id") val id: Int,
-
-    @SerializedName("code")
-    @ColumnInfo(name = "code") val code:String,
+    @PrimaryKey
+    @SerializedName("symbol")
+    @ColumnInfo(name = "symbol") val symbol:String,
 
     @SerializedName("total_amount")
     @ColumnInfo(name = "total_amount")var total_amount:Float,
@@ -29,9 +25,8 @@ class StockPortfolio (
     @ColumnInfo(name = "average_price")var average_price:Float,
 
     //update with current price in database...
-    val price_changed:String = "",
-    val percent_changed:String = ""
-
+    val price:String = "",
+    val percent_change:String = ""
     //todo:- get the current price...
 
     ){}

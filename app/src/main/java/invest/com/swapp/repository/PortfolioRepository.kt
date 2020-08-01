@@ -19,11 +19,13 @@ class PortfolioRepository (private val portfolioDao: PortfolioDao){
 
         //do the insert...
 
-        var stockP = portfolioDao.getStock(stock.code)
+        var stockP = portfolioDao.getStock(stock.symbol)
         print("is found $stockP")
         Log.d("_FOUND", "$stockP  $stockP.tra")
+        //todo:- onload get the current price...
 
         if(stockP == null){
+            Log.d("_TRANS", "Portfolio inserted $stockP  $stock")
             portfolioDao.insert(stock)
         }else{
             if(stock.trans_type == 0){
@@ -31,6 +33,7 @@ class PortfolioRepository (private val portfolioDao: PortfolioDao){
                 stockP.total_amount = stockP.total_amount + stock.total_amount
                 portfolioDao.updateStock(stockP)
             }else{
+
                 stockP.total_shares = stockP.total_shares - stock.total_shares
 
                 if(stockP.total_shares == 0f){

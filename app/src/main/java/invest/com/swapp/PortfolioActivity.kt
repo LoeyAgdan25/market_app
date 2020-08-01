@@ -28,6 +28,7 @@ import invest.com.swapp.viewmodel.TradeViewModel
 import kotlinx.android.synthetic.main.activity_portfolio.*
 import kotlinx.android.synthetic.main.activity_trade.*
 import kotlinx.android.synthetic.main.content_portfolio.*
+import org.jetbrains.anko.toast
 
 
 class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, AdapterView.OnItemSelectedListener{
@@ -71,6 +72,7 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
         stockTradeViewModel.portfolio.observe(this, Observer { it ->
             stockTrade.clear()
             stockTrade.addAll(it)
+            toast("${it.count()}")
             portfolio_recycler!!.adapter!!.notifyDataSetChanged()
         })
 
@@ -113,8 +115,6 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-
-
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

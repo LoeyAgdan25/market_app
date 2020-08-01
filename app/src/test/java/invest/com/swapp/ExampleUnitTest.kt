@@ -70,4 +70,55 @@ class ExampleUnitTest {
         assertEquals( 500f, remaining_price2)
 
     }
+
+    @Test
+    fun compute_pie_distribution(){
+        //get all total in portfolio
+        //get percentage of each portfolio
+
+        var totalPortfolioValue = 7750f
+
+        var cebPercent = 1200f
+        var sscPercent = 3000f
+        var jfcPercent = 2000f
+        var merPercent = 30f
+        var hlcmPercent = 1520f
+
+        assertEquals(totalPortfolioValue, cebPercent + sscPercent + jfcPercent + merPercent + hlcmPercent)
+
+        var ceb = (cebPercent / totalPortfolioValue) * 100   // percentage in total amount of shares
+        var ssc = (sscPercent / totalPortfolioValue) * 100
+        var jfc = (jfcPercent / totalPortfolioValue) * 100
+        var mer = (merPercent / totalPortfolioValue) * 100
+        var hlcm = (hlcmPercent / totalPortfolioValue) * 100
+
+        //get total pie value in percentage
+
+        assertEquals(100f , ceb + ssc + jfc + mer + hlcm)
+
+
+        var cebPercentNew = 1200f // check changed in percent if how many percent shrunk or shrink
+        var cebPercentGain = 1200f * 2f // for 100% gain
+        var cebLoss = 600f
+
+        //var totalGainLoss = cebPercentNew - cebPercent
+        //get cebloss / percent...
+
+        var gainNoChanged = ((cebPercentNew - cebPercent) / cebPercent) * 100
+        var gain = ((cebPercentGain - cebPercent) / cebPercent) * 100
+        var loss = ((cebLoss - cebPercent) / cebPercent) * 100
+
+        assertEquals(0f, gainNoChanged) // no changed
+        assertEquals(100f, gain) //gain
+        assertEquals(-50f, loss)
+
+    }
+
+    @Test
+    fun compute_current_market_share_value(){
+        //compute current market value
+        //and percentage changed...
+        //get current market value...
+
+    }
 }
