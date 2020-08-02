@@ -35,6 +35,8 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
 
     private lateinit var stockTrade:ArrayList<StockPortfolio>
     private lateinit var stockTradeViewModel: TradeViewModel
+    var xvalues = ArrayList<PieEntry>()
+    lateinit var dataSet:PieDataSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,24 +44,7 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        portfolio_pie_chart.setUsePercentValues(true)
-        val xvalues = ArrayList<PieEntry>()
-        xvalues.add(PieEntry(34.0f, "CEB"))
-        xvalues.add(PieEntry(28.2f, "SSC"))
-        xvalues.add(PieEntry(37.9f, "JFC"))
-        val dataSet = PieDataSet(xvalues, "Stocks")
-        val data = PieData(dataSet)
-
-        dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
-        data.setValueFormatter(PercentFormatter())
-
-        portfolio_pie_chart.data = data
-        portfolio_pie_chart.description.text = ""
-        portfolio_pie_chart.isDrawHoleEnabled = false
-        data.setValueTextSize(13f)
-
-        portfolio_pie_chart.setOnChartValueSelectedListener(this)
-        chartDetails(portfolio_pie_chart, Typeface.SANS_SERIF)
+        dataSet = PieDataSet(xvalues, "Stocks")
 
         stockTrade = ArrayList()
 
@@ -74,12 +59,45 @@ class PortfolioActivity : AppCompatActivity() , OnChartValueSelectedListener, Ad
             stockTrade.addAll(it)
             toast("${it.count()}")
             portfolio_recycler!!.adapter!!.notifyDataSetChanged()
+
+            dataSet.clear()
+            xvalues = ArrayList<PieEntry>()
+
+            for(portfolioStock: StockPortfolio in it) {
+                var sum = it.sumByDouble { s -> s.total_amount.toDouble() }
+                xvalues.add(PieEntry((portfolioStock.total_amount / sum.toFloat()) * 100f, portfolioStock.symbol))
+            }
+
+            dataSet = PieDataSet(xvalues, "Stocks")
+            dataSet.notifyDataSetChanged()
+            val data = PieData(dataSet)
+
+            dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
+            data.setValueFormatter(PercentFormatter())
+
+            portfolio_pie_chart.data = data
+            portfolio_pie_chart.description.text = ""
+            portfolio_pie_chart.isDrawHoleEnabled = false
+            data.setValueTextSize(13f)
+
         })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        /** Chart data */
+
+        portfolio_pie_chart.setUsePercentValues(true)
+
+
+
+
+
+
+        portfolio_pie_chart.setOnChartValueSelectedListener(this)
+        chartDetails(portfolio_pie_chart, Typeface.SANS_SERIF)
     }
 
     fun chartDetails(mChart: PieChart, tf: Typeface) {

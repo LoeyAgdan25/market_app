@@ -37,7 +37,7 @@ class PortfolioAdapter(private val stocks:List<StockPortfolio>) : RecyclerView.A
         p0.share.text = "${item.total_amount}"
 
         //quick fix get current price set manually here...
-
+        p0.marketValue.text = "${item.price.toFloat() * item.total_shares}"
         p0.marketPrice.text = "${item.price}"
         p0.percentChanged.text = "${item.percent_change}"
     }
@@ -48,8 +48,7 @@ class PortfolioAdapter(private val stocks:List<StockPortfolio>) : RecyclerView.A
         val share: TextView = view.shares_port
         val marketPrice: TextView = view.current_market_price_port
         val percentChanged: TextView = view.percent_change_port
-//        val shares:MaterialTextView = view.no_share_trade_list
-
+        val marketValue: TextView = view.market_value_port
     }
 
 }

@@ -27,6 +27,7 @@ class StockPortfolio (
     //update with current price in database...
     val price:String = "",
     val percent_change:String = ""
+
     //todo:- get the current price...
 
     ){}

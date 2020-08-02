@@ -1,9 +1,11 @@
 package invest.com.swapp.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.data.PieEntry
 import invest.com.swapp.db.room.StocksRoomDatabase
 import invest.com.swapp.model.StockPortfolio
 import invest.com.swapp.model.StockTrade
@@ -18,6 +20,9 @@ class TradeViewModel(application: Application): AndroidViewModel(application) {
 
     var trades: LiveData<List<StockTrade>>
     var portfolio: LiveData<List<StockPortfolio>>
+    var pieData = ArrayList<PieEntry>()
+
+
     init {
         val tradeDao = StocksRoomDatabase.getDatabase(application,viewModelScope).tradeDao()
         val portDao = StocksRoomDatabase.getDatabase(application, viewModelScope).portolioDao()
@@ -27,6 +32,12 @@ class TradeViewModel(application: Application): AndroidViewModel(application) {
 
         trades = repository.stockTrade
         portfolio = portfolioRepo.portfolio
+
+        pieData.add(PieEntry(34.0f, "CEB"))
+        pieData.add(PieEntry(28.2f, "SSC"))
+        pieData.add(PieEntry(37.9f, "JFC"))
+
+
     }
 
     fun saveTrade(trade:StockTrade) = viewModelScope.launch {
